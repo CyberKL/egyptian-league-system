@@ -7,7 +7,7 @@ public class Manager extends FootballCharacter{
     private Team team;
     private int trophies;
     private boolean wasPlayer;
-    private static int numOfManagers;
+    private static int numOfManagers = 0;
 
     public Manager(String name, LocalDate dateOfBirth, String nationality, int yellowCards, int redCards, Team team, int trophies, boolean wasPlayer){
         super(name,dateOfBirth, nationality, yellowCards, redCards);
