@@ -13,4 +13,8 @@ public class Referee extends FootballCharacter{
         numOfReferees++;
     }
 
+    public String displayRefereeInfo(){
+        return "Name: "+name+"/nAge: "+age+"/nNationality: " +nationality+"/nMatches Refereed: " +matchesRefereed+ "/nYellow Cards: " +yellowCards+ "/nRed Cards: " +redCards;
+    }
+
 }
