@@ -24,5 +24,9 @@ public abstract class Player extends FootballCharacter{
         this.position = position;
         numOfPlayers ++;
     }
+    protected String displayPlayerInfo(){
+
+        return "Name: "+name+"/nNationality"+nationality+"/nAge: "+age+"/nPlayerId:"+playerId+"/nNumber:"+number+"/nTeam:"+team+"/nHeight:"+height+"/nWeight:"+weight+"/nPreferredFoot:"+preferredFoot+"/nPosition:"+position+"/nYellowCards:"+yellowCards+"/nRedCards:"+redCards;
+    }
 
 }
