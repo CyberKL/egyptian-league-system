@@ -16,6 +16,7 @@ public class Logic {
     private static ArrayList<Stadium> stadiums = new ArrayList<Stadium>();
 
 
+    //Start of match related methods
     public static void enterMatchInfo (){
         Team homeTeam = null;
         Team awayTeam = null;
@@ -31,16 +32,16 @@ public class Logic {
         while (!isValid) {
             try {
 
-                System.out.println("Enter match ID:");
+                System.out.print("Enter match ID: ");
                 int matchId = scanner.nextInt();
                 scanner.nextLine();
                 //Check if id is taken
                 isMatchIdDuplicate(matchId);
 
-                System.out.println("Enter Date (yyyy-mm-dd):");
+                System.out.print("Enter Date (yyyy-mm-dd): ");
                 LocalDate date = LocalDate.parse(scanner.nextLine());
 
-                System.out.println("Enter home team name:");
+                System.out.print("Enter home team name: ");
                 String home = scanner.nextLine();
                 for (Team team : teams) {
                     if (team.getName().equalsIgnoreCase(home)) {
@@ -50,7 +51,7 @@ public class Logic {
 
                 // Home and away team must be different
                 do {
-                    System.out.println("Enter away team name:");
+                    System.out.print("Enter away team name: ");
                     String away = scanner.nextLine();
                     if (away.equals(home)) {
                         System.out.println("Home and away team must be different");
@@ -65,7 +66,7 @@ public class Logic {
                     }
                 } while (!diffTeams);
 
-                System.out.println("Enter referee name: ");
+                System.out.print("Enter referee name: ");
                 String refName = scanner.nextLine();
                 for (Referee element : referees) {
                     if (element.getName().equalsIgnoreCase(home)) {
@@ -73,7 +74,7 @@ public class Logic {
                     }
                 }
 
-                System.out.println("Enter stadium name: ");
+                System.out.print("Enter stadium name: ");
                 String stadiumName = scanner.nextLine();
                 for (Stadium element : stadiums) {
                     if (element.getName().equalsIgnoreCase(stadiumName)) {
@@ -82,7 +83,7 @@ public class Logic {
                 }
 
                 do {
-                    System.out.println("Enter score (home-away): ");
+                    System.out.print("Enter score (home-away): ");
                     matchScore = scanner.nextLine();
                 } while (!isValidScore(matchScore));
                 score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
@@ -119,5 +120,124 @@ public class Logic {
     private static boolean isValidScore(String matchScore) {
         return matchScore.matches("\\d+-\\d+");
     }
+    public static String displayMatchInfo(){
+
+        System.out.print("Enter the id of the match you want to display: ");
+        Scanner idScanner = new Scanner(System.in);
+        int id = idScanner.nextInt();
+        idScanner.nextLine();
+        for (Match element : matches){
+            if (element.getMatchId()==id){
+                return element.toString();
+            }
+        }
+        return "Match not found, please provide a valid match Id";
+    }
+    public void updateMatch(){
+
+        System.out.print("Enter the id of the match you want to update: ");
+        Scanner idScanner = new Scanner(System.in);
+        int id = idScanner.nextInt();
+        idScanner.nextLine();
+        for (Match element: matches){
+            if (element.getMatchId()==id){
+                System.out.println("What do you want to update?");
+                System.out.println("1. Date/n2. Home team/n 3. Away team/n4. Referee/n5. Stadium/n6.Score");
+                Scanner scanner = new Scanner(System.in);
+                int choice = 0;
+                try{
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
+                }
+                catch (InputMismatchException e){
+                    System.out.println("Choose a number from 1-6 please");
+                    scanner.nextLine();
+                }
+                switch (choice) {
+                    case 1: {
+                        System.out.print("Enter new date: ");
+                        LocalDate date = LocalDate.parse(scanner.nextLine());
+                        element.setDate(date);
+                        break;
+                    }
+                    case 2: {
+                        System.out.print("Enter home team: ");
+                        String home = scanner.nextLine();
+                        for (Team i : teams) {
+                            if (i.getName().equals(home)) {
+                                element.setHomeTeam(i);
+                            } else {
+                                System.out.println("Team not found");
+                            }
+                        }
+                        break;
+                    }
+                    case 3: {
+                        System.out.print("Enter away team: ");
+                        String away = scanner.nextLine();
+                        for (Team i : teams) {
+                            if (i.getName().equals(away)) {
+                                element.setAwayTeam(i);
+                            } else {
+                                System.out.println("Team not found");
+                            }
+                        }
+                        break;
+                    }
+                    case 4: {
+                        System.out.println("Enter new referee: ");
+                        String refName = scanner.nextLine();
+                        for (Referee i : referees) {
+                            if (i.getName().equals(refName)) {
+                                element.setReferee(i);
+                            } else {
+                                System.out.println("Referee not found");
+                            }
+                        }
+                        break;
+                    }
+                    case 5: {
+                        System.out.println("Enter new stadium: ");
+                        String stadiumName = scanner.nextLine();
+                        for (Stadium i : stadiums) {
+                            if (i.getName().equals(stadiumName)) {
+                                element.setStadium(i);
+                            } else {
+                                System.out.println("Stadium not found");
+                            }
+                        }
+                        break;
+                    }
+                    case 6: {
+                        System.out.println("Enter new Score (home-away): ");
+                        String matchScore = scanner.nextLine();
+                        Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                        element.setScore(score);
+                        break;
+                    }
+                }
+                System.out.println("Match updated successfully!");
+                return;
+            }
+        }
+        System.out.println("Match not found, please provide a valid match Id");
+    }
+
+    public void deleteMatch(){
+
+        System.out.print("Enter the id of the match you want to delete: ");
+        Scanner idScanner = new Scanner(System.in);
+        int id = idScanner.nextInt();
+        idScanner.nextLine();
+        for (Match element:matches){
+            if (element.getMatchId()==id){
+                matches.remove(element);
+                System.out.println("Match deleted successfully!");
+                return;
+            }
+        }
+        System.out.println("Match not found, please provide a valid match id");
+    }
+    //End of match related methods
 
 }

@@ -77,4 +77,15 @@ public class Match {
     public void setStadium(Stadium stadium) {
         this.stadium = stadium;
     }
+
+    @Override
+    public String toString() {
+        return "Match Id: " + matchId +
+                "/nDate: " + date +
+                "/nHome team: " + homeTeam.getName() +
+                "/nAway team: " + awayTeam.getName() +
+                "/nReferee: " + referee.getName() +
+                "/nScore: " + score.toString() +
+                "/nStadium: " + stadium.getName();
+    }
 }
