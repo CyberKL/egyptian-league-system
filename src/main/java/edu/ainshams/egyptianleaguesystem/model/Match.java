@@ -16,7 +16,7 @@ public class Match {
     private Score score;
     private Stadium stadium;
 
-    public Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Score score, Stadium stadium) {
+    private Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Score score, Stadium stadium) {
         this.matchId = matchId;
         this.date = date;
         this.homeTeam = homeTeam;
