@@ -1,5 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
+import edu.ainshams.egyptianleaguesystem.model.Logic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -14,7 +15,8 @@ import java.io.IOException;
 public class Main extends Application{
 
     public static void main(String[] args){
-        launch(args);
+        //launch(args);
+        Logic.enterMatchInfo();
     }
 
     @Override
