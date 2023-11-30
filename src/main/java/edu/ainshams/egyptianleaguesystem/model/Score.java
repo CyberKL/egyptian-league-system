@@ -15,4 +15,20 @@ public class Score {
         return homeTeam+":"+awayTeam;
     }
 
+    public int getHomeTeam() {
+        return homeTeam;
+    }
+
+    public int getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setHomeTeam(int homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public void setAwayTeam(int awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
 }

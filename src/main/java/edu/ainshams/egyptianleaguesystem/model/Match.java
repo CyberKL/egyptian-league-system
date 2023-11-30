@@ -21,4 +21,60 @@ public class Match {
         this.score = score;
         this.stadium = stadium;
     }
+
+    public int getMatchId() {
+        return matchId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public Referee getReferee() {
+        return referee;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public Stadium getStadium() {
+        return stadium;
+    }
+
+    public void setMatchId(int matchId) {
+        this.matchId = matchId;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public void setReferee(Referee referee) {
+        this.referee = referee;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
+    }
 }

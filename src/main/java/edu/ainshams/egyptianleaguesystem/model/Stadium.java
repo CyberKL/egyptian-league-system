@@ -17,12 +17,31 @@ public class Stadium {
         this.matchesPlayedOn = 0;
     }
 
-    public ArrayList<Match> getUpComingMatches() {
-        return upcomingMatches;
-    }
-
     public void addUpcomingMatch(Match upComingMatch) {
         upcomingMatches.add(upComingMatch);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public ArrayList<Match> getUpcomingMatches() {
+        return upcomingMatches;
+    }
+
+    public int getMatchesPlayedOn() {
+        return matchesPlayedOn;
+    }
+
+    public void setMatchesPlayedOn(int matchesPlayedOn) {
+        this.matchesPlayedOn = matchesPlayedOn;
+    }
 }
