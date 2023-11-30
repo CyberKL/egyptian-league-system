@@ -215,7 +215,7 @@ public class Match {
             case 1: {
                 System.out.print("Enter new date: ");
                 LocalDate date = LocalDate.parse(scanner.nextLine());
-                this.setDate(date);
+                this.date = date;
                 break;
             }
             case 2: {
@@ -223,10 +223,10 @@ public class Match {
                 String home = scanner.nextLine();
                 for (Team i : teams) {
                     if (i.getName().equals(home)) {
-                        this.setHomeTeam(i);
-                    } else {
-                        System.out.println("Team not found");
+                        this.homeTeam = i;
+                        return;
                     }
+                    System.out.println("Team not found");
                 }
                 break;
             }
@@ -235,10 +235,9 @@ public class Match {
                 String away = scanner.nextLine();
                 for (Team i : teams) {
                     if (i.getName().equals(away)) {
-                        this.setAwayTeam(i);
-                    } else {
-                        System.out.println("Team not found");
+                        this.awayTeam = i;
                     }
+                    System.out.println("Team not found");
                 }
                 break;
             }
@@ -247,10 +246,9 @@ public class Match {
                 String refName = scanner.nextLine();
                 for (Referee i : referees) {
                     if (i.getName().equals(refName)) {
-                        this.setReferee(i);
-                    } else {
-                        System.out.println("Referee not found");
+                        this.referee = i;
                     }
+                    System.out.println("Referee not found");
                 }
                 break;
             }
@@ -259,10 +257,9 @@ public class Match {
                 String stadiumName = scanner.nextLine();
                 for (Stadium i : stadiums) {
                     if (i.getName().equals(stadiumName)) {
-                        this.setStadium(i);
-                    } else {
-                        System.out.println("Stadium not found");
+                        this.stadium = i;
                     }
+                    System.out.println("Stadium not found");
                 }
                 break;
             }
@@ -270,7 +267,7 @@ public class Match {
                 System.out.println("Enter new Score (home-away): ");
                 String matchScore = scanner.nextLine();
                 Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
-                this.setScore(score);
+                this.score = score;
                 break;
             }
         }
