@@ -187,6 +187,14 @@ public class Match {
                 // Creates new match object with the data the user entered
                 Match match = new Match(matchId, date, homeTeam, awayTeam, referee, score, stadium);
 
+                //Updating related objects;
+                homeTeam.addMatch(match);
+                homeTeam.setMatchesPlayed(homeTeam.getMatchesPlayed()+1);
+                awayTeam.addMatch(match);
+                awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed()+1);
+                referee.setMatchesRefereed(referee.getMatchesRefereed()+1);
+                stadium.addUpcomingMatch(match);
+
                 // Add the new match object to the matches ArrayList
                 matches.add(match);
                 isValid = true;
@@ -263,7 +271,11 @@ public class Match {
                 String home = scanner.nextLine();
                 for (Team i : teams) {
                     if (i.getName().equals(home)) {
+                        this.homeTeam.removeMatch(this);
+                        this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()-1);
                         this.homeTeam = i;
+                        this.homeTeam.addMatch(this);
+                        this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()+1);
                         return;
                     }
                     System.out.println("Team not found");
@@ -275,7 +287,11 @@ public class Match {
                 String away = scanner.nextLine();
                 for (Team i : teams) {
                     if (i.getName().equals(away)) {
+                        this.awayTeam.removeMatch(this);
+                        this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()-1);
                         this.awayTeam = i;
+                        this.awayTeam.addMatch(this);
+                        this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()+1);
                         return;
                     }
                     System.out.println("Team not found");
@@ -287,7 +303,9 @@ public class Match {
                 String refName = scanner.nextLine();
                 for (Referee i : referees) {
                     if (i.getName().equals(refName)) {
+                        this.referee.setMatchesRefereed(this.referee.getMatchesRefereed()-1);
                         this.referee = i;
+                        this.referee.setMatchesRefereed(this.referee.getMatchesRefereed()+1);
                         return;
                     }
                     System.out.println("Referee not found");
@@ -306,7 +324,9 @@ public class Match {
                                 if (upcoming.getDate().isEqual(this.date)) {
                                     System.out.println("Stadium not available on " + this.date);
                                 } else {
+                                    this.stadium.removeUpcomingMatch(this);
                                     this.stadium = i;
+                                    this.stadium.addUpcomingMatch(this);
                                     available = true;
                                     found = true;
                                 }
