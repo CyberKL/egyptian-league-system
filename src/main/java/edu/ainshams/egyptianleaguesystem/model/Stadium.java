@@ -17,8 +17,11 @@ public class Stadium {
         this.matchesPlayedOn = 0;
     }
 
-    public void addUpcomingMatch(Match upComingMatch) {
-        upcomingMatches.add(upComingMatch);
+    public void addUpcomingMatch(Match upcomingMatch) {
+        upcomingMatches.add(upcomingMatch);
+    }
+    public void removeUpcomingMatch(Match upcomingMatch){
+        upcomingMatches.remove(upcomingMatch);
     }
 
     public String getName() {

@@ -80,8 +80,12 @@ public class Team {
         this.manager = manager;
     }
 
-    public void setMatches(ArrayList<Match> matches) {
-        this.matches = matches;
+    public void addMatch(Match match) {
+        matches.add(match);
+    }
+
+    public void removeMatch(Match match) {
+        matches.remove(match);
     }
 
     public void setMatchesPlayed(int matchesPlayed) {
