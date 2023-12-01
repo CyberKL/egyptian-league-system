@@ -114,8 +114,18 @@ public class Match {
                 //Check if id is taken
                 isMatchIdDuplicate(matchId, matches);
 
-                System.out.print("Enter Date (yyyy-mm-dd): ");
-                LocalDate date = LocalDate.parse(scanner.nextLine());
+                boolean isValidDate = false;
+                LocalDate date = null;
+                while (!isValidDate) {
+                    System.out.print("Enter Date (yyyy-mm-dd): ");
+                    date = LocalDate.parse(scanner.nextLine());
+                    if (date.isBefore(LocalDate.now())){
+                        System.out.println("Must be upcoming date");
+                    }
+                    else {
+                        isValidDate = true;
+                    }
+                }
 
                 System.out.print("Enter home team name: ");
                 String home = scanner.nextLine();
@@ -150,11 +160,21 @@ public class Match {
                     }
                 }
 
-                System.out.print("Enter stadium name: ");
-                String stadiumName = scanner.nextLine();
-                for (Stadium element : stadiums) {
-                    if (element.getName().equalsIgnoreCase(stadiumName)) {
-                        stadium = element;
+                boolean available = false;
+                while(!available) {
+                    System.out.print("Enter stadium name: ");
+                    String stadiumName = scanner.nextLine();
+                    for (Stadium element : stadiums) {
+                        if (element.getName().equalsIgnoreCase(stadiumName)) {
+                            for (Match i : element.getUpcomingMatches()) {
+                                if (i.getDate().isEqual(date)) {
+                                    System.out.println("Stadium not available on " + date);
+                                } else {
+                                    stadium = element;
+                                    available = true;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -203,19 +223,39 @@ public class Match {
         System.out.println("1. Date/n2. Home team/n 3. Away team/n4. Referee/n5. Stadium/n6.Score");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
+        boolean outOfBounds = true;
         try{
-            choice = scanner.nextInt();
-            scanner.nextLine();
+            while (outOfBounds){
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice < 1 || choice > 6){
+                    System.out.println("Choose a number from 1-6 please");
+                }
+                else {
+                    outOfBounds = false;
+                }
+            }
+
         }
         catch (InputMismatchException e){
             System.out.println("Choose a number from 1-6 please");
             scanner.nextLine();
+            //return;
         }
         switch (choice) {
             case 1: {
-                System.out.print("Enter new date: ");
-                LocalDate date = LocalDate.parse(scanner.nextLine());
-                this.date = date;
+                boolean isValidDate = false;
+                while(!isValidDate) {
+                    System.out.print("Enter new date: ");
+                    LocalDate date = LocalDate.parse(scanner.nextLine());
+                    if (date.isBefore(LocalDate.now())) {
+                        System.out.println("Please enter an upcoming date.");
+                    }
+                    else {
+                        this.date = date;
+                        isValidDate = true;
+                    }
+                }
                 break;
             }
             case 2: {
@@ -236,6 +276,7 @@ public class Match {
                 for (Team i : teams) {
                     if (i.getName().equals(away)) {
                         this.awayTeam = i;
+                        return;
                     }
                     System.out.println("Team not found");
                 }
@@ -247,19 +288,34 @@ public class Match {
                 for (Referee i : referees) {
                     if (i.getName().equals(refName)) {
                         this.referee = i;
+                        return;
                     }
                     System.out.println("Referee not found");
                 }
                 break;
             }
             case 5: {
-                System.out.println("Enter new stadium: ");
-                String stadiumName = scanner.nextLine();
-                for (Stadium i : stadiums) {
-                    if (i.getName().equals(stadiumName)) {
-                        this.stadium = i;
+                boolean available = false;
+                boolean found = false;
+                while (!available) {
+                    System.out.println("Enter new stadium: ");
+                    String stadiumName = scanner.nextLine();
+                    for (Stadium i : stadiums) {
+                        if (i.getName().equals(stadiumName)) {
+                            for (Match upcoming : i.getUpcomingMatches()) {
+                                if (upcoming.getDate().isEqual(this.date)) {
+                                    System.out.println("Stadium not available on " + this.date);
+                                } else {
+                                    this.stadium = i;
+                                    available = true;
+                                    found = true;
+                                }
+                            }
+                        }
                     }
-                    System.out.println("Stadium not found");
+                    if(!found) {
+                        System.out.println("Stadium not found");
+                    }
                 }
                 break;
             }
