@@ -11,6 +11,9 @@ public class Team {
     private Manager manager;
     private  ArrayList<Match> matches;
     private int matchesPlayed;
+    private int wins;
+    private int draws;
+    private int losses;
     private int totalScore;
     private  static int numOfTeams = 0;
 
@@ -21,6 +24,9 @@ public class Team {
         this.manager = manager;
         this.matchesPlayed = 0;
         this.totalScore = 0;
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
         numOfTeams++;
     }
 
@@ -98,5 +104,29 @@ public class Team {
 
     public static void setNumOfTeams(int numOfTeams) {
         Team.numOfTeams = numOfTeams;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getDraws() {
+        return draws;
+    }
+
+    public void setDraws(int draws) {
+        this.draws = draws;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public void setLosses(int losses) {
+        this.losses = losses;
     }
 }

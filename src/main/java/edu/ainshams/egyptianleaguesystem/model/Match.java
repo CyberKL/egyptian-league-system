@@ -15,6 +15,7 @@ public class Match {
     private Referee referee;
     private Score score;
     private Stadium stadium;
+    private String winner;
 
     private Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Score score, Stadium stadium) {
         this.matchId = matchId;
@@ -24,6 +25,7 @@ public class Match {
         this.referee = referee;
         this.score = score;
         this.stadium = stadium;
+        this.winner = null;
     }
 
     public int getMatchId() {
@@ -194,6 +196,7 @@ public class Match {
                 awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed()+1);
                 referee.setMatchesRefereed(referee.getMatchesRefereed()+1);
                 stadium.addUpcomingMatch(match);
+                result(match);
 
                 // Add the new match object to the matches ArrayList
                 matches.add(match);
@@ -223,6 +226,23 @@ public class Match {
     }
     private static boolean isValidScore(String matchScore) {
         return matchScore.matches("\\d+-\\d+");
+    }
+    private static void result(Match match){
+        if(match.score.getHomeTeam()>match.score.getAwayTeam()){
+            match.homeTeam.setWins(match.homeTeam.getWins()+1);
+            match.awayTeam.setLosses(match.awayTeam.getLosses()+1);
+            match.winner = match.homeTeam.getName();
+        }
+        else if (match.score.getHomeTeam()<match.score.getAwayTeam()) {
+            match.awayTeam.setWins(match.awayTeam.getWins()+1);
+            match.homeTeam.setLosses(match.homeTeam.getLosses()+1);
+            match.winner = match.awayTeam.getName();
+        }
+        else {
+            match.homeTeam.setDraws(match.homeTeam.getDraws()+1);
+            match.awayTeam.setDraws(match.awayTeam.getDraws()+1);
+            match.winner = "draw";
+        }
     }
 
     public void updateMatch(ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums){
@@ -273,7 +293,21 @@ public class Match {
                     if (i.getName().equals(home)) {
                         this.homeTeam.removeMatch(this);
                         this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()-1);
-                        this.homeTeam = i;
+                        if (this.winner.equalsIgnoreCase(this.homeTeam.getName())){
+                            this.homeTeam.setWins(this.homeTeam.getWins()-1);
+                            this.homeTeam = i;
+                            this.homeTeam.setWins(this.homeTeam.getWins()+1);
+                        }
+                        else if (this.winner.equals("draw")){
+                            this.homeTeam.setDraws(this.homeTeam.getDraws()-1);
+                            this.homeTeam = i;
+                            this.homeTeam.setDraws(this.homeTeam.getDraws()+1);
+                        }
+                        else {
+                            this.homeTeam.setLosses(this.homeTeam.getLosses()-1);
+                            this.homeTeam = i;
+                            this.homeTeam.setLosses(this.homeTeam.getLosses()+1);
+                        }
                         this.homeTeam.addMatch(this);
                         this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()+1);
                         return;
@@ -289,7 +323,21 @@ public class Match {
                     if (i.getName().equals(away)) {
                         this.awayTeam.removeMatch(this);
                         this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()-1);
-                        this.awayTeam = i;
+                        if (this.winner.equalsIgnoreCase(this.awayTeam.getName())){
+                            this.awayTeam.setWins(this.awayTeam.getWins()-1);
+                            this.awayTeam = i;
+                            this.awayTeam.setWins(this.awayTeam.getWins()+1);
+                        }
+                        else if (this.winner.equals("draw")){
+                            this.awayTeam.setDraws(this.awayTeam.getDraws()-1);
+                            this.awayTeam = i;
+                            this.awayTeam.setDraws(this.awayTeam.getDraws()+1);
+                        }
+                        else {
+                            this.awayTeam.setLosses(this.awayTeam.getLosses()-1);
+                            this.awayTeam = i;
+                            this.awayTeam.setLosses(this.awayTeam.getLosses()+1);
+                        }
                         this.awayTeam.addMatch(this);
                         this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()+1);
                         return;
@@ -344,6 +392,7 @@ public class Match {
                 String matchScore = scanner.nextLine();
                 Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
                 this.score = score;
+                result(this);
                 break;
             }
         }
