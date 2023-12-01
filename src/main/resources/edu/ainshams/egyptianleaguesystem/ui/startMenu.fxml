@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="988.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MenuController">
    <children>
-      <VBox layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="988.0" spacing="10.0" stylesheets="@../../../../menu.css" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0">
+      <VBox layoutX="5.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="988.0" spacing="10.0" stylesheets="@../../../../menu.css" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Button fx:id="teamBtn" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Teams" />
             <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Matches" />
