@@ -22,10 +22,23 @@ public abstract class Player extends FootballCharacter{
         this.position = position;
         numOfPlayers ++;
     }
-    protected String displayPlayerInfo(){
 
-        return "Name: "+name+"/nNationality"+nationality+"/nAge: "+age+"/nPlayerId:"+playerId+"/nNumber:"+number+"/nTeam:"+team+"/nHeight:"+height+"/nWeight:"+weight+"/nPreferredFoot:"+preferredFoot+"/nPosition:"+position+"/nYellowCards:"+yellowCards+"/nRedCards:"+redCards;
+    @Override
+    public String toString() {
+        return "Player Id: " + playerId +
+                "/nNumber: " + number +
+                "/nTeam: " + team +
+                "/nHeight: " + height +
+                "/nWeight: " + weight +
+                "/nPreferredFoot: " + preferredFoot +
+                "/nPosition: " + position +
+                "/nName: " + name +
+                "/nNationality: " + nationality +
+                "/nYellowCards: " + yellowCards +
+                "/nRedCards: " + redCards +
+                "/nAge: " + age;
     }
+
 
     public static int displayNumOfPlayers(){
         return numOfPlayers;
@@ -65,13 +78,8 @@ public abstract class Player extends FootballCharacter{
     protected void setPosition(String position) {
         this.position = position;
     }
-    protected void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
 
-    protected void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+
 
     public void updatePlayerInfo( int number, Team team, int height, int weight, String preferredFoot, String position,String nationality, LocalDate dateOfBirth) {
         setNumber(number);
@@ -85,6 +93,9 @@ public abstract class Player extends FootballCharacter{
         calculateAge();
     }
 
-    protected void enterPlayerInfo(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position, int yellowCards, int redCards) {
+    protected void enterPlayerInfo(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position, int yellowCards, int redCards) {}
+    public int getPlayerId() {
+        return playerId;
+
     }
 }
