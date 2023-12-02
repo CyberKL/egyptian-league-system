@@ -17,7 +17,7 @@ public class Match {
     private Stadium stadium;
     private String winner;
 
-    private Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Score score, Stadium stadium) {
+    private Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Stadium stadium) {
         this.matchId = matchId;
         this.date = date;
         this.homeTeam = homeTeam;
@@ -53,7 +53,7 @@ public class Match {
         Referee referee = null;
         Stadium stadium = null;
         String matchScore;
-        Score score;
+        Score score = null;
 
         Scanner scanner = new Scanner(System.in);
         boolean isValid = false;
@@ -126,14 +126,16 @@ public class Match {
                     }
                 }
 
-                do {
-                    System.out.print("Enter score (home-away): ");
-                    matchScore = scanner.nextLine();
-                } while (!isValidScore(matchScore));
-                score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                if (date.isBefore(LocalDate.now())) {
+                    do {
+                        System.out.print("Enter score (home-away): ");
+                        matchScore = scanner.nextLine();
+                    } while (!isValidScore(matchScore));
+                    score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                }
 
                 // Creates new match object with the data the user entered
-                Match match = new Match(matchId, date, homeTeam, awayTeam, referee, score, stadium);
+                Match match = new Match(matchId, date, homeTeam, awayTeam, referee, stadium);
 
                 //Updating related objects;
                 homeTeam.addMatch(match);
@@ -142,7 +144,10 @@ public class Match {
                 awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed()+1);
                 referee.setMatchesRefereed(referee.getMatchesRefereed()+1);
                 stadium.addUpcomingMatch(match);
-                result(match);
+                if (score != null) {
+                    match.score = score;
+                    result(match);
+                }
 
                 // Add the new match object to the matches ArrayList
                 matches.add(match);
@@ -194,7 +199,7 @@ public class Match {
     public void updateMatch(ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums){
 
         System.out.println("What do you want to update?");
-        System.out.println("1. Date/n2. Home team/n 3. Away team/n4. Referee/n5. Stadium/n6.Score");
+        System.out.println("1. Date/n2. Home team/n 3. Away team/n4. Referee/n5. Stadium/n6. Score");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         boolean outOfBounds = true;
@@ -235,61 +240,103 @@ public class Match {
             case 2: {
                 System.out.print("Enter home team: ");
                 String home = scanner.nextLine();
-                for (Team i : teams) {
-                    if (i.getName().equals(home)) {
-                        this.homeTeam.removeMatch(this);
-                        this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()-1);
-                        if (this.winner.equalsIgnoreCase(this.homeTeam.getName())){
-                            this.homeTeam.setWins(this.homeTeam.getWins()-1);
-                            this.homeTeam = i;
-                            this.homeTeam.setWins(this.homeTeam.getWins()+1);
+                if (this.date.isBefore(LocalDate.now())) {
+                    for (Team i : teams) {
+                        if (i.getName().equalsIgnoreCase(home)) {
+                            if (i != homeTeam && i != awayTeam) {
+                                this.homeTeam.removeMatch(this);
+                                this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed() - 1);
+                                if (this.winner.equalsIgnoreCase(this.homeTeam.getName())) {
+                                    this.homeTeam.setWins(this.homeTeam.getWins() - 1);
+                                    this.homeTeam = i;
+                                    this.homeTeam.setWins(this.homeTeam.getWins() + 1);
+                                } else if (this.winner.equals("draw")) {
+                                    this.homeTeam.setDraws(this.homeTeam.getDraws() - 1);
+                                    this.homeTeam = i;
+                                    this.homeTeam.setDraws(this.homeTeam.getDraws() + 1);
+                                } else {
+                                    this.homeTeam.setLosses(this.homeTeam.getLosses() - 1);
+                                    this.homeTeam = i;
+                                    this.homeTeam.setLosses(this.homeTeam.getLosses() + 1);
+                                }
+                                this.homeTeam.addMatch(this);
+                                this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed() + 1);
+                            }
+                            else {
+                                System.out.println("This team is already a side in the match");
+                            }
+                            return;
                         }
-                        else if (this.winner.equals("draw")){
-                            this.homeTeam.setDraws(this.homeTeam.getDraws()-1);
-                            this.homeTeam = i;
-                            this.homeTeam.setDraws(this.homeTeam.getDraws()+1);
-                        }
-                        else {
-                            this.homeTeam.setLosses(this.homeTeam.getLosses()-1);
-                            this.homeTeam = i;
-                            this.homeTeam.setLosses(this.homeTeam.getLosses()+1);
-                        }
-                        this.homeTeam.addMatch(this);
-                        this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()+1);
-                        return;
                     }
                     System.out.println("Team not found");
+                }
+                else {
+                    for (Team j : teams){
+                        if (j.getName().equalsIgnoreCase(home)){
+                            if (j != awayTeam && j != homeTeam){
+                                this.homeTeam = j;
+                            }
+                            else {
+                                System.out.println("This team is already a side in the match");
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                    System.out.println("Team not found");
+                    return;
                 }
                 break;
             }
             case 3: {
                 System.out.print("Enter away team: ");
                 String away = scanner.nextLine();
-                for (Team i : teams) {
-                    if (i.getName().equals(away)) {
-                        this.awayTeam.removeMatch(this);
-                        this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()-1);
-                        if (this.winner.equalsIgnoreCase(this.awayTeam.getName())){
-                            this.awayTeam.setWins(this.awayTeam.getWins()-1);
-                            this.awayTeam = i;
-                            this.awayTeam.setWins(this.awayTeam.getWins()+1);
+                if (this.date.isBefore(LocalDate.now())) {
+                    for (Team i : teams) {
+                        if (i.getName().equalsIgnoreCase(away)) {
+                            if (i != homeTeam && i != awayTeam) {
+                                this.awayTeam.removeMatch(this);
+                                this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed() - 1);
+                                if (this.winner.equalsIgnoreCase(this.awayTeam.getName())) {
+                                    this.awayTeam.setWins(this.awayTeam.getWins() - 1);
+                                    this.awayTeam = i;
+                                    this.awayTeam.setWins(this.awayTeam.getWins() + 1);
+                                } else if (this.winner.equals("draw")) {
+                                    this.awayTeam.setDraws(this.awayTeam.getDraws() - 1);
+                                    this.awayTeam = i;
+                                    this.awayTeam.setDraws(this.awayTeam.getDraws() + 1);
+                                } else {
+                                    this.awayTeam.setLosses(this.awayTeam.getLosses() - 1);
+                                    this.awayTeam = i;
+                                    this.awayTeam.setLosses(this.awayTeam.getLosses() + 1);
+                                }
+                                this.awayTeam.addMatch(this);
+                                this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed() + 1);
+                            } else {
+                                System.out.println("This team is already a side in the match");
+                            }
+                            return;
                         }
-                        else if (this.winner.equals("draw")){
-                            this.awayTeam.setDraws(this.awayTeam.getDraws()-1);
-                            this.awayTeam = i;
-                            this.awayTeam.setDraws(this.awayTeam.getDraws()+1);
-                        }
-                        else {
-                            this.awayTeam.setLosses(this.awayTeam.getLosses()-1);
-                            this.awayTeam = i;
-                            this.awayTeam.setLosses(this.awayTeam.getLosses()+1);
-                        }
-                        this.awayTeam.addMatch(this);
-                        this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()+1);
-                        return;
                     }
                     System.out.println("Team not found");
                 }
+                else {
+                    for (Team j : teams){
+                        if (j.getName().equalsIgnoreCase(away)){
+                            if (j != awayTeam && j != homeTeam){
+                                this.awayTeam = j;
+                            }
+                            else {
+                                System.out.println("This team is already a side in the match");
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                    System.out.println("Team not found");
+                    return;
+                }
+
                 break;
             }
             case 4: {
@@ -334,15 +381,21 @@ public class Match {
                 break;
             }
             case 6: {
-                System.out.println("Enter new Score (home-away): ");
-                String matchScore = scanner.nextLine();
-                Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
-                this.score = score;
-                result(this);
+                if (this.date.isBefore(LocalDate.now())) {
+                    System.out.println("Enter new Score (home-away): ");
+                    String matchScore = scanner.nextLine();
+                    Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                    this.score = score;
+                    result(this);
+                }
+                else {
+                    System.out.println("Match not played yet!");
+                    return;
+                }
                 break;
             }
         }
-            System.out.println("Match updated successfully!");
+            System.out.println("Update process finished");
     }
 
     public void deleteMatch(ArrayList<Match> matches){
