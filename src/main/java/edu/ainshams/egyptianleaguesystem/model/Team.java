@@ -152,4 +152,13 @@ public class Team {
         System.out.println("Team deleted successfully!");
     }
 
+    public void setTeamName(String newTeamName) {
+    }
+
+    public String getTeamName() {
+        return name;
+    }
+    public ArrayList<Player> getPlayers() {
+        return this.players;
+    }
 }
