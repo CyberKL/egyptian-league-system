@@ -50,12 +50,14 @@ public class Logic {
 
     public static void deleteMatch(){
         System.out.print("Enter the id of the match you want to delete: ");
-        Scanner idScanner = new Scanner(System.in);
-        int id = idScanner.nextInt();
-        idScanner.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        scanner.nextLine();
         for (Match element:matches) {
             if (element.getMatchId() == id) {
-                element.deleteMatch(matches);
+                matches.remove(element);
+                System.out.println("Match deleted successfully!");
+                return;
             }
         }
         System.out.println("Match not found, please provide a valid match id");
@@ -63,12 +65,30 @@ public class Logic {
     //End of match related methods
 
     //Start of team related methods
+    public static void enterTeamInfo(){
+        Team.enterMatchInfo(teams,managers);
+    }
+
+    public static void updateTeam() throws DuplicateException{
+        System.out.print("Enter the name of the team you want to update: ");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        for (Team element : teams){
+            if (element.getName().equalsIgnoreCase(name)){
+                element.updateTeam(teams, players);
+                return;
+            }
+        }
+        System.out.println("Match not found, please provide a valid match Id");
+    }
+
     public static String displayTeamInfo(){
         System.out.println("Enter team name: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
         for (Team element : teams){
             if (element.getName().equalsIgnoreCase(name)){
+                element.calcTotalScore();
                 return element.toString();
             }
         }
@@ -97,6 +117,86 @@ public class Logic {
         }
     }
 
+    public static void addPlayerToTeam(){
+        String teamName = null;
+        String playerName = null;
+        int id = 0;
+        boolean teamFound = false;
+        try {
+            System.out.print("Enter the team name you would like to add player to: ");
+            Scanner scanner = new Scanner(System.in);
+            teamName = scanner.nextLine();
+            System.out.println("Enter the player name and id you would like to add: ");
+            System.out.print("Name: ");
+            playerName = scanner.nextLine();
+            System.out.print("Id: ");
+            id = scanner.nextInt();
+            scanner.nextLine();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Invalid input, please try again!");
+        }
+        catch (Exception e){
+            System.out.println("Try again!");
+        }
+        for (Team team : teams){
+            if (team.getName().equalsIgnoreCase(teamName)){
+                teamFound = true;
+                for (Player player : players){
+                    if (player.getPlayerId()==id && player.getName().equalsIgnoreCase(playerName)){
+                        team.addPlayer(player);
+                        System.out.println("Player added successfully to "+team.getName());
+                        return;
+                    }
+                }
+                System.out.println("Player not found");
+            }
+        }
+        if (!teamFound){
+            System.out.println("Team not found");
+        }
+    }
+
+    public static void deletePlayerFromTeam(){
+        String teamName = null;
+        String playerName = null;
+        int id = 0;
+        boolean teamFound = false;
+        try {
+            System.out.print("Enter the team name you would like to delete player from: ");
+            Scanner scanner = new Scanner(System.in);
+            teamName = scanner.nextLine();
+            System.out.println("Enter the player name and id you would like to delete: ");
+            System.out.print("Name: ");
+            playerName = scanner.nextLine();
+            System.out.print("Id: ");
+            id = scanner.nextInt();
+            scanner.nextLine();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Invalid input, please try again!");
+        }
+        catch (Exception e){
+            System.out.println("Try again!");
+        }
+        for (Team team : teams){
+            if (team.getName().equalsIgnoreCase(teamName)){
+                teamFound = true;
+                for (Player player : players){
+                    if (player.getPlayerId()==id && player.getName().equalsIgnoreCase(playerName)){
+                        team.deletePlayer(player);
+                        System.out.println("Player deleted successfully from "+team.getName());
+                        return;
+                    }
+                }
+                System.out.println("Player not found");
+            }
+        }
+        if (!teamFound){
+            System.out.println("Team not found");
+        }
+    }
+
     public static void displayTotalTeams (){
         for (Team team : teams){
             System.out.println(team.getName());
@@ -114,10 +214,13 @@ public class Logic {
         scanner.nextLine();
         for (Team element:teams) {
             if (element.getTeamId() == id) {
-                element.deleteTeam(teams);
+                teams.remove(element);
+                System.out.println("Team deleted successfully!");
+                return;
             }
         }
         System.out.println("Team not found, please provide a valid team id");
     }
+    //End of team related methods
 
 }
