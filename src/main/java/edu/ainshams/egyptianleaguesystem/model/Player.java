@@ -51,10 +51,8 @@ public abstract class Player extends FootballCharacter{
     public Team getTeam() {
         return team;
     }
-    public String getName() {
-        return this.name;
-    }
-    public String searchPlayer(ArrayList<Player> playersList) {
+
+    public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter player name:");
         String playerName = scanner.nextLine();
@@ -74,9 +72,13 @@ public abstract class Player extends FootballCharacter{
             System.out.println("Enter team name:");
             String inputTeamName = scanner.nextLine();
 
-            for (Player player : playersList) {
-                if (player.getName().equalsIgnoreCase(playerName) && player.getTeam().getTeamName().equalsIgnoreCase(inputTeamName)) {
-                    System.out.println( "Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
+            for (Team team : teamsList) {
+                if (team.getName().equalsIgnoreCase(inputTeamName)) {
+                    for (Player player : team.getPlayers()) {
+                        if (player.getName().equalsIgnoreCase(playerName)) {
+                            System.out.println("Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
+                        }
+                    }
                 }
             }
             return "Player not found in the specified team";
