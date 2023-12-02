@@ -36,54 +36,6 @@ public class Match {
         return date;
     }
 
-    public Team getHomeTeam() {
-        return homeTeam;
-    }
-
-    public Team getAwayTeam() {
-        return awayTeam;
-    }
-
-    public Referee getReferee() {
-        return referee;
-    }
-
-    public Score getScore() {
-        return score;
-    }
-
-    public Stadium getStadium() {
-        return stadium;
-    }
-
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setHomeTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
-    }
-
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
-    }
-
-    public void setReferee(Referee referee) {
-        this.referee = referee;
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
-    }
-
-    public void setStadium(Stadium stadium) {
-        this.stadium = stadium;
-    }
-
     @Override
     public String toString() {
         return "Match Id: " + matchId +
@@ -105,7 +57,7 @@ public class Match {
 
         Scanner scanner = new Scanner(System.in);
         boolean isValid = false;
-        boolean diffTeams = true;
+        boolean diffTeams;
 
         while (!isValid) {
             try {
@@ -116,24 +68,15 @@ public class Match {
                 //Check if id is taken
                 isMatchIdDuplicate(matchId, matches);
 
-                boolean isValidDate = false;
-                LocalDate date = null;
-                while (!isValidDate) {
-                    System.out.print("Enter Date (yyyy-mm-dd): ");
-                    date = LocalDate.parse(scanner.nextLine());
-                    if (date.isBefore(LocalDate.now())){
-                        System.out.println("Must be upcoming date");
-                    }
-                    else {
-                        isValidDate = true;
-                    }
-                }
+                System.out.print("Enter Date (yyyy-mm-dd): ");
+                LocalDate date = LocalDate.parse(scanner.nextLine());
 
                 System.out.print("Enter home team name: ");
                 String home = scanner.nextLine();
                 for (Team team : teams) {
                     if (team.getName().equalsIgnoreCase(home)) {
                         homeTeam = team;
+                        break;
                     }
                 }
 
@@ -149,6 +92,7 @@ public class Match {
                         for (Team team : teams) {
                             if (team.getName().equalsIgnoreCase(home)) {
                                 awayTeam = team;
+                                break;
                             }
                         }
                     }
@@ -159,6 +103,7 @@ public class Match {
                 for (Referee element : referees) {
                     if (element.getName().equalsIgnoreCase(home)) {
                         referee = element;
+                        break;
                     }
                 }
 
@@ -174,6 +119,7 @@ public class Match {
                                 } else {
                                     stadium = element;
                                     available = true;
+                                    break;
                                 }
                             }
                         }
@@ -402,6 +348,9 @@ public class Match {
     public void deleteMatch(ArrayList<Match> matches){
         matches.remove(this);
         System.out.println("Match deleted successfully!");
+    }
+    public String matchHeader(){
+        return homeTeam.getName()+" : "+awayTeam.getName();
     }
 
 }

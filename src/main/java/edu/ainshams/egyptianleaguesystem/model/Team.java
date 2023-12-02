@@ -1,5 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Team {
@@ -34,56 +35,8 @@ public class Team {
         return name;
     }
 
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public Player getCaptain() {
-        return captain;
-    }
-
-    public Manager getManager() {
-        return manager;
-    }
-
-    public ArrayList<Match> getMatches() {
-        return matches;
-    }
-
     public int getMatchesPlayed() {
         return matchesPlayed;
-    }
-
-    public int getTotalScore() {
-        return totalScore;
-    }
-
-    public static int getNumOfTeams() {
-        return numOfTeams;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
-    public void setCaptain(Player captain) {
-        this.captain = captain;
-    }
-
-    public void setManager(Manager manager) {
-        this.manager = manager;
     }
 
     public void addMatch(Match match) {
@@ -96,14 +49,6 @@ public class Team {
 
     public void setMatchesPlayed(int matchesPlayed) {
         this.matchesPlayed = matchesPlayed;
-    }
-
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
-    }
-
-    public static void setNumOfTeams(int numOfTeams) {
-        Team.numOfTeams = numOfTeams;
     }
 
     public int getWins() {
@@ -129,4 +74,82 @@ public class Team {
     public void setLosses(int losses) {
         this.losses = losses;
     }
+
+    public static int getNumOfTeams() {
+        return numOfTeams;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name +
+                "/nTeam Id: " + teamId +
+                "/nCaptain: " + captain.getName() +
+                "/nManager: " + manager.getName() +
+                "/nMatches Played: " + matchesPlayed +
+                "/nWins: " + wins +
+                "/nDraws: " + draws +
+                "/nLosses: " + losses +
+                "/nTotal score: " + totalScore;
+    }
+
+    public void displayTeamPlayers() {
+        for (Player player : this.players){
+            System.out.println(player.getName());
+        }
+    }
+
+    public void displayTeamMatches(){
+        boolean heldMatches = false;
+        boolean upcomingMatches = false;
+        for (Match match : matches){
+            if (match.getDate().isBefore(LocalDate.now())){
+                heldMatches = true;
+            }
+            if (!match.getDate().isBefore(LocalDate.now())){
+                upcomingMatches = true;
+            }
+        }
+        if (heldMatches){
+            System.out.println("Matches held: ");
+            for (Match match : matches){
+                if (match.getDate().isBefore(LocalDate.now())){
+                    System.out.println(match.matchHeader());
+                }
+            }
+        }
+        if (upcomingMatches){
+            System.out.println("Upcoming matches: ");
+            for (Match match : matches){
+                if (!match.getDate().isBefore(LocalDate.now())){
+                    System.out.println(match.matchHeader());
+                }
+            }
+        }
+        if (!heldMatches && !upcomingMatches){
+            System.out.println("This team has no matches");
+        }
+    }
+
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+    public void deletePlayer(String name, int id){
+        for (Player player : players){
+            if (player.getName().equalsIgnoreCase(name) && player.getPlayerId()==id){
+                this.players.remove(player);
+                return;
+            }
+        }
+    }
+
+    public void deleteTeam(ArrayList<Team> teams){
+        teams.remove(this);
+        System.out.println("Team deleted successfully!");
+    }
+
 }
