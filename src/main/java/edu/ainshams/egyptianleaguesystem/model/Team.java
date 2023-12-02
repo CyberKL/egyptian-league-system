@@ -315,6 +315,10 @@ public class Team {
         }
     }
 
+    public void calcTotalScore() {
+        this.totalScore = (3 * this.wins)+(this.draws);
+    }
+
     public void addPlayer(Player player){
         this.players.add(player);
     }
@@ -322,5 +326,6 @@ public class Team {
     public void deletePlayer(Player player){
         this.players.remove(player);
     }
+
 
 }

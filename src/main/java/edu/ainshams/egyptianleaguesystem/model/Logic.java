@@ -88,6 +88,7 @@ public class Logic {
         String name = scanner.nextLine();
         for (Team element : teams){
             if (element.getName().equalsIgnoreCase(name)){
+                element.calcTotalScore();
                 return element.toString();
             }
         }

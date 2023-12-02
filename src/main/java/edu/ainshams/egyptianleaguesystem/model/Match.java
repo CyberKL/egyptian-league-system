@@ -23,7 +23,6 @@ public class Match {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.referee = referee;
-        this.score = score;
         this.stadium = stadium;
         this.winner = null;
     }
