@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Team {
 
     private String name;
-    private final int teamId;
+    private int teamId;
     private ArrayList<Player> players;
     private Player captain;
     private Manager manager;
@@ -23,7 +23,6 @@ public class Team {
     public Team(String name, int teamId, Manager manager) {
         this.name = name;
         this.teamId = teamId;
-        this.captain = captain;
         this.manager = manager;
         this.matchesPlayed = 0;
         this.totalScore = 0;
@@ -102,9 +101,8 @@ public class Team {
                 "/nTotal score: " + totalScore;
     }
 
-    public static void enterMatchInfo(ArrayList<Team> teams, ArrayList<Player> players, ArrayList<Match> matches, ArrayList<Manager> managers) {
+    public static void enterMatchInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
 
-        ArrayList<Player> newPlayers = null;
         Manager manager = null;
         Scanner scanner = new Scanner(System.in);
         boolean duplicateTeamName;
@@ -114,7 +112,6 @@ public class Team {
             do {
                 duplicateTeamName = false;
                 System.out.print("Enter the team name: ");
-                scanner = new Scanner(System.in);
                 teamName = scanner.nextLine();
                 for (Team team : teams) {
                     if (team.getName().equalsIgnoreCase(teamName)) {
@@ -171,6 +168,118 @@ public class Team {
     public void displayTeamPlayers() {
         for (Player player : this.players){
             System.out.println(player.getName());
+        }
+    }
+
+    public void updateTeam(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
+        System.out.println("What do you want to update?");
+        System.out.println("1. Name/n2. Id/n 3. Players/n4. Captain");
+        Scanner scanner = new Scanner(System.in);
+        int choice = 0;
+        boolean outOfBounds = true;
+        try{
+            while (outOfBounds){
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice < 1 || choice > 4){
+                    System.out.println("Choose a number from 1-4 please");
+                }
+                else {
+                    outOfBounds = false;
+                }
+            }
+
+        }
+        catch (InputMismatchException e){
+            System.out.println("Choose a number from 1-4 please");
+            scanner.nextLine();
+            //return;
+        }
+        boolean duplicateTeamName;
+        switch (choice){
+            case 1:{
+                String teamName = null;
+                do {
+                    duplicateTeamName = false;
+                    System.out.print("Enter the team name: ");
+                    teamName = scanner.nextLine();
+                    for (Team team : teams) {
+                        if (team.getName().equalsIgnoreCase(teamName)) {
+                            System.out.println("There is already a team with this name");
+                            duplicateTeamName = true;
+                            break;
+                        }
+                    }
+                } while (duplicateTeamName);
+                this.name = teamName;
+                break;
+            }
+            case 2: {
+                System.out.print("Enter new Id: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                isTeamIdDuplicate(id, teams);
+                break;
+            }
+            case 3:{
+                boolean enterAgain;
+                do {
+                    boolean playerFound = false;
+                    System.out.println("Enter the name and id of the player you want to add: ");
+                    System.out.print("Name: ");
+                    String playerName = scanner.nextLine();
+                    System.out.print("Id: ");
+                    int playerId = scanner.nextInt();
+                    scanner.nextLine();
+                    for (Player player : players) {
+                        if (player.getName().equalsIgnoreCase(playerName) && player.getPlayerId() == playerId) {
+                            this.players.add(player);
+                            System.out.println("Player added successfully!");
+                            playerFound = true;
+                            break;
+                        }
+                    }
+                    if (!playerFound) {
+                        System.out.println("Player not found");
+                    }
+                    System.out.println("Do you want to enter another player (y-n): ");
+                    String another = scanner.nextLine();
+                    switch (another) {
+                        case "y":
+                            enterAgain = true;
+                            break;
+                        case "n":
+                            enterAgain = false;
+                            break;
+                        default:
+                            System.out.println("Invalid input");
+                            return;
+                    }
+                }while (enterAgain);
+                break;
+            }
+            case 4: {
+                boolean captainFound = false;
+                System.out.println("Enter the name and id of the new captain: ");
+                System.out.print("Name: ");
+                String captainName = scanner.nextLine();
+                System.out.print("Id: ");
+                int captainId = scanner.nextInt();
+                scanner.nextLine();
+
+                for (Player player : this.players){
+                    if (player.getName().equalsIgnoreCase(captainName) && player.getPlayerId()==captainId){
+                        this.captain = player;
+                        System.out.println("Captain updated!");
+                        captainFound = true;
+                        break;
+                    }
+                }
+                if (!captainFound){
+                    System.out.println("Captain not found in this team players (Captain must be from the team)!");
+                }
+                break;
+            }
         }
     }
 

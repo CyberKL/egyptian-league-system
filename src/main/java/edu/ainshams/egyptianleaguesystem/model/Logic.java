@@ -66,7 +66,20 @@ public class Logic {
 
     //Start of team related methods
     public static void enterTeamInfo(){
-        Team.enterMatchInfo(teams,players,matches,managers);
+        Team.enterMatchInfo(teams,managers);
+    }
+
+    public static void updateTeam() throws DuplicateException{
+        System.out.print("Enter the name of the team you want to update: ");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        for (Team element : teams){
+            if (element.getName().equalsIgnoreCase(name)){
+                element.updateTeam(teams, players);
+                return;
+            }
+        }
+        System.out.println("Match not found, please provide a valid match Id");
     }
 
     public static String displayTeamInfo(){
@@ -207,5 +220,6 @@ public class Logic {
         }
         System.out.println("Team not found, please provide a valid team id");
     }
+    //End of team related methods
 
 }

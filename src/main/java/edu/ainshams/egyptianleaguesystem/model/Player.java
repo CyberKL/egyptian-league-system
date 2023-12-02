@@ -11,8 +11,8 @@ public abstract class Player extends FootballCharacter{
     protected String position;
     private static int numOfPlayers = 0;
 
-    protected Player(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position, int yellowCards, int redCards){
-        super(name, dateOfBirth, nationality, yellowCards, redCards);
+    protected Player(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position){
+        super(name, dateOfBirth, nationality);
         this.playerId = playerId;
         this.number = number;
         this.team = team;

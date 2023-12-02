@@ -12,12 +12,12 @@ public abstract class FootballCharacter {
     protected int redCards;
     protected int age;
 
-    protected FootballCharacter(String name, LocalDate dateOfBirth, String nationality, int yellowCards, int redCards){
+    protected FootballCharacter(String name, LocalDate dateOfBirth, String nationality){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.yellowCards = yellowCards;
-        this.redCards = redCards;
+        this.yellowCards = 0;
+        this.redCards = 0;
         calculateAge();
     }
 
