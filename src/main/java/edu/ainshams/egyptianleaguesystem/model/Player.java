@@ -43,13 +43,8 @@ public abstract class Player extends FootballCharacter{
                 "/nRedCards: " + redCards +
                 "/nAge: " + age;
     }
-
-    public static int getNumOfPlayers() {
-        return numOfPlayers;
-    }
-
-    public Team getTeam() {
-        return team;
+    public int getPlayerId() {
+        return playerId;
     }
 
     public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
@@ -87,170 +82,138 @@ public abstract class Player extends FootballCharacter{
         }
     }
 
-    protected void setNumber(int number) {
-        this.number = number;
-    }
-
-    protected void setHeight(int height) {
-        this.height = height;
-    }
-
-    protected void setWeight(int weight) {
-        this.weight = weight;
-    }
-    protected void setPreferredFoot(String preferredFoot) {
-        this.preferredFoot = preferredFoot;
-    }
-    protected void setPosition(String position) {
-        this.position = position;
-    }
-    private void setPlayerId(int newPlayerId) {
-        this.playerId = newPlayerId;
-    }
-
-    public void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> Teams, int number, Team team, int height, int weight, String preferredFoot
-            , String position, String nationality, LocalDate dateOfBirth, int playerId) {
+    protected void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
-        System.out.println("1. Number/n2. Team/n 3. Height/n4. Weight/n5. PreferredFoot/n6. Position/n" +
-                "7. Nationality/n8. Data of birth/n9. Player ID/n10. Add yellow cards/n11. Add Red cards  ");
+        System.out.println("1. Number/n2. Team/n 3. Height/n4. Weight/n5. Preferred Foot/n6. Position/n" +
+                "7. Nationality/n8. Data of birth/n9. Player ID/n10. Yellow cards/n11. Red cards  ");
         int choice = scanner.nextInt();
         scanner.nextLine();
 
         if (choice >= 1 && choice <= 11) {
             switch (choice) {
-                case 1:
-                    System.out.println("Enter new number:");
+                case 1: {
+                    System.out.print("Enter new number: ");
                     try {
-                        int newNumber = Integer.parseInt(scanner.nextLine());
+                        int newNumber = scanner.nextInt();
+                        scanner.nextLine();
                         if (newNumber > 0 && newNumber <= 99) {
-                            for (Player player : playersList) {
-                                player.setNumber(newNumber);
-                            }
+                            this.number = newNumber;
                         } else {
                             System.out.println("Number should be between 1 and 99");
+                            return;
                         }
                     } catch (InputMismatchException e) {
-                        System.out.println("Mismatched input type. Please enter a valid number.");
+                        System.out.println("Mismatched input type. Please enter a number.");
                     }
                     break;
-                case 2:
-                    // remove from old team
-                    System.out.println("Enter new Team name:");
+                }
+                case 2: {
+                    System.out.print("Enter new Team name: ");
                     String newTeamName = scanner.nextLine();
 
                     boolean teamExists = false;
-                    for (Team existingTeam : Teams) {
+                    for (Team existingTeam : teams) {
                         if (existingTeam.getName().equalsIgnoreCase(newTeamName)) {
+                            existingTeam.deletePlayer(this);
+                            this.team = existingTeam;
                             teamExists = true;
                             break;
                         }
                     }
-
-                    if (teamExists) {
-                        for (Player player : playersList) {
-                            if (player.getTeam() != null) {
-                                player.getTeam().setTeamName(newTeamName);
-                            }
-                        }
-                    } else {
-                        System.out.println("Team name does not exist in the system.");
+                    if (!teamExists) {
+                        System.out.println("Team does not exist in the system.");
                     }
                     break;
+                }
 
-                case 3:
+                case 3: {
                     try {
-                        System.out.println("Enter new Height:");
+                        System.out.print("Enter new Height: ");
                         int newHeight = scanner.nextInt();
                         scanner.nextLine();
-                        for (Player player : playersList) {
-                            player.setHeight(newHeight);
-                        }
+                        this.height = newHeight;
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid height, Please enter a numerical value.");
                         scanner.nextLine();
                     }
                     break;
-                case 4:
+                }
+                case 4: {
                     try {
-                        System.out.println("Enter new Weight:");
+                        System.out.print("Enter new Weight: ");
                         int newWeight = scanner.nextInt();
                         scanner.nextLine();
-                        for (Player player : playersList) {
-                            player.setWeight(newWeight);
-                        }
+                        this.weight = newWeight;
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid weight, Please enter a numerical value.");
                         scanner.nextLine();
                     }
                     break;
-                case 5:
-                    System.out.println("Enter new PreferredFoot:");
-                    System.out.println("Enter new PreferredFoot (left/right):");
+                }
+                case 5: {
+                    System.out.print("Enter new Preferred Foot (left/right): ");
                     String newPreferredFoot = scanner.nextLine();
 
-                    if (newPreferredFoot.equals("left") || newPreferredFoot.equals("right")) {
-                        for (Player player : playersList) {
-                            player.setPreferredFoot(newPreferredFoot);
-                        }
+                    if (newPreferredFoot.equalsIgnoreCase("left") || newPreferredFoot.equalsIgnoreCase("right")) {
+                        this.preferredFoot = newPreferredFoot;
                     } else {
                         System.out.println("Invalid preferred foot  , Please enter 'left' or 'right'.");
+                        return;
                     }
                     break;
+                }
 
-                case 6:
-                    System.out.println("Enter new Position (Forward, Midfielder, Defender, Goalkeeper):");
+                case 6: {
+                    System.out.print("Enter new Position (Forward, Midfielder, Defender, Goalkeeper): ");
                     String newPosition = scanner.nextLine();
                     String[] validPositions = {"Forward", "Midfielder", "Defender", "Goalkeeper"};
                     boolean isValidPosition = false;
                     for (String validPos : validPositions) {
                         if (validPos.equalsIgnoreCase(newPosition)) {
+                            this.position = newPosition;
                             isValidPosition = true;
                             break;
                         }
                     }
-                    if (isValidPosition) {
-                        for (Player player : playersList) {
-                            player.setPosition(newPosition);
-                        }
-                    } else {
+                    if (!isValidPosition) {
                         System.out.println("Invalid position, Please enter a valid position.");
+                        return;
                     }
                     break;
+                }
 
-                case 7:
-                    System.out.println("Enter new Nationality:");
+                case 7: {
+                    System.out.print("Enter new Nationality: ");
                     String newNationality = scanner.nextLine();
-                    for (Player player : playersList) {
-                        player.setNationality(newNationality);
-                    }
+                    this.nationality = newNationality;
                     break;
-                case 8:
-                    System.out.println("Enter new Date of Birth :");
-                    String dob = scanner.nextLine();
-                    LocalDate newDateOfBirth = LocalDate.parse(dob);
+                }
+                case 8: {
+                    System.out.print("Enter new Date of Birth (yyyy-mm-dd): ");
+                    LocalDate dob = LocalDate.parse(scanner.nextLine());
                     LocalDate currentDate = LocalDate.now();
-                    Period period = Period.between(dateOfBirth, currentDate);
+                    Period period = Period.between(dob, currentDate);
                     int age = period.getYears();
 
                     if (age >= 16) {
-                        for (Player player : playersList) {
-                            player.setDateOfBirth(newDateOfBirth);
-                            player.calculateAge();
-                        }
+                        this.dateOfBirth = dob;
+                        this.age = age;
                     } else {
                         System.out.println("The player must be at least 16 years old.");
+                        return;
                     }
                     break;
-                case 9:
+                }
+                case 9: {
                     System.out.println("Enter new Player ID:");
                     int newPlayerId = scanner.nextInt();
                     scanner.nextLine();
-                    for (Player player : playersList) {
-                        player.setPlayerId(newPlayerId);
-                    }
+                    isPlayerIdDuplicate(newPlayerId, playersList);
+                    this.playerId = newPlayerId;
                     break;
-                case 10:
+                }
+                case 10: {
                     try {
                         System.out.println("Enter number of Yellow Cards you want to add:");
                         int numYellowCards = scanner.nextInt();
@@ -261,7 +224,8 @@ public abstract class Player extends FootballCharacter{
                         scanner.nextLine();
                     }
                     break;
-                case 11:
+                }
+                case 11: {
                     try {
                         System.out.println("Enter number of Red Cards you want to add:");
                         int numRedCards = scanner.nextInt();
@@ -272,120 +236,114 @@ public abstract class Player extends FootballCharacter{
                         scanner.nextLine();
                     }
                     break;
-                default:
-                    System.out.println("Invalid choice");
-                    break;
+                }
             }
         } else {
             System.out.println("Please enter a number between 1 and 11");
         }
 
     }
+    private static void isPlayerIdDuplicate(int playerId, ArrayList<Player> playerList) throws DuplicateException{
+        for (Player element : playerList){
+            if(element.getPlayerId()==playerId){
+                throw new DuplicateException("This player id is already taken");
+            }
+        }
+    }
 
-    protected void enterPlayerInfo(ArrayList<Team> teams , String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position, int yellowCards, int redCards) {
+
+    protected void enterPlayerInfo(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
+        Team playerTeam = null;
+        boolean isValidAge = false;
+        LocalDate playerDateOfBirth = null;
 
         System.out.println("Enter player name:");
         String playerName = scanner.nextLine();
 
-        boolean isValidAge = false;
-        LocalDate playerDateOfBirth = null;
-
         while (!isValidAge) {
-            System.out.println("Enter Date of Birth :");
-            String dob = scanner.nextLine();
-
-            playerDateOfBirth = LocalDate.parse(dob);
+            System.out.print("Enter Date of Birth: ");
+            playerDateOfBirth = LocalDate.parse(scanner.nextLine());
             LocalDate currentDate = LocalDate.now();
             Period period = Period.between(playerDateOfBirth, currentDate);
             int age = period.getYears();
 
             if (age >= 16) {
                 isValidAge = true;
-                System.out.println("Age verified");
             } else {
                 System.out.println("The player must be at least 16 years old");
+                return;
             }
         }
 
-        System.out.println("Enter nationality:");
+        System.out.print("Enter nationality: ");
         String playerNationality = scanner.nextLine();
 
-        System.out.println("Enter player ID:");
+        System.out.print("Enter player ID:");
         int playerID = scanner.nextInt();
         scanner.nextLine();
+        isPlayerIdDuplicate(playerID, players);
 
-        System.out.println("Enter player number:");
-        int playerNumber = scanner.nextInt();
-        scanner.nextLine();
+        try {
+            System.out.print("Enter player number: ");
+            int playerNumber = scanner.nextInt();
+            scanner.nextLine();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Please enter a numerical value");
+        }
 
 
-        System.out.println("Enter team name:");
+        System.out.print("Enter team name: ");
         String teamName = scanner.nextLine();
-        Team playerTeam = null;
         for (Team t :teams) {
             if (t.getName().equalsIgnoreCase(teamName)) {
                 playerTeam = t;
                 break;
-
             }
         }
 
-        while (true) {
-            try {
-                System.out.println("Enter player height:");
-                int playerHeight = scanner.nextInt();
-                scanner.nextLine();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Please enter a valid integer for player height.");
-                scanner.nextLine();
-            }
-        }
-        while (true) {
-            try {
-                System.out.println("Enter player weight:");
-                int playerWeight = scanner.nextInt();
-                scanner.nextLine();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Please enter a valid integer for player weight.");
-                scanner.nextLine();
-            }
+        try {
+            System.out.println("Enter player height:");
+            int playerHeight = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid integer for player height.");
+            scanner.nextLine();
         }
 
+        try {
+            System.out.println("Enter player weight:");
+            int playerWeight = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid integer for player weight.");
+            scanner.nextLine();
+        }
 
-        String playerPreferredFoot;
-        while (true) {
             System.out.println("Enter preferred foot (right/left):");
-            playerPreferredFoot = scanner.nextLine();
-
-            if (playerPreferredFoot.equals("right") || playerPreferredFoot.equals("left")) {
-                break;
-            } else {
+            String playerPreferredFoot = scanner.nextLine();
+            if (!playerPreferredFoot.equalsIgnoreCase("right") && !playerPreferredFoot.equalsIgnoreCase("left")) {
                 System.out.println("Please enter either 'right' or 'left'.");
+                return;
             }
-        }
 
-        String playerPosition;
-
-        while (true) {
-            System.out.println("Enter player position (forward/midfielder/defender/goalkeeper):");
-            playerPosition = scanner.nextLine();
-
-            if (playerPosition.equalsIgnoreCase("forward") || playerPosition.equalsIgnoreCase("midfielder")
-                    || playerPosition.equalsIgnoreCase("defender") || playerPosition.equalsIgnoreCase("goalkeeper")) {
+        System.out.println("Enter player position (forward/midfielder/defender/goalkeeper):");
+        String playerPosition = scanner.nextLine();
+        String[] validPositions = {"Forward", "Midfielder", "Defender", "Goalkeeper"};
+        boolean isValidPosition = false;
+        for (String validPos : validPositions) {
+            if (validPos.equalsIgnoreCase(playerPosition)) {
+                isValidPosition = true;
                 break;
-            } else {
-                System.out.println("Please enter a valid player position.");
             }
+        }
+        if (!isValidPosition){
+            System.out.println("Please enter a correct position");
         }
 
 
     }
 
-    public int getPlayerId() {
-        return playerId;
 
-    }
 }

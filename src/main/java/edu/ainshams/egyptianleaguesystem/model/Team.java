@@ -219,6 +219,7 @@ public class Team {
                 int id = scanner.nextInt();
                 scanner.nextLine();
                 isTeamIdDuplicate(id, teams);
+                this.teamId = id;
                 break;
             }
             case 3:{
