@@ -16,8 +16,8 @@ public abstract class FootballCharacter {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.yellowCards=0;
-        this.redCards=0;
+        this.yellowCards = 0;
+        this.redCards = 0;
         calculateAge();
     }
 
