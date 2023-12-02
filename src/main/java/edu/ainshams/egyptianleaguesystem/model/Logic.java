@@ -65,6 +65,10 @@ public class Logic {
     //End of match related methods
 
     //Start of team related methods
+    public static void enterTeamInfo(){
+        Team.enterMatchInfo(teams,players,matches,managers);
+    }
+
     public static String displayTeamInfo(){
         System.out.println("Enter team name: ");
         Scanner scanner = new Scanner(System.in);

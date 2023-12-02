@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Match {
 
-    private int matchId;
+    private final int matchId;
     private LocalDate date;
     private  Team homeTeam;
     private Team awayTeam;
