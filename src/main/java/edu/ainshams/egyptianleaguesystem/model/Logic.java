@@ -97,7 +97,7 @@ public class Logic {
         }
     }
 
-    public static void addPlayer(){
+    public static void addPlayerToTeam(){
         String teamName = null;
         String playerName = null;
         int id = 0;
@@ -137,7 +137,7 @@ public class Logic {
         }
     }
 
-    public static void deletePlayer (){
+    public static void deletePlayerFromTeam(){
         String teamName = null;
         String playerName = null;
         int id = 0;
