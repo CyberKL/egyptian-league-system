@@ -138,13 +138,8 @@ public class Team {
         this.players.add(player);
     }
 
-    public void deletePlayer(String name, int id){
-        for (Player player : players){
-            if (player.getName().equalsIgnoreCase(name) && player.getPlayerId()==id){
-                this.players.remove(player);
-                return;
-            }
-        }
+    public void deletePlayer(Player player){
+        this.players.remove(player);
     }
 
     public void deleteTeam(ArrayList<Team> teams){
