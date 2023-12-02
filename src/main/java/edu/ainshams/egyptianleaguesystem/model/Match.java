@@ -398,10 +398,6 @@ public class Match {
             System.out.println("Update process finished");
     }
 
-    public void deleteMatch(ArrayList<Match> matches){
-        matches.remove(this);
-        System.out.println("Match deleted successfully!");
-    }
     public String matchHeader(){
         return homeTeam.getName()+" : "+awayTeam.getName();
     }

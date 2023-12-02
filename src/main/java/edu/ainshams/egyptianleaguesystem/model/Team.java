@@ -142,9 +142,4 @@ public class Team {
         this.players.remove(player);
     }
 
-    public void deleteTeam(ArrayList<Team> teams){
-        teams.remove(this);
-        System.out.println("Team deleted successfully!");
-    }
-
 }

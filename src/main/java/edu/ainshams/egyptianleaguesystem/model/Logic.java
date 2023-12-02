@@ -50,12 +50,14 @@ public class Logic {
 
     public static void deleteMatch(){
         System.out.print("Enter the id of the match you want to delete: ");
-        Scanner idScanner = new Scanner(System.in);
-        int id = idScanner.nextInt();
-        idScanner.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        scanner.nextLine();
         for (Match element:matches) {
             if (element.getMatchId() == id) {
-                element.deleteMatch(matches);
+                matches.remove(element);
+                System.out.println("Match deleted successfully!");
+                return;
             }
         }
         System.out.println("Match not found, please provide a valid match id");
@@ -194,7 +196,9 @@ public class Logic {
         scanner.nextLine();
         for (Team element:teams) {
             if (element.getTeamId() == id) {
-                element.deleteTeam(teams);
+                teams.remove(element);
+                System.out.println("Team deleted successfully!");
+                return;
             }
         }
         System.out.println("Team not found, please provide a valid team id");
