@@ -10,6 +10,7 @@
     -fx-font-size: 45px;
     -fx-alignment: baseline-left;
     -fx-background-radius: 0 30 0 30;
+    -fx-font-weight: bold;
 }
 
 #quitBtn {
@@ -21,5 +22,5 @@
     -fx-font-family: "Quicksand";
     -fx-font-size: 30px;
     -fx-alignment: baseline-left;
-
+    -fx-font-weight: normal;
 }

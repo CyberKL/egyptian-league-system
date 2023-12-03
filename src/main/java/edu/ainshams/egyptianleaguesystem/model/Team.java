@@ -20,7 +20,7 @@ public class Team {
     private int totalScore;
     private  static int numOfTeams = 0;
 
-    public Team(String name, int teamId, Manager manager) {
+    public Team(String name, int teamId) {
         this.name = name;
         this.teamId = teamId;
         this.manager = manager;
@@ -147,7 +147,7 @@ public class Team {
                 return;
             }
 
-            Team team = new Team(teamName, id, manager);
+            Team team = new Team(teamName, id);
             teams.add(team);
         }
         catch (InputMismatchException e){

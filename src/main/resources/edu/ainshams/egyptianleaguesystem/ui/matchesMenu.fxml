@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="988.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MatchMenuController">
+   <children>
+      <VBox layoutX="15.0" layoutY="-44.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="988.0" spacing="10.0" stylesheets="@../../../../menu.css" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <Button fx:id="newMatchBtn" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="New Match" />
+            <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Edit Match" />
+            <Button fx:id="playerBtn" layoutX="10.0" layoutY="189.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Fixtures" />
+            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Delete Match" />
+         </children>
+      </VBox>
+      <Button fx:id="backBtn" layoutX="20.33333396911621" layoutY="662.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" stylesheets="@../../../../backButton.css" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" />
+   </children>
+</AnchorPane>

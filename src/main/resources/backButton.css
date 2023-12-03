@@ -1,0 +1,11 @@
+#backBtn {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 1;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Quicksand";
+    -fx-font-size: 30px;
+    -fx-alignment: baseline-left;
+    -fx-background-radius: 0 30 0 30;
+}
