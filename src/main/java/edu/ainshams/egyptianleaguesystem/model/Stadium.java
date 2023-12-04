@@ -1,6 +1,7 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Stadium {
 
@@ -47,4 +48,35 @@ public class Stadium {
     public void setMatchesPlayedOn(int matchesPlayedOn) {
         this.matchesPlayedOn = matchesPlayedOn;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + name +
+                "/nCapacity: " + capacity +
+                "/nCity: " + city  +
+                "/nNumber of matches played on: " + matchesPlayedOn;
+    }
+
+    public static void enterStadiumInfo(ArrayList<Stadium> stadiums){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter stadium name: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium:stadiums){
+            if (stadium.getName().equalsIgnoreCase(name)){
+                System.out.println("Stadium already exist!");
+                return;
+            }
+        }
+
+        System.out.print("Enter stadium capacity: ");
+        int capacity = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter stadium city: ");
+        String city = scanner.nextLine();
+
+        Stadium stadium = new Stadium(name, capacity, city);
+        stadiums.add(stadium);
+    }
+
 }

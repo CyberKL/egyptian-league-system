@@ -223,4 +223,56 @@ public class Logic {
     }
     //End of team related methods
 
+    //Start of stadium related methods
+    public static void enterStadiumInfo(){
+        Stadium.enterStadiumInfo(stadiums);
+    }
+
+    public static String displayStadiumInfo(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium you want to display: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums){
+            if (stadium.getName().equalsIgnoreCase(name)){
+                return stadium.toString();
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+
+    public static String displayUpcomingMatches(){
+        StringBuilder upcomingMatches = new StringBuilder();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium to see upcoming matches: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums) {
+            if (stadium.getName().equalsIgnoreCase(name)) {
+                if (stadium.getUpcomingMatches().isEmpty()){
+                    return "No upcoming matches found";
+                }
+                else {
+                    for (Match match : stadium.getUpcomingMatches()) {
+                        upcomingMatches.append(match.matchHeader()).append("/n");
+                    }
+                    return upcomingMatches.toString();
+                }
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+
+    public static String deleteStadium(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium you want to delete: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums) {
+            if (stadium.getName().equalsIgnoreCase(name)) {
+                stadiums.remove(stadium);
+                return "Stadium deleted successfully!";
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+    //End of stadium related methods
+
 }

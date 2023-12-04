@@ -142,7 +142,11 @@ public class Match {
                 awayTeam.addMatch(match);
                 awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed()+1);
                 referee.setMatchesRefereed(referee.getMatchesRefereed()+1);
-                stadium.addUpcomingMatch(match);
+                if(date.isBefore(LocalDate.now())){
+                    stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn()+1);
+                }else{
+                    stadium.addUpcomingMatch(match);
+                }
                 if (score != null) {
                     match.score = score;
                     result(match);
@@ -230,6 +234,10 @@ public class Match {
                         System.out.println("Please enter an upcoming date.");
                     }
                     else {
+                        if (this.date.isBefore(LocalDate.now())) {
+                            this.stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn() - 1);
+                            this.stadium.addUpcomingMatch(this);
+                        }
                         this.date = date;
                         isValidDate = true;
                     }
@@ -364,9 +372,16 @@ public class Match {
                                 if (upcoming.getDate().isEqual(this.date)) {
                                     System.out.println("Stadium not available on " + this.date);
                                 } else {
-                                    this.stadium.removeUpcomingMatch(this);
-                                    this.stadium = i;
-                                    this.stadium.addUpcomingMatch(this);
+                                    if (this.date.isBefore(LocalDate.now())){
+                                        this.stadium.setMatchesPlayedOn(this.stadium.getMatchesPlayedOn()-1);
+                                        this.stadium= i;
+                                        this.stadium.setMatchesPlayedOn(this.stadium.getMatchesPlayedOn()+1);
+                                    }
+                                    else {
+                                        this.stadium.removeUpcomingMatch(this);
+                                        this.stadium = i;
+                                        this.stadium.addUpcomingMatch(this);
+                                    }
                                     available = true;
                                     found = true;
                                 }
