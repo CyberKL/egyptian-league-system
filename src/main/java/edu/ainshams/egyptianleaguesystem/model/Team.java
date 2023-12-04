@@ -17,18 +17,23 @@ public class Team {
     private int wins;
     private int draws;
     private int losses;
+    private int goalsFor;
+    private int goalsAgainst;
+    private int goalDifference;
     private int totalScore;
     private  static int numOfTeams = 0;
 
     public Team(String name, int teamId) {
         this.name = name;
         this.teamId = teamId;
-        this.manager = manager;
         this.matchesPlayed = 0;
         this.totalScore = 0;
         this.wins = 0;
         this.draws = 0;
         this.losses = 0;
+        this.goalsFor = 0;
+        this.goalsAgainst = 0;
+        this.goalDifference = 0;
         numOfTeams++;
     }
 
@@ -98,6 +103,9 @@ public class Team {
                 "/nWins: " + wins +
                 "/nDraws: " + draws +
                 "/nLosses: " + losses +
+                "/nGoals for: "+ goalsFor +
+                "/nGoals against: "+ goalsAgainst +
+                "/nGoals difference: "+ goalDifference +
                 "/nTotal score: " + totalScore;
     }
 
@@ -320,6 +328,10 @@ public class Team {
         this.totalScore = (3 * this.wins)+(this.draws);
     }
 
+    public void calcGoalDiff(){
+        this.goalDifference = this.goalsFor - this.goalsAgainst;
+    }
+
     public void addPlayer(Player player){
         this.players.add(player);
     }
@@ -328,14 +340,22 @@ public class Team {
         this.players.remove(player);
     }
 
-
-    public void setTeamName(String newTeamName) {
-    }
-
-    public String getTeamName() {
-        return name;
-    }
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+    public void setGoalsFor(int goalsFor) {
+        this.goalsFor = goalsFor;
+    }
+
+    public void setGoalsAgainst(int goalsAgainst) {
+        this.goalsAgainst = goalsAgainst;
+    }
+
+    public int getGoalsFor() {
+        return goalsFor;
+    }
+
+    public int getGoalsAgainst() {
+        return goalsAgainst;
     }
 }
