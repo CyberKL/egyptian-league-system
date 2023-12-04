@@ -96,17 +96,17 @@ public class Team {
     @Override
     public String toString() {
         return "Name: " + name +
-                "/nTeam Id: " + teamId +
-                "/nCaptain: " + captain.getName() +
-                "/nManager: " + manager.getName() +
-                "/nMatches Played: " + matchesPlayed +
-                "/nWins: " + wins +
-                "/nDraws: " + draws +
-                "/nLosses: " + losses +
-                "/nGoals for: "+ goalsFor +
-                "/nGoals against: "+ goalsAgainst +
-                "/nGoals difference: "+ goalDifference +
-                "/nTotal score: " + totalScore;
+                "\nTeam Id: " + teamId +
+                "\nCaptain: " + captain.getName() +
+                "\nManager: " + manager.getName() +
+                "\nMatches Played: " + matchesPlayed +
+                "\nWins: " + wins +
+                "\nDraws: " + draws +
+                "\nLosses: " + losses +
+                "\nGoals for: "+ goalsFor +
+                "\nGoals against: "+ goalsAgainst +
+                "\nGoals difference: "+ goalDifference +
+                "\nTotal score: " + totalScore;
     }
 
     public static void enterMatchInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
@@ -181,7 +181,7 @@ public class Team {
 
     public void updateTeam(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         System.out.println("What do you want to update?");
-        System.out.println("1. Name/n2. Id/n 3. Players/n4. Captain");
+        System.out.println("1. Name\n2. Id\n 3. Players\n4. Captain");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         boolean outOfBounds = true;

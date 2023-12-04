@@ -52,9 +52,9 @@ public class Stadium {
     @Override
     public String toString() {
         return "Name: " + name +
-                "/nCapacity: " + capacity +
-                "/nCity: " + city  +
-                "/nNumber of matches played on: " + matchesPlayedOn;
+                "\nCapacity: " + capacity +
+                "\nCity: " + city  +
+                "\nNumber of matches played on: " + matchesPlayedOn;
     }
 
     public static void enterStadiumInfo(ArrayList<Stadium> stadiums){

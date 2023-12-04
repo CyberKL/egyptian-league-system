@@ -31,17 +31,17 @@ public abstract class Player extends FootballCharacter{
     @Override
     public String toString() {
         return "Player Id: " + playerId +
-                "/nNumber: " + number +
-                "/nTeam: " + team +
-                "/nHeight: " + height +
-                "/nWeight: " + weight +
-                "/nPreferredFoot: " + preferredFoot +
-                "/nPosition: " + position +
-                "/nName: " + name +
-                "/nNationality: " + nationality +
-                "/nYellowCards: " + yellowCards +
-                "/nRedCards: " + redCards +
-                "/nAge: " + age;
+                "\nNumber: " + number +
+                "\nTeam: " + team +
+                "\nHeight: " + height +
+                "\nWeight: " + weight +
+                "\nPreferredFoot: " + preferredFoot +
+                "\nPosition: " + position +
+                "\nName: " + name +
+                "\nNationality: " + nationality +
+                "\nYellowCards: " + yellowCards +
+                "\nRedCards: " + redCards +
+                "\nAge: " + age;
     }
     public int getPlayerId() {
         return playerId;
@@ -85,8 +85,8 @@ public abstract class Player extends FootballCharacter{
     protected void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
-        System.out.println("1. Number/n2. Team/n 3. Height/n4. Weight/n5. Preferred Foot/n6. Position/n" +
-                "7. Nationality/n8. Data of birth/n9. Player ID/n10. Yellow cards/n11. Red cards  ");
+        System.out.println("1. Number\n2. Team\n 3. Height\n4. Weight\n5. Preferred Foot\n6. Position\n" +
+                "7. Nationality\n8. Data of birth\n9. Player ID\n10. Yellow cards\n11. Red cards  ");
         int choice = scanner.nextInt();
         scanner.nextLine();
 

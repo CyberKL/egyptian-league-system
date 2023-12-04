@@ -252,7 +252,7 @@ public class Logic {
                 }
                 else {
                     for (Match match : stadium.getUpcomingMatches()) {
-                        upcomingMatches.append(match.matchHeader()).append("/n");
+                        upcomingMatches.append(match.matchHeader()).append("\n");
                     }
                     return upcomingMatches.toString();
                 }

@@ -38,12 +38,12 @@ public class Match {
     @Override
     public String toString() {
         return "Match Id: " + matchId +
-                "/nDate: " + date +
-                "/nHome team: " + homeTeam.getName() +
-                "/nAway team: " + awayTeam.getName() +
-                "/nReferee: " + referee.getName() +
-                "/nScore: " + score.toString() +
-                "/nStadium: " + stadium.getName();
+                "\nDate: " + date +
+                "\nHome team: " + homeTeam.getName() +
+                "\nAway team: " + awayTeam.getName() +
+                "\nReferee: " + referee.getName() +
+                "\nScore: " + score.toString() +
+                "\nStadium: " + stadium.getName();
     }
 
     public static void enterMatchInfo (ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums, ArrayList<Match> matches){
@@ -208,7 +208,7 @@ public class Match {
     public void updateMatch(ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums){
 
         System.out.println("What do you want to update?");
-        System.out.println("1. Date/n2. Home team/n 3. Away team/n4. Referee/n5. Stadium/n6. Score");
+        System.out.println("1. Date\n2. Home team\n 3. Away team\n4. Referee\n5. Stadium\n6. Score");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         boolean outOfBounds = true;
