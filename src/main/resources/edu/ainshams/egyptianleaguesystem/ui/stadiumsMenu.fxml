@@ -6,14 +6,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="988.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MenuController">
    <children>
-      <VBox layoutX="20.0" layoutY="206.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="988.0" spacing="10.0" stylesheets="@../../../../menu.css" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="0.0">
+      <VBox layoutX="20.0" layoutY="206.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="988.0" spacing="10.0" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="0.0">
          <children>
-            <Button fx:id="newMatchBtn" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="New Stadium" />
-            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Delete Stadium" />
-            <Button fx:id="playerBtn1" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Stadium Information" />
-            <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" stylesheets="@../../../../buttonBackground.css" text="Upcoming Matches" />
+            <Button fx:id="newMatchBtn" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="New Stadium" />
+            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Stadium" />
+            <Button fx:id="playerBtn1" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stadium Information" />
+            <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Upcoming Matches" />
          </children>
       </VBox>
-      <Button fx:id="backBtn" layoutX="60.33333396911621" layoutY="702.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" stylesheets="@../../../../backButton.css" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+      <Button fx:id="backBtn" layoutX="60.33333396911621" layoutY="702.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
    </children>
 </AnchorPane>
