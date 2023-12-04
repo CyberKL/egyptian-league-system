@@ -22,6 +22,8 @@ public class MenuController {
     private Stage stage;
 
     @FXML
+    private Button backBtn;
+    @FXML
     private Button quitBtn;
     @FXML
     private Button teamBtn;
@@ -49,6 +51,10 @@ public class MenuController {
     public void hoverButton(MouseEvent event){
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
+    }
+
+    public void blueBack(MouseEvent event){
+        backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
     public void switchTeamMenu(ActionEvent event) throws IOException {
@@ -103,6 +109,13 @@ public class MenuController {
     }
     public void switchStatsMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("stats.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToStartMenu(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("startMenu.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(startMenu);
