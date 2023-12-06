@@ -274,5 +274,4 @@ public class Logic {
         return "Stadium not found, please enter a valid name";
     }
     //End of stadium related methods
-
 }
