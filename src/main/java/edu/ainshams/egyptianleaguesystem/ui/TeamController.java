@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class NewTeamController {
+public class TeamController {
 
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     private Stage stage;
