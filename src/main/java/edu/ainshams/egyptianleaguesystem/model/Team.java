@@ -109,7 +109,7 @@ public class Team {
                 "\nTotal score: " + totalScore;
     }
 
-    public static void enterMatchInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
+    public static void enterTeamInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
 
         Manager manager = null;
         Scanner scanner = new Scanner(System.in);

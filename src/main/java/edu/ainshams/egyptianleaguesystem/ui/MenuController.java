@@ -39,6 +39,8 @@ public class MenuController {
     private Button stadBtn;
     @FXML
     private Button statsBtn;
+    @FXML
+    private Button newTeamBtn;
 
     public void redQuit(MouseEvent event){
         quitBtn.setStyle("-fx-background-color: red;");
@@ -116,6 +118,20 @@ public class MenuController {
     }
     public void switchToStartMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("startMenu.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToNewTeam(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newTeam.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToDeleteTeam(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("deleteTeam.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(startMenu);

@@ -15,6 +15,15 @@ public class Logic {
     private static ArrayList<Referee> referees = new ArrayList<Referee>();
     private static ArrayList<Stadium> stadiums = new ArrayList<Stadium>();
 
+    public static ArrayList<Team> getTeams() {
+        return teams;
+    }
+    public static void addTeam(Team team){
+        teams.add(team);
+    }
+    public static void removeTeam(Team team){
+        teams.remove(team);
+    }
 
     //Start of match related methods
     public static void enterMatchInfo(){
@@ -66,7 +75,7 @@ public class Logic {
 
     //Start of team related methods
     public static void enterTeamInfo(){
-        Team.enterMatchInfo(teams,managers);
+        Team.enterTeamInfo(teams,managers);
     }
 
     public static void updateTeam() throws DuplicateException{

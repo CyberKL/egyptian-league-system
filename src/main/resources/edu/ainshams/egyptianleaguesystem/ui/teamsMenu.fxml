@@ -8,12 +8,12 @@
    <children>
       <VBox layoutX="5.0" layoutY="-54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="444.0" spacing="10.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="0.0">
          <children>
-            <Button fx:id="teamBtn" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="New Team" />
+            <Button fx:id="newTeamBtn" mnemonicParsing="false" onAction="#switchToNewTeam" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="New Team" />
             <Button fx:id="teamBtn1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Edit Team" />
             <Button fx:id="teamBtn11" layoutX="10.0" layoutY="106.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Team Information" />
             <Button fx:id="teamBtn111" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Team Matches" />
             <Button fx:id="teamBtn1111" layoutX="10.0" layoutY="298.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Players" />
-            <Button fx:id="teamBtn11111" layoutX="10.0" layoutY="394.0" mnemonicParsing="false" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Team" />
+            <Button fx:id="teamBtn11111" layoutX="10.0" layoutY="394.0" mnemonicParsing="false" onAction="#switchToDeleteTeam" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Team" />
          </children>
       </VBox>
       <Button fx:id="backBtn" layoutX="10.333333969116211" layoutY="648.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
