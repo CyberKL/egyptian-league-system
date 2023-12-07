@@ -25,6 +25,10 @@ public class Logic {
         teams.remove(team);
     }
 
+    public static ArrayList<Player> getPlayers() {
+        return players;
+    }
+
     //Start of match related methods
     public static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);

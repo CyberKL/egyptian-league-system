@@ -137,5 +137,12 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
+    public void switchToEditTeam(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("editTeam.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
 
 }

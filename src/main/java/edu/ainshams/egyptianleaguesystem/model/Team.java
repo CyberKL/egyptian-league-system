@@ -93,6 +93,14 @@ public class Team {
         return manager;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name +
@@ -357,5 +365,13 @@ public class Team {
 
     public int getGoalsAgainst() {
         return goalsAgainst;
+    }
+
+    public Player getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Player captain) {
+        this.captain = captain;
     }
 }
