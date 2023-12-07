@@ -101,6 +101,18 @@ public class Team {
         this.teamId = teamId;
     }
 
+    public int getGoalDifference() {
+        return goalDifference;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public ArrayList<Match> getMatches() {
+        return matches;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name +

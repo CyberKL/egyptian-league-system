@@ -1,12 +1,14 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
+import edu.ainshams.egyptianleaguesystem.model.Match;
 import edu.ainshams.egyptianleaguesystem.model.Player;
 import edu.ainshams.egyptianleaguesystem.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -45,6 +47,10 @@ public class TeamController {
     private Pane confirmPane;
     @FXML
     private HBox choiceBox;
+    @FXML
+    private GridPane infoGrid;
+    @FXML
+    private TextField nameField;
 
     public void defaultButton(MouseEvent event){
         Button btn = (Button) event.getSource();
@@ -128,7 +134,104 @@ public class TeamController {
 
     private int id;
     private boolean isIdAvailable = false;
-    Label chooseLabel;
+
+    public void displayTeamInfo(){
+        Team currentTeam;
+        boolean found = false;
+        String name = nameField.getText();
+        for (Team team: Logic.getTeams()){
+            if (team.getName().equalsIgnoreCase(name)){
+                found = true;
+                currentTeam = team;
+                removeNodeById(root, "idBox");
+                teamInfo(currentTeam);
+                isIdAvailable = true;
+                break;
+            }
+        }
+        if (!found){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Team not found!");
+            alert.show();
+        }
+    }
+
+    private void teamInfo(Team team){
+        Label teamName = new Label(team.getName());
+        Label teamId = new Label(Integer.toString(team.getTeamId()));
+        Label teamManager = new Label(team.getManager().getName());
+        Label teamCaptain = new Label(team.getCaptain().getName());
+        Label matchesPlayed = new Label(Integer.toString(team.getMatchesPlayed()));
+        Label teamWins = new Label(Integer.toString(team.getWins()));
+        Label teamDraws = new Label(Integer.toString(team.getDraws()));
+        Label teamLosses = new Label(Integer.toString(team.getLosses()));
+        Label teamGoalsFor = new Label(Integer.toString(team.getGoalsFor()));
+        Label teamGoalsAgainst = new Label(Integer.toString(team.getGoalsAgainst()));
+        Label teamGoalDifference = new Label(Integer.toString(team.getGoalDifference()));
+        Label teamTotalScore = new Label(Integer.toString(team.getTotalScore()));
+        VBox infoList = new VBox(teamName, teamId, teamManager, teamCaptain, matchesPlayed, teamWins, teamDraws, teamLosses, teamGoalsFor, teamGoalsAgainst, teamGoalDifference, teamTotalScore);
+        infoGrid.add(infoList, 1, 0);
+        infoGrid.setVisible(true);
+    }
+    public void displayTeamMatches(){
+        Team currentTeam;
+        boolean found = false;
+        String name = nameField.getText();
+        for (Team team: Logic.getTeams()){
+            if (team.getName().equalsIgnoreCase(name)){
+                found = true;
+                currentTeam = team;
+                removeNodeById(root, "idBox");
+                teamMatches(currentTeam);
+                isIdAvailable = true;
+                break;
+            }
+        }
+        if (!found){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Team not found!");
+            alert.show();
+        }
+    }
+    private void teamMatches(Team team){
+        FlowPane matchesPane = new FlowPane();
+        for (Match match : team.getMatches()){
+            Label label = new Label(match.matchHeader());
+            label.setFont(new Font(20));
+            label.setTextFill(Color.WHITE);
+            matchesPane.getChildren().add(label);
+        }
+        root.getChildren().add(matchesPane);
+    }
+    public void displayTeamPlayers(){
+        Team currentTeam;
+        boolean found = false;
+        String name = nameField.getText();
+        for (Team team: Logic.getTeams()){
+            if (team.getName().equalsIgnoreCase(name)){
+                found = true;
+                currentTeam = team;
+                removeNodeById(root, "idBox");
+                teamPlayers(currentTeam);
+                isIdAvailable = true;
+                break;
+            }
+        }
+        if (!found){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Team not found!");
+            alert.show();
+        }
+    }
+    private   void teamPlayers(Team team){
+        FlowPane playersPane = new FlowPane();
+        playersPane.setOrientation(Orientation.VERTICAL);
+        for (Player player : team.getPlayers()){
+            Label label = new Label(player.getNumber()+"  "+player.getName());
+            playersPane.getChildren().add(label);
+        }
+    }
+
     public void determineTeamId(){
         boolean found = false;
         int id = Integer.parseInt(idField.getText());
@@ -137,7 +240,7 @@ public class TeamController {
                 this.id = id;
                 found = true;
                 removeNodeById(root, "idBox");
-                chooseLabel = new Label("Please select a choice");
+                Label chooseLabel = new Label("Please select a choice");
                 chooseLabel.setFont(new Font(50));
                 chooseLabel.setTextFill(Color.WHITE);
                 chooseLabel.setId("chooseLabel");

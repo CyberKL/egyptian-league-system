@@ -55,6 +55,10 @@ public abstract class Player extends FootballCharacter{
         this.team = team;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter player name:");

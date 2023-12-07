@@ -144,5 +144,27 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
+    public void switchToTeamInfo(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("teamInfo.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToTeamMatches(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("teamMatches.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToTeamPlayers(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("teamPlayers.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+
 
 }
