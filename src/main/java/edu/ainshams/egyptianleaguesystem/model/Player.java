@@ -340,6 +340,9 @@ public abstract class Player extends FootballCharacter{
         if (playerPosition.equalsIgnoreCase("goalkeeper")){
             Player goalkeeper = new Goalkeeper(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot, playerPosition);
             players.add(goalkeeper);
+        } else if (playerPosition.equalsIgnoreCase("midfielder")) {
+            Player midfielder = new Midfielder(playerName, playerDateOfBirth, playerNationality,playerID,playerNumber, playerTeam, playerHeight, playerWeight,playerPreferredFoot,playerPosition );
+            players.add(midfielder);
         }
 
 
