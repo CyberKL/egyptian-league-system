@@ -165,6 +165,34 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
+    public void switchToNewStadium(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newStadium.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToDeleteStadium(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("deleteStadium.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToStadiumInfo(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("stadiumInfo.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToStadiumMatches(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("stadiumMatches.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
 
 
 }

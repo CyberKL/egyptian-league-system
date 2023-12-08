@@ -29,6 +29,16 @@ public class Logic {
         return players;
     }
 
+    public static ArrayList<Stadium> getStadiums() {
+        return stadiums;
+    }
+    public static void addStadium(Stadium stadium){
+        stadiums.add(stadium);
+    }
+    public static void removeStadium(Stadium stadium){
+        stadiums.remove(stadium);
+    }
+
     //Start of match related methods
     public static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);
