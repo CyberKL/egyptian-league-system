@@ -8,7 +8,7 @@ public class Referee extends FootballCharacter{
     private static int numOfReferees = 0;
 
     public Referee(String name, LocalDate dateOfBirth, String nationality, int yellowCards, int redCards){
-        super(name, dateOfBirth, nationality, yellowCards, redCards);
+        super(name, dateOfBirth, nationality);
         this.matchesRefereed = 0;
         numOfReferees++;
     }
