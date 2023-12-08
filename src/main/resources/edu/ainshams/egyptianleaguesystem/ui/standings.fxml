@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="948.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.StandingsController">
+   <center>
+      <TableView fx:id="standingsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="562.0" prefWidth="1141.0" stylesheets="@../../../../table.css" BorderPane.alignment="CENTER">
+         <columns>
+            <TableColumn fx:id="clubCol" prefWidth="432.666646361351" resizable="false" text="Club" />
+            <TableColumn fx:id="mpCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="MP" />
+            <TableColumn fx:id="winsCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="W" />
+            <TableColumn fx:id="drawsCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="D" />
+            <TableColumn fx:id="lossesCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="L" />
+            <TableColumn fx:id="gfCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="GF" />
+            <TableColumn fx:id="gaCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="GA" />
+            <TableColumn fx:id="gdCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="GD" />
+            <TableColumn fx:id="ptsCol" editable="false" minWidth="0.0" prefWidth="89.0" resizable="false" text="Pts" />
+         </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <Button fx:id="backBtn" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueQBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" BorderPane.alignment="BOTTOM_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="5.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+</BorderPane>

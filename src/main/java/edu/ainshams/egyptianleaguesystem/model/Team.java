@@ -17,18 +17,23 @@ public class Team {
     private int wins;
     private int draws;
     private int losses;
+    private int goalsFor;
+    private int goalsAgainst;
+    private int goalDifference;
     private int totalScore;
     private  static int numOfTeams = 0;
 
-    public Team(String name, int teamId, Manager manager) {
+    public Team(String name, int teamId) {
         this.name = name;
         this.teamId = teamId;
-        this.manager = manager;
         this.matchesPlayed = 0;
         this.totalScore = 0;
         this.wins = 0;
         this.draws = 0;
         this.losses = 0;
+        this.goalsFor = 0;
+        this.goalsAgainst = 0;
+        this.goalDifference = 0;
         numOfTeams++;
     }
 
@@ -88,20 +93,47 @@ public class Team {
         return manager;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
+
+    public int getGoalDifference() {
+        return goalDifference;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public ArrayList<Match> getMatches() {
+        return matches;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name +
-                "/nTeam Id: " + teamId +
-                "/nCaptain: " + captain.getName() +
-                "/nManager: " + manager.getName() +
-                "/nMatches Played: " + matchesPlayed +
-                "/nWins: " + wins +
-                "/nDraws: " + draws +
-                "/nLosses: " + losses +
-                "/nTotal score: " + totalScore;
+                "\nTeam Id: " + teamId +
+                "\nCaptain: " + captain.getName() +
+                "\nManager: " + manager.getName() +
+                "\nMatches Played: " + matchesPlayed +
+                "\nWins: " + wins +
+                "\nDraws: " + draws +
+                "\nLosses: " + losses +
+                "\nGoals for: "+ goalsFor +
+                "\nGoals against: "+ goalsAgainst +
+                "\nGoals difference: "+ goalDifference +
+                "\nTotal score: " + totalScore;
     }
 
-    public static void enterMatchInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
+    public static void enterTeamInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
 
         Manager manager = null;
         Scanner scanner = new Scanner(System.in);
@@ -147,7 +179,7 @@ public class Team {
                 return;
             }
 
-            Team team = new Team(teamName, id, manager);
+            Team team = new Team(teamName, id);
             teams.add(team);
         }
         catch (InputMismatchException e){
@@ -173,7 +205,7 @@ public class Team {
 
     public void updateTeam(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         System.out.println("What do you want to update?");
-        System.out.println("1. Name/n2. Id/n 3. Players/n4. Captain");
+        System.out.println("1. Name\n2. Id\n 3. Players\n4. Captain");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         boolean outOfBounds = true;
@@ -320,6 +352,10 @@ public class Team {
         this.totalScore = (3 * this.wins)+(this.draws);
     }
 
+    public void calcGoalDiff(){
+        this.goalDifference = this.goalsFor - this.goalsAgainst;
+    }
+
     public void addPlayer(Player player){
         this.players.add(player);
     }
@@ -328,14 +364,30 @@ public class Team {
         this.players.remove(player);
     }
 
-
-    public void setTeamName(String newTeamName) {
-    }
-
-    public String getTeamName() {
-        return name;
-    }
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+    public void setGoalsFor(int goalsFor) {
+        this.goalsFor = goalsFor;
+    }
+
+    public void setGoalsAgainst(int goalsAgainst) {
+        this.goalsAgainst = goalsAgainst;
+    }
+
+    public int getGoalsFor() {
+        return goalsFor;
+    }
+
+    public int getGoalsAgainst() {
+        return goalsAgainst;
+    }
+
+    public Player getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Player captain) {
+        this.captain = captain;
     }
 }

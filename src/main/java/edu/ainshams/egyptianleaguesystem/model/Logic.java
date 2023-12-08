@@ -15,6 +15,43 @@ public class Logic {
     private static ArrayList<Referee> referees = new ArrayList<Referee>();
     private static ArrayList<Stadium> stadiums = new ArrayList<Stadium>();
 
+    public static ArrayList<Team> getTeams() {
+        return teams;
+    }
+    public static void addTeam(Team team){
+        teams.add(team);
+    }
+    public static void removeTeam(Team team){
+        teams.remove(team);
+    }
+
+    public static ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public static ArrayList<Stadium> getStadiums() {
+        return stadiums;
+    }
+    public static void addStadium(Stadium stadium){
+        stadiums.add(stadium);
+    }
+    public static void removeStadium(Stadium stadium){
+        stadiums.remove(stadium);
+    }
+
+    public static ArrayList<Match> getMatches() {
+        return matches;
+    }
+    public static void addMatch(Match match){
+        matches.add(match);
+    }
+    public static void removeMatch(Match match){
+        matches.remove(match);
+    }
+
+    public static ArrayList<Referee> getReferees() {
+        return referees;
+    }
 
     //Start of match related methods
     public static void enterMatchInfo(){
@@ -66,7 +103,7 @@ public class Logic {
 
     //Start of team related methods
     public static void enterTeamInfo(){
-        Team.enterMatchInfo(teams,managers);
+        Team.enterTeamInfo(teams,managers);
     }
 
     public static void updateTeam() throws DuplicateException{
@@ -223,4 +260,55 @@ public class Logic {
     }
     //End of team related methods
 
+    //Start of stadium related methods
+    public static void enterStadiumInfo(){
+        Stadium.enterStadiumInfo(stadiums);
+    }
+
+    public static String displayStadiumInfo(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium you want to display: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums){
+            if (stadium.getName().equalsIgnoreCase(name)){
+                return stadium.toString();
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+
+    public static String displayUpcomingMatches(){
+        StringBuilder upcomingMatches = new StringBuilder();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium to see upcoming matches: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums) {
+            if (stadium.getName().equalsIgnoreCase(name)) {
+                if (stadium.getUpcomingMatches().isEmpty()){
+                    return "No upcoming matches found";
+                }
+                else {
+                    for (Match match : stadium.getUpcomingMatches()) {
+                        upcomingMatches.append(match.matchHeader()).append("\n");
+                    }
+                    return upcomingMatches.toString();
+                }
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+
+    public static String deleteStadium(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the Stadium you want to delete: ");
+        String name = scanner.nextLine();
+        for (Stadium stadium: stadiums) {
+            if (stadium.getName().equalsIgnoreCase(name)) {
+                stadiums.remove(stadium);
+                return "Stadium deleted successfully!";
+            }
+        }
+        return "Stadium not found, please enter a valid name";
+    }
+    //End of stadium related methods
 }

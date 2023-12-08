@@ -31,20 +31,32 @@ public abstract class Player extends FootballCharacter{
     @Override
     public String toString() {
         return "Player Id: " + playerId +
-                "/nNumber: " + number +
-                "/nTeam: " + team +
-                "/nHeight: " + height +
-                "/nWeight: " + weight +
-                "/nPreferredFoot: " + preferredFoot +
-                "/nPosition: " + position +
-                "/nName: " + name +
-                "/nNationality: " + nationality +
-                "/nYellowCards: " + yellowCards +
-                "/nRedCards: " + redCards +
-                "/nAge: " + age;
+                "\nNumber: " + number +
+                "\nTeam: " + team +
+                "\nHeight: " + height +
+                "\nWeight: " + weight +
+                "\nPreferredFoot: " + preferredFoot +
+                "\nPosition: " + position +
+                "\nName: " + name +
+                "\nNationality: " + nationality +
+                "\nYellowCards: " + yellowCards +
+                "\nRedCards: " + redCards +
+                "\nAge: " + age;
     }
     public int getPlayerId() {
         return playerId;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
@@ -82,14 +94,9 @@ public abstract class Player extends FootballCharacter{
         }
     }
 
-    protected void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams) throws DuplicateException{
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("What do you want to update?");
-        System.out.println("1. Number/n2. Team/n 3. Height/n4. Weight/n5. Preferred Foot/n6. Position/n" +
-                "7. Nationality/n8. Data of birth/n9. Player ID/n10. Yellow cards/n11. Red cards  ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+    protected void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException{
 
+        Scanner scanner = new Scanner(System.in);
         if (choice >= 1 && choice <= 11) {
             switch (choice) {
                 case 1: {
@@ -238,8 +245,6 @@ public abstract class Player extends FootballCharacter{
                     break;
                 }
             }
-        } else {
-            System.out.println("Please enter a number between 1 and 11");
         }
 
     }
@@ -284,9 +289,10 @@ public abstract class Player extends FootballCharacter{
         scanner.nextLine();
         isPlayerIdDuplicate(playerID, players);
 
+        int playerNumber = 0;
         try {
             System.out.print("Enter player number: ");
-            int playerNumber = scanner.nextInt();
+            playerNumber = scanner.nextInt();
             scanner.nextLine();
         }
         catch (InputMismatchException e){
@@ -303,18 +309,20 @@ public abstract class Player extends FootballCharacter{
             }
         }
 
+        int playerHeight = 0;
         try {
             System.out.println("Enter player height:");
-            int playerHeight = scanner.nextInt();
+            playerHeight = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid integer for player height.");
             scanner.nextLine();
         }
 
+        int playerWeight = 0;
         try {
             System.out.println("Enter player weight:");
-            int playerWeight = scanner.nextInt();
+            playerWeight = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid integer for player weight.");
@@ -340,6 +348,13 @@ public abstract class Player extends FootballCharacter{
         }
         if (!isValidPosition){
             System.out.println("Please enter a correct position");
+        }
+        if (playerPosition.equalsIgnoreCase("goalkeeper")){
+            Player goalkeeper = new Goalkeeper(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot, playerPosition);
+            players.add(goalkeeper);
+        } else if (playerPosition.equalsIgnoreCase("midfielder")) {
+            Player midfielder = new Midfielder(playerName, playerDateOfBirth, playerNationality,playerID,playerNumber, playerTeam, playerHeight, playerWeight,playerPreferredFoot,playerPosition );
+            players.add(midfielder);
         }
 
 

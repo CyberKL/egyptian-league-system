@@ -13,8 +13,13 @@ public class Manager extends FootballCharacter{
     private boolean wasPlayer;
     private static int numOfManagers = 0;
 
+
     public Manager(String name, int managerId, LocalDate dateOfBirth, String nationality, Team team, int trophies, boolean wasPlayer) {
         super(name, dateOfBirth, nationality);
+    }
+
+    public Manager(String name, LocalDate dateOfBirth, String nationality, int yellowCards, int redCards, Team team, int trophies, boolean wasPlayer){
+        super(name,dateOfBirth, nationality);
         this.team = team;
         this.managerId = managerId;
         this.trophies = trophies;
