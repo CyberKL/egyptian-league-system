@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="988.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MenuController">
+   <children>
+      <VBox layoutX="5.0" layoutY="-54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="737.0" prefWidth="988.0" spacing="10.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <Button fx:id="teamBtn" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Teams" />
+            <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#switchMatchMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Matches" />
+            <Button fx:id="playerBtn" layoutX="10.0" layoutY="189.0" mnemonicParsing="false" onAction="#switchPlayerMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Players" />
+            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#switchStandingsMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Standings" />
+            <Button fx:id="mngrBtn" layoutX="10.0" layoutY="275.0" mnemonicParsing="false" onAction="#switchManagerMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Managers" />
+            <Button fx:id="refBtn" layoutX="10.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchRefereeMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Refeeres" />
+            <Button fx:id="stadBtn" layoutX="10.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchStadiumMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stadiums" />
+            <Button fx:id="statsBtn" layoutX="10.0" layoutY="586.0" mnemonicParsing="false" onAction="#switchStatsMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stats" />
+         </children>
+      </VBox>
+      <Button fx:id="quitBtn" layoutX="10.333333969116211" layoutY="652.6666259765625" mnemonicParsing="false" onMouseEntered="#redQuit" onMouseExited="#defaultButton" prefHeight="57.0" prefWidth="107.0" text="Quit" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+   </children>
+</AnchorPane>
