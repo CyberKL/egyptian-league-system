@@ -39,6 +39,20 @@ public class Logic {
         stadiums.remove(stadium);
     }
 
+    public static ArrayList<Match> getMatches() {
+        return matches;
+    }
+    public static void addMatch(Match match){
+        matches.add(match);
+    }
+    public static void removeMatch(Match match){
+        matches.remove(match);
+    }
+
+    public static ArrayList<Referee> getReferees() {
+        return referees;
+    }
+
     //Start of match related methods
     public static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);

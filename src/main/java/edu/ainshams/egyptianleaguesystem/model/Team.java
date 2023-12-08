@@ -109,6 +109,10 @@ public class Team {
         return totalScore;
     }
 
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
     public ArrayList<Match> getMatches() {
         return matches;
     }

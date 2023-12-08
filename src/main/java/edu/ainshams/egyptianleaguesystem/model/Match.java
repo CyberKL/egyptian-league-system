@@ -1,6 +1,7 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -17,7 +18,7 @@ public class Match {
     private Stadium stadium;
     private String winner;
 
-    private Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Stadium stadium) {
+    public Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Stadium stadium) {
         this.matchId = matchId;
         this.date = date;
         this.homeTeam = homeTeam;
@@ -35,15 +36,46 @@ public class Match {
         return date;
     }
 
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public Referee getReferee() {
+        return referee;
+    }
+
+    public Stadium getStadium() {
+        return stadium;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
     @Override
     public String toString() {
-        return "Match Id: " + matchId +
+        String info = "Match Id: " + matchId +
                 "\nDate: " + date +
                 "\nHome team: " + homeTeam.getName() +
                 "\nAway team: " + awayTeam.getName() +
                 "\nReferee: " + referee.getName() +
-                "\nScore: " + score.toString() +
                 "\nStadium: " + stadium.getName();
+        if (this.date.isBefore(LocalDate.now())){
+            info = info.concat("\nScore: " + score.toString());
+        }
+        return info;
     }
 
     public static void enterMatchInfo (ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums, ArrayList<Match> matches){
@@ -181,20 +213,24 @@ public class Match {
     private static boolean isValidScore(String matchScore) {
         return matchScore.matches("\\d+-\\d+");
     }
-    private static void result(Match match){
+    public static void result(Match match){
         if(match.score.getHomeTeam()>match.score.getAwayTeam()){
             match.homeTeam.setWins(match.homeTeam.getWins()+1);
+            match.homeTeam.setTotalScore(match.homeTeam.getTotalScore()+3);
             match.awayTeam.setLosses(match.awayTeam.getLosses()+1);
             match.winner = match.homeTeam.getName();
         }
         else if (match.score.getHomeTeam()<match.score.getAwayTeam()) {
             match.awayTeam.setWins(match.awayTeam.getWins()+1);
+            match.awayTeam.setTotalScore(match.awayTeam.getTotalScore()+3);
             match.homeTeam.setLosses(match.homeTeam.getLosses()+1);
             match.winner = match.awayTeam.getName();
         }
         else {
             match.homeTeam.setDraws(match.homeTeam.getDraws()+1);
+            match.homeTeam.setTotalScore(match.homeTeam.getTotalScore()+1);
             match.awayTeam.setDraws(match.awayTeam.getDraws()+1);
+            match.awayTeam.setTotalScore(match.awayTeam.getTotalScore()+1);
             match.winner = "draw";
         }
         match.homeTeam.setGoalsFor(match.homeTeam.getGoalsFor()+match.score.getHomeTeam());
@@ -273,8 +309,10 @@ public class Match {
                                 this.homeTeam.removeMatch(this);
                                 if (this.winner.equalsIgnoreCase(this.homeTeam.getName())) {
                                     this.homeTeam.setWins(this.homeTeam.getWins() - 1);
+                                    this.homeTeam.setTotalScore(this.homeTeam.getTotalScore()-3);
                                 } else if (this.winner.equals("draw")) {
                                     this.homeTeam.setDraws(this.homeTeam.getDraws() - 1);
+                                    this.homeTeam.setTotalScore(this.homeTeam.getTotalScore()-1);
                                 } else {
                                     this.homeTeam.setLosses(this.homeTeam.getLosses() - 1);
                                 }
@@ -325,8 +363,10 @@ public class Match {
                                 this.awayTeam.removeMatch(this);
                                 if (this.winner.equalsIgnoreCase(this.awayTeam.getName())) {
                                     this.awayTeam.setWins(this.awayTeam.getWins() - 1);
+                                    this.awayTeam.setTotalScore(this.awayTeam.getTotalScore()-3);
                                 } else if (this.winner.equals("draw")) {
                                     this.awayTeam.setDraws(this.awayTeam.getDraws() - 1);
+                                    this.awayTeam.setTotalScore(this.awayTeam.getTotalScore()-1);
                                 } else {
                                     this.awayTeam.setLosses(this.awayTeam.getLosses() - 1);
                                 }
@@ -439,7 +479,16 @@ public class Match {
     }
 
     public String matchHeader(){
-        return homeTeam.getName()+" : "+awayTeam.getName();
+        String header;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        if (this.date.isBefore(LocalDate.now())){
+            header = homeTeam.getName()+"   "+this.score.getHomeTeam()+" : "+this.score.getAwayTeam()+"   "+awayTeam.getName();
+        }
+        else {
+            String formattedDate = date.format(formatter);
+            header = homeTeam.getName()+"  "+formattedDate+"  "+awayTeam.getName();
+        }
+        return header;
     }
 
 }

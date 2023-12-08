@@ -184,7 +184,7 @@ public class StadiumController {
     private void stadiumUpcomingMatches(Stadium stadium){
         FlowPane matchesPane = new FlowPane();
         for (Match match : stadium.getUpcomingMatches()){
-            Label label = new Label(match.getDate()+"  "+match.matchHeader());
+            Label label = new Label(match.matchHeader());
             matchesPane.getChildren().add(label);
         }
         root.getChildren().add(matchesPane);

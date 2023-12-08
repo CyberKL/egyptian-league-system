@@ -25,22 +25,6 @@ public class MenuController {
     private Button backBtn;
     @FXML
     private Button quitBtn;
-    @FXML
-    private Button teamBtn;
-    @FXML
-    private Button matchBtn;
-    @FXML
-    private Button playerBtn;
-    @FXML
-    private Button mngrBtn;
-    @FXML
-    private Button refBtn;
-    @FXML
-    private Button stadBtn;
-    @FXML
-    private Button statsBtn;
-    @FXML
-    private Button newTeamBtn;
 
     public void redQuit(MouseEvent event){
         quitBtn.setStyle("-fx-background-color: red;");
@@ -188,6 +172,27 @@ public class MenuController {
     }
     public void switchToStadiumMatches(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("stadiumMatches.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToNewMatch(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newMatch.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToDeleteMatch(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("deleteMatch.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    public void switchToMatchInfo(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("matchInfo.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(startMenu);
