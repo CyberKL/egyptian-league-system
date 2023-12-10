@@ -198,6 +198,13 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
+    public void switchToEditMatch(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("editMatch.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
 
 
 }

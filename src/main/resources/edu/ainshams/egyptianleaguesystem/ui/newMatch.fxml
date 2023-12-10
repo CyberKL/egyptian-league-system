@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MatchController">
    <children>
       <Button fx:id="backBtn" layoutX="35.0" layoutY="745.0" mnemonicParsing="false" onAction="#switchMatchMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
@@ -74,7 +73,7 @@
                         <Insets left="50.0" />
                      </VBox.margin>
                   </TextField>
-                  <DatePicker fx:id="datePicker" minHeight="-Infinity" prefHeight="39.0" prefWidth="195.0">
+                  <DatePicker fx:id="datePicker" minHeight="-Infinity" onAction="#dateChecker" prefHeight="39.0" prefWidth="195.0">
                      <VBox.margin>
                         <Insets left="50.0" />
                      </VBox.margin>
