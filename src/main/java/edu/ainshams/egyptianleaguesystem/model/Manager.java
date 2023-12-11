@@ -14,11 +14,7 @@ public class Manager extends FootballCharacter{
     private static int numOfManagers = 0;
 
 
-    public Manager(String name, int managerId, LocalDate dateOfBirth, String nationality, Team team, int trophies, boolean wasPlayer) {
-        super(name, dateOfBirth, nationality);
-    }
-
-    public Manager(String name, LocalDate dateOfBirth, String nationality, int yellowCards, int redCards, Team team, int trophies, boolean wasPlayer){
+    public Manager(String name, LocalDate dateOfBirth, String nationality, int managerId,  int trophies, boolean wasPlayer){
         super(name,dateOfBirth, nationality);
         this.team = team;
         this.managerId = managerId;
@@ -27,19 +23,50 @@ public class Manager extends FootballCharacter{
         numOfManagers++;
     }
 
+    public int getManagerId() {
+        return managerId;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public int getTrophies() {
+        return trophies;
+    }
+
+    public boolean isWasPlayer() {
+        return wasPlayer;
+    }
+
+    public static int getNumOfManagers() {
+        return numOfManagers;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public void setTrophies(int trophies) {
+        this.trophies = trophies;
+    }
+
+    public void setWasPlayer(boolean wasPlayer) {
+        this.wasPlayer = wasPlayer;
+    }
+
     @Override
     public String toString() {
         return
-                "/n Name: " + name +
-                "/n Manager Id:"+managerId+
-                "/n Team: " + team +
-                "/n Trophies:" + trophies +
-                "/n Was Player:" + wasPlayer +
-                "/n Nationality: " + nationality +
-                "/n YellowCards: " + yellowCards +
-                "/n RedCards: " + redCards +
-                "/n Date of birth:"+dateOfBirth+
-                "/n Age: " + age;
+                "\nName: " + name +
+                "\nManager Id:"+managerId+
+                "\nAge: " + age +
+                "\nNationality: " + nationality +
+                "\nTeam: " + team +
+                "\nTrophies:" + trophies +
+                "\nWas Player:" + wasPlayer +
+                "\nYellowCards: " + yellowCards +
+                "\nRedCards: " + redCards;
     }
 
 
@@ -53,15 +80,6 @@ public class Manager extends FootballCharacter{
         int managerId = scanner.nextInt();
         scanner.nextLine();
         isManagerIdDuplicate(managerId, managerList);
-
-        System.out.println("Enter manager team name:");
-        String teamName = scanner.nextLine();
-        for (Team t :teams) {
-            if (t.getName().equalsIgnoreCase(teamName)) {
-                managerTeam = t;
-                break;
-            }
-        }
 
         boolean isValidAge = false;
         LocalDate managerDateOfBirth = null;
@@ -98,13 +116,11 @@ public class Manager extends FootballCharacter{
             System.out.println("Please enter 'true' or 'false'.");
             return;
         }
-        Manager manager = new Manager(managerName,managerId,managerDateOfBirth,managerNationality,managerTeam,trophies,wasPlayer);
+        Manager manager = new Manager(managerName, managerDateOfBirth, managerNationality, managerId, trophies, wasPlayer);
         managerList.add(manager);
     }
 
-    public int getManagerId() {
-        return managerId;
-    }
+
     private static void isManagerIdDuplicate(int managerId, ArrayList<Manager> managerList) throws DuplicateException {
         for (Manager manager : managerList) {
             if (manager.getManagerId() == managerId) {
@@ -114,14 +130,14 @@ public class Manager extends FootballCharacter{
     }
 
 
-    protected void updatePlayerInfo() throws DuplicateException {
+    protected void updateManagerInfo() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
-        System.out.println("1. Name\n2. Team\n3. Trophies\n4. Was Player\n5. Nationality\n6. Date Of Birth\n7. Age\n8. Yellow Cards\n9. Red Cards");
+        System.out.println("1. Name\n2. Team\n3. Trophies\n4. Was Player\n5. Nationality\n6. Date Of Birth\n7. Yellow Cards\n8. Red Cards");
         int choice = scanner.nextInt();
         scanner.nextLine();
 
-        if (choice >= 1 && choice <= 9) {
+        if (choice >= 1 && choice <= 8) {
             switch (choice) {
                 case 1: {
                     System.out.print("Enter new player name: ");
@@ -156,19 +172,13 @@ public class Manager extends FootballCharacter{
                     break;
                 }
                 case 7: {
-                    System.out.print("Enter new age: ");
-                    int newAge = scanner.nextInt();
-                    scanner.nextLine();
-                    break;
-                }
-                case 8: {
                     System.out.print("Enter new number of yellow cards: ");
                     int yellowCards = scanner.nextInt();
                     scanner.nextLine();
                     this.yellowCards += yellowCards;
                     break;
                 }
-                case 9: {
+                case 8: {
                     System.out.print("Enter new number of red cards: ");
                     int redCards = scanner.nextInt();
                     scanner.nextLine();

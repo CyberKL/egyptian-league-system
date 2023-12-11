@@ -113,6 +113,10 @@ public class Team {
         this.totalScore = totalScore;
     }
 
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
     public ArrayList<Match> getMatches() {
         return matches;
     }

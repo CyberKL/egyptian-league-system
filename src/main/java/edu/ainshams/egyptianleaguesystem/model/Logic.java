@@ -53,6 +53,16 @@ public class Logic {
         return referees;
     }
 
+    public static ArrayList<Manager> getManagers() {
+        return managers;
+    }
+    public static void addManager(Manager manager){
+        managers.add(manager);
+    }
+    public static void removeManager(Manager manager){
+        managers.remove(manager);
+    }
+
     //Start of match related methods
     public static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);
