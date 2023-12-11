@@ -52,6 +52,9 @@ public class Logic {
     public static ArrayList<Referee> getReferees() {
         return referees;
     }
+    public static void addReferee(Referee referee){
+        referees.add(referee);
+    }
 
     //Start of match related methods
     public static void enterMatchInfo(){
@@ -311,4 +314,23 @@ public class Logic {
         return "Stadium not found, please enter a valid name";
     }
     //End of stadium related methods
+
+    //Start of referee related methods
+    public static void displayTotalReferees(){
+        System.out.println("Total number of referees: " + Integer.toString(Referee.getNumOfReferees()));
+    }
+
+    public static String deleteReferee(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Enter the ID of the referee you want to delete");
+        int refereeId = scanner.nextInt();
+        scanner.nextLine();
+        for (Referee referee : referees){
+            if (referee.getRefereeId()==refereeId){
+                referees.remove(referee);
+                return "This referee has been deleted successfully";
+            }
+        }
+        return "Referee not found";
+    }
 }
