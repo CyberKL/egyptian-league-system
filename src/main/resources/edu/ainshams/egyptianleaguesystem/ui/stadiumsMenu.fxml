@@ -11,7 +11,7 @@
             <Button fx:id="newMatchBtn" mnemonicParsing="false" onAction="#switchToNewStadium" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="New Stadium" />
             <Button fx:id="playerBtn1" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#switchToStadiumInfo" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stadium Information" />
             <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#switchToStadiumMatches" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Upcoming Matches" />
-            <Button layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#switchToDeleteStadium" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Stadium" />
+            <Button layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#deleteStadium" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Stadium" />
          </children>
       </VBox>
       <Button fx:id="backBtn" layoutX="60.33333396911621" layoutY="702.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />

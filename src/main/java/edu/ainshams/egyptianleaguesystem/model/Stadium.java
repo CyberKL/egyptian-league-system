@@ -6,13 +6,15 @@ import java.util.Scanner;
 public class Stadium {
 
     private final String name;
+    private final int id;
     private final int capacity;
     private final String city;
     private ArrayList<Match> upcomingMatches;
     private int matchesPlayedOn;
 
-    public  Stadium(String name, int capacity, String city){
+    public  Stadium(String name, int id, int capacity, String city){
         this.name = name;
+        this.id = id;
         this.capacity = capacity;
         this.city = city;
         this.matchesPlayedOn = 0;
@@ -49,6 +51,10 @@ public class Stadium {
         this.matchesPlayedOn = matchesPlayedOn;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name +
@@ -57,7 +63,7 @@ public class Stadium {
                 "\nNumber of matches played on: " + matchesPlayedOn;
     }
 
-    public static void enterStadiumInfo(ArrayList<Stadium> stadiums){
+    public static void enterStadiumInfo(ArrayList<Stadium> stadiums) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter stadium name: ");
         String name = scanner.nextLine();
@@ -67,6 +73,10 @@ public class Stadium {
                 return;
             }
         }
+        System.out.print("Enter stadium ID");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        isStadiumIdDuplicate(id, stadiums);
 
         System.out.print("Enter stadium capacity: ");
         int capacity = scanner.nextInt();
@@ -75,8 +85,15 @@ public class Stadium {
         System.out.print("Enter stadium city: ");
         String city = scanner.nextLine();
 
-        Stadium stadium = new Stadium(name, capacity, city);
+        Stadium stadium = new Stadium(name, id, capacity, city);
         stadiums.add(stadium);
+    }
+    private static void isStadiumIdDuplicate(int id, ArrayList<Stadium> stadiums) throws DuplicateException{
+        for (Stadium element : stadiums){
+            if(element.getId()==id){
+                throw new DuplicateException("This team id is already taken");
+            }
+        }
     }
 
 }

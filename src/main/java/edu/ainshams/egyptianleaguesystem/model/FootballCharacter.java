@@ -57,6 +57,7 @@ public abstract class FootballCharacter {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        calculateAge();
     }
 
     public void setNationality(String nationality) {

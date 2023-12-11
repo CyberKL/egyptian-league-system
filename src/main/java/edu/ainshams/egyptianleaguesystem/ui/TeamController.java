@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class TeamController {
 
@@ -35,8 +34,6 @@ public class TeamController {
     private TextField teamName;
     @FXML
     private TextField teamId;
-    @FXML
-    private TextField deleteText;
     @FXML
     private GridPane editGrid;
     @FXML
@@ -96,33 +93,7 @@ public class TeamController {
         Logic.displayTotalTeams();
     }
 
-    public void deleteTeam(){
-        boolean teamFound = false;
-        int id = Integer.parseInt(deleteText.getText());
-        for (Team team : Logic.getTeams()){
-            if (team.getTeamId()==id){
-                teamFound = true;
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText("Are you sure you want to delete "+team.getName());
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
-                    System.out.println("OK");
-                    Logic.removeTeam(team);
-                    Alert deleteAlert = new Alert(Alert.AlertType.INFORMATION);
-                    deleteAlert.setContentText(team.getName()+" deleted successfully!");
-                    deleteAlert.show();
-                    break;
-                }
-            }
-        }
-        if (!teamFound){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Team not found!");
-            alert.show();
-        }
-        System.out.println("Available teams:");
-        Logic.displayTotalTeams();
-    }
+
 
     private void removeNodeById(AnchorPane container, String nodeId) {
         container.getChildren().stream()

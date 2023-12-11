@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                edu.ainshams.egyptianleaguesystem/edu.ainshams.egyptianleaguesystem.HelloApplication
+                                edu.ainshams.egyptianleaguesystem/edu.ainshams.egyptianleaguesystem.ui.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

@@ -36,6 +36,10 @@ public class Match {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public void setScore(Score score) {
         this.score = score;
     }
@@ -44,16 +48,32 @@ public class Match {
         return homeTeam;
     }
 
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
     public Team getAwayTeam() {
         return awayTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
     }
 
     public Referee getReferee() {
         return referee;
     }
 
+    public void setReferee(Referee referee) {
+        this.referee = referee;
+    }
+
     public Stadium getStadium() {
         return stadium;
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
     }
 
     public Score getScore() {
@@ -63,6 +83,7 @@ public class Match {
     public String getWinner() {
         return winner;
     }
+
 
     @Override
     public String toString() {
@@ -132,14 +153,14 @@ public class Match {
                 System.out.print("Enter referee name: ");
                 String refName = scanner.nextLine();
                 for (Referee element : referees) {
-                    if (element.getName().equalsIgnoreCase(home)) {
+                    if (element.getName().equalsIgnoreCase(refName)) {
                         referee = element;
                         break;
                     }
                 }
 
-                boolean available = false;
-                while(!available) {
+                boolean notAvailable = false;
+                do {
                     System.out.print("Enter stadium name: ");
                     String stadiumName = scanner.nextLine();
                     for (Stadium element : stadiums) {
@@ -147,15 +168,17 @@ public class Match {
                             for (Match i : element.getUpcomingMatches()) {
                                 if (i.getDate().isEqual(date)) {
                                     System.out.println("Stadium not available on " + date);
-                                } else {
-                                    stadium = element;
-                                    available = true;
+                                    notAvailable = true;
                                     break;
                                 }
                             }
+                            if (!notAvailable){
+                                stadium = element;
+                                break;
+                            }
                         }
                     }
-                }
+                }while (notAvailable);
 
                 if (date.isBefore(LocalDate.now())) {
                     do {
@@ -321,12 +344,9 @@ public class Match {
                                 this.homeTeam.addMatch(this);
                                 this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed() + 1);
                             }
-                            else {
-                                System.out.println("This team is already a side in the match");
-                            }
-                            return;
                         }
                     }
+                    //System.out.println("This team is already a side in the match");
                     System.out.println("Team not found");
                 }
                 else {
@@ -461,11 +481,15 @@ public class Match {
                     Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
                     this.homeTeam.setGoalsFor(this.homeTeam.getGoalsFor() - this.score.getHomeTeam());
                     this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() - this.score.getAwayTeam());
-                    this.homeTeam.calcGoalDiff();
                     this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() - this.score.getAwayTeam());
                     this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() - this.score.getHomeTeam());
-                    this.awayTeam.calcGoalDiff();
                     this.score = score;
+                    this.homeTeam.setGoalsFor(this.homeTeam.getGoalsFor() + this.score.getHomeTeam());
+                    this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() + this.score.getAwayTeam());
+                    this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() + this.score.getAwayTeam());
+                    this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() + this.score.getHomeTeam());
+                    this.homeTeam.calcGoalDiff();
+                    this.awayTeam.calcGoalDiff();
                     result(this);
                 }
                 else {

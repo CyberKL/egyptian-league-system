@@ -56,6 +56,16 @@ public class Logic {
         referees.add(referee);
     }
 
+    public static ArrayList<Manager> getManagers() {
+        return managers;
+    }
+    public static void addManager(Manager manager){
+        managers.add(manager);
+    }
+    public static void removeManager(Manager manager){
+        managers.remove(manager);
+    }
+
     //Start of match related methods
     public static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);
@@ -264,7 +274,7 @@ public class Logic {
     //End of team related methods
 
     //Start of stadium related methods
-    public static void enterStadiumInfo(){
+    public static void enterStadiumInfo() throws DuplicateException{
         Stadium.enterStadiumInfo(stadiums);
     }
 
