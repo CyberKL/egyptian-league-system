@@ -34,10 +34,6 @@ public class StadiumController {
     @FXML
     private TextField cityField;
     @FXML
-    private VBox nameBox;
-    @FXML
-    private TextField nameLookUpField;
-    @FXML
     private GridPane infoGrid;
     @FXML
     private AnchorPane root;
@@ -58,15 +54,9 @@ public class StadiumController {
     public void blueBack(MouseEvent event){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
-    private void removeNodeById(AnchorPane container, String nodeId) {
-        container.getChildren().stream()
-                .filter(node -> node.getId() != null && node.getId().equals(nodeId))
-                .findFirst()
-                .ifPresent(node -> node.setVisible(false));
-    }
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
-    Alert stadiumNotFoundAlert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+
     public void createStadium(){
         if (nameField.getText().isBlank() || idField.getText().isBlank() || capacityField.getText().isBlank() || cityField.getText().isBlank()){
             missingDataAlert.show();
@@ -106,62 +96,18 @@ public class StadiumController {
         }
     }
 
-    public void displayStadiumInfo(){
-        boolean stadiumFound = false;
-        Stadium currentStadium;
-        if (nameLookUpField.getText().isBlank()){
-            missingDataAlert.show();
-        }
-        else {
-            String stadiumName = nameLookUpField.getText();
-            for (Stadium stadium : Logic.getStadiums()){
-                if (stadium.getName().equalsIgnoreCase(stadiumName)){
-                    stadiumFound = true;
-                    currentStadium = stadium;
-                    removeNodeById(root, "nameBox");
-                    stadiumInfo(currentStadium);
-                    break;
-                }
-            }
-            if (!stadiumFound){
-                stadiumNotFoundAlert.show();
-            }
-        }
-    }
-    private void stadiumInfo(Stadium stadium){
+    public void stadiumInfo(Stadium stadium){
         Label stadiumName = new Label(stadium.getName());
+        Label stadiumId = new Label(Integer.toString(stadium.getId()));
         Label stadiumCity = new Label(stadium.getCity());
         Label stadiumCapacity = new Label(Integer.toString(stadium.getCapacity()));
         Label stadiumNumOfMatches = new Label(Integer.toString(stadium.getMatchesPlayedOn()));
-        VBox infoList = new VBox(stadiumName, stadiumCity, stadiumCapacity, stadiumNumOfMatches);
+        VBox infoList = new VBox(stadiumName, stadiumId, stadiumCity, stadiumCapacity, stadiumNumOfMatches);
         infoGrid.add(infoList, 1, 0);
         infoGrid.setVisible(true);
-
     }
 
-    public  void displayStadiumUpcomingMatches(){
-        boolean stadiumFound = false;
-        Stadium currentStadium;
-        if (nameLookUpField.getText().isBlank()){
-            missingDataAlert.show();
-        }
-        else {
-            String stadiumName = nameLookUpField.getText();
-            for (Stadium stadium : Logic.getStadiums()){
-                if (stadium.getName().equalsIgnoreCase(stadiumName)){
-                    stadiumFound = true;
-                    currentStadium = stadium;
-                    removeNodeById(root, "nameBox");
-                    stadiumUpcomingMatches(currentStadium);
-                    break;
-                }
-            }
-            if (!stadiumFound){
-                stadiumNotFoundAlert.show();
-            }
-        }
-    }
-    private void stadiumUpcomingMatches(Stadium stadium){
+    public void stadiumUpcomingMatches(Stadium stadium){
         FlowPane matchesPane = new FlowPane();
         for (Match match : stadium.getUpcomingMatches()){
             Label label = new Label(match.matchHeader());

@@ -259,18 +259,56 @@ public class MenuController {
         }
     }
     public void switchToStadiumInfo(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("stadiumInfo.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Stadium Info");
+
+        if (textDialogController != null) {
+            // Check if the user entered a valid ID
+            String enteredId = textDialogController.getEnteredId();
+            if (enteredId != null && !enteredId.isEmpty()) {
+                Stadium existingStadium = findStadiumById(enteredId);
+                if (existingStadium != null) {
+                    FXMLLoader stadiumInfoLoader = new FXMLLoader(getClass().getResource("stadiumInfo.fxml"));
+                    Parent stadiumInfoRoot = stadiumInfoLoader.load();
+                    StadiumController stadiumController = stadiumInfoLoader.getController();
+                    stadiumController.stadiumInfo(existingStadium);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(stadiumInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    alert.show();
+                }
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
     public void switchToStadiumMatches(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("stadiumMatches.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Stadium upcoming matches");
+
+        if (textDialogController != null) {
+            // Check if the user entered a valid ID
+            String enteredId = textDialogController.getEnteredId();
+            if (enteredId != null && !enteredId.isEmpty()) {
+                Stadium existingStadium = findStadiumById(enteredId);
+                if (existingStadium != null) {
+                    FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
+                    Parent stadiumMatchesRoot = stadiumMatchesLoader.load();
+                    StadiumController stadiumController = stadiumMatchesLoader.getController();
+                    stadiumController.stadiumUpcomingMatches(existingStadium);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(stadiumMatchesRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    alert.show();
+                }
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
 
     //Match menu methods
@@ -358,18 +396,57 @@ public class MenuController {
         }
     }
     public void switchToMatchInfo(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("matchInfo.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Match Info");
+
+        if (textDialogController != null) {
+            // Check if the user entered a valid ID
+            String enteredId = textDialogController.getEnteredId();
+            if (enteredId != null && !enteredId.isEmpty()) {
+                Match existingMatch = findMatchById(enteredId);
+                if (existingMatch != null) {
+                    FXMLLoader matchInfoLoader = new FXMLLoader(getClass().getResource("matchInfo.fxml"));
+                    Parent matchInfoRoot = matchInfoLoader.load();
+                    MatchController matchController = matchInfoLoader.getController();
+                    matchController.matchInfo(existingMatch);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(matchInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Match not found!");
+                    alert.show();
+                }
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
     public void switchToEditMatch(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("editMatch.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Edit Match");
+
+        if (textDialogController != null) {
+            // Check if the user entered a valid ID
+            String enteredId = textDialogController.getEnteredId();
+            if (enteredId != null && !enteredId.isEmpty()) {
+                Match existingMatch = findMatchById(enteredId);
+                if (existingMatch != null) {
+                    // Proceed to switch to the EditManager scene with the existing manager
+                    FXMLLoader editMatchLoader = new FXMLLoader(getClass().getResource("editMatch.fxml"));
+                    Parent editMatchRoot = editMatchLoader.load();
+                    MatchController matchController = editMatchLoader.getController();
+                    matchController.initialize(existingMatch);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(editMatchRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                    alert.show();
+                }
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
 
     //Manager menu methods

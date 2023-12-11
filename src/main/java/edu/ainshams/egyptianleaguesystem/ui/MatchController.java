@@ -42,17 +42,9 @@ public class MatchController {
     @FXML
     private TextField scoreField;
     @FXML
-    private TextField idLookupField;
-    @FXML
     private GridPane infoGrid;
     @FXML
     private VBox labelsBox;
-    @FXML
-    private AnchorPane root;
-    @FXML
-    private Pane startPane;
-    @FXML
-    private TextField idEditField;
     @FXML
     private Label matchHeaderLabel;
     @FXML
@@ -69,6 +61,7 @@ public class MatchController {
     private Button confirmBtn;
     @FXML
     private ToggleGroup choice;
+    private Match currentMatch;
 
 
     public void defaultButton(MouseEvent event){
@@ -85,15 +78,8 @@ public class MatchController {
         stage.setScene(startMenu);
         stage.show();
     }
-    private void removeNodeById(AnchorPane container, String nodeId) {
-        container.getChildren().stream()
-                .filter(node -> node.getId() != null && node.getId().equals(nodeId))
-                .findFirst()
-                .ifPresent(node -> node.setVisible(false));
-    }
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
-    Alert matchNotFound = new Alert(Alert.AlertType.WARNING, "Match not found!");
 
     public void createMatch(){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Match created successfully!");
@@ -324,29 +310,7 @@ public class MatchController {
         }
     }
 
-    public void displayMatchInfo(){
-        boolean found = false;
-        Match currentMatch;
-        if (idLookupField.getText().isBlank()){
-            missingDataAlert.show();
-        }
-        else {
-            int id = Integer.parseInt(idField.getText());
-            for (Match match : Logic.getMatches()){
-                if (match.getMatchId()==id){
-                    found = true;
-                    currentMatch = match;
-                    removeNodeById(root, "idBox");
-                    matchInfo(currentMatch);
-                    break;
-                }
-            }
-            if (!found){
-                matchNotFound.show();
-            }
-        }
-    }
-    private void matchInfo(Match match){
+    public void matchInfo(Match match){
         Label id = new Label(Integer.toString(match.getMatchId()));
         Label date = new Label(match.getDate().toString());
         Label homeTeam = new Label(match.getHomeTeam().getName());
@@ -364,24 +328,7 @@ public class MatchController {
         infoGrid.setVisible(true);
     }
 
-    private Match determineMatchId(){
-        int id = Integer.parseInt(idEditField.getText());
-        Match currentMatch = null;
-        boolean matchFound = false;
-        for (Match match : Logic.getMatches()){
-            if (match.getMatchId()==id){
-                currentMatch = match;
-                matchFound = true;
-            }
-        }
-        if (!matchFound){
-            matchNotFound.show();
-        }
-        else {
-            startPane.setVisible(false);
-        }
-        return currentMatch;
-    }
+    //Edit match methods
     private String getSelectedButtonText() {
         Toggle selectedToggle = choice.getSelectedToggle();
 
@@ -393,9 +340,8 @@ public class MatchController {
             return "No toggle selected";
         }
     }
-    public void showNodes(){
+    public void showNodes(Match currentMatch){
         String editing = getSelectedButtonText();
-        Match currentMatch = determineMatchId();
         if (currentMatch != null){
             matchHeaderLabel.setText(currentMatch.matchHeader());
             currentInfoLabel.setText("Current "+editing+":");
@@ -416,9 +362,17 @@ public class MatchController {
             alert.show();
         }
     }
+    public void initialize(Match match) {
+        matchHeaderLabel.setText(match.matchHeader());
+        choice.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                showNodes(match);
+                currentMatch = match;
+            }
+        });
+    }
     public void editMatchInfo(){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Match updated successfully!");
-        Match currentMatch = determineMatchId();
         if (currentMatch != null) {
             String editing = getSelectedButtonText();
             if (editing.equalsIgnoreCase("date")) {
