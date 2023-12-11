@@ -271,7 +271,7 @@ public class Logic {
     //End of team related methods
 
     //Start of stadium related methods
-    public static void enterStadiumInfo(){
+    public static void enterStadiumInfo() throws DuplicateException{
         Stadium.enterStadiumInfo(stadiums);
     }
 

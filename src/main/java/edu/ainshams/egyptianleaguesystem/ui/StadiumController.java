@@ -21,7 +21,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.Flow;
 
 public class StadiumController {
@@ -35,8 +34,6 @@ public class StadiumController {
     @FXML
     private TextField cityField;
     @FXML
-    private TextField deleteField;
-    @FXML
     private VBox nameBox;
     @FXML
     private TextField nameLookUpField;
@@ -44,6 +41,8 @@ public class StadiumController {
     private GridPane infoGrid;
     @FXML
     private AnchorPane root;
+    @FXML
+    private TextField idField;
 
     public void switchStadiumMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("stadiumsMenu.fxml"));
@@ -69,12 +68,13 @@ public class StadiumController {
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
     Alert stadiumNotFoundAlert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
     public void createStadium(){
-        if (nameField.getText().isBlank() || capacityField.getText().isBlank() || cityField.getText().isBlank()){
+        if (nameField.getText().isBlank() || idField.getText().isBlank() || capacityField.getText().isBlank() || cityField.getText().isBlank()){
             missingDataAlert.show();
         }
         else {
             boolean duplicateStadium = false;
             String name = nameField.getText();
+            int id = Integer.parseInt(idField.getText());
             int capacity = Integer.parseInt(capacityField.getText());
             String city = cityField.getText();
             for (Stadium stadium : Logic.getStadiums()){
@@ -86,8 +86,17 @@ public class StadiumController {
                     break;
                 }
             }
+            for (Stadium stadium : Logic.getStadiums()){
+                if (stadium.getId()==id){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("There is already a stadium with this name!");
+                    alert.show();
+                    duplicateStadium = true;
+                    break;
+                }
+            }
             if (!duplicateStadium){
-                Stadium stadium = new Stadium(name, capacity, city);
+                Stadium stadium = new Stadium(name, id, capacity, city);
                 Logic.addStadium(stadium);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Stadium created!");
@@ -95,35 +104,6 @@ public class StadiumController {
             }
             System.out.println(Logic.getStadiums().getFirst().getName());
         }
-    }
-
-    public void deleteStadium(){
-        if (deleteField.getText().isBlank()){
-            missingDataAlert.show();
-        }
-        else {
-            String name = deleteField.getText();
-            boolean stadiumFound = false;
-            for (Stadium stadium : Logic.getStadiums()){
-                if (stadium.getName().equalsIgnoreCase(name)){
-                    stadiumFound = true;
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete "+stadium.getName()+"?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get()==ButtonType.OK){
-                        Logic.removeStadium(stadium);
-                        Alert success = new Alert(Alert.AlertType.INFORMATION, stadium.getName()+" deleted successfully!");
-                        success.show();
-                        stadiumFound = true;
-                        break;
-                    }
-                }
-            }
-            if (!stadiumFound){
-                stadiumNotFoundAlert.show();
-            }
-            System.out.println(Logic.getStadiums().getFirst().getName());
-        }
-
     }
 
     public void displayStadiumInfo(){

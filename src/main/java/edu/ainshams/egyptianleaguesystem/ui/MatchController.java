@@ -297,46 +297,6 @@ public class MatchController {
         }
     }
 
-    public void deleteMatch(){
-        boolean found = false;
-        if (idLookupField.getText().isBlank()){
-            missingDataAlert.show();
-        }
-        else {
-            for (Match match : Logic.getMatches()){
-                int matchId = Integer.parseInt(idLookupField.getText());
-                if (match.getMatchId() == matchId){
-                    found = true;
-                    Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this match: "+match.matchHeader());
-                    Optional<ButtonType> result = deleteAlert.showAndWait();
-                    if (result.isPresent() && result.get()==ButtonType.OK){
-                        updateEntitiesDelete(match);
-                        Logic.removeMatch(match);
-                        Alert success = new Alert(Alert.AlertType.INFORMATION, "Match deleted successfully!");
-                        success.show();
-                        break;
-                    }
-                }
-            }
-            if (!found){
-                matchNotFound.show();
-            }
-        }
-    }
-    private void updateEntitiesDelete(Match match){
-        match.getHomeTeam().removeMatch(match);
-        match.getAwayTeam().removeMatch(match);
-        if (match.getDate().isBefore(LocalDate.now())){
-            match.getReferee().setMatchesRefereed(match.getReferee().getMatchesRefereed()-1);
-            match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed()-1);
-            match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed()-1);
-            match.getStadium().setMatchesPlayedOn(match.getStadium().getMatchesPlayedOn()-1);
-            updateResultDelete(match);
-        }
-        else {
-            match.getStadium().getUpcomingMatches().remove(match);
-        }
-    }
     private void updateResultDelete(Match match){
         Team homeTeam = match.getHomeTeam();
         Team awayTeam = match.getAwayTeam();

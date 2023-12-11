@@ -11,7 +11,7 @@
             <Button fx:id="newMatchBtn" mnemonicParsing="false" onAction="#switchToNewMatch" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="New Match" />
             <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#switchToEditMatch" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Edit Match" />
             <Button layoutX="10.0" layoutY="189.0" mnemonicParsing="false" onAction="#switchToMatchInfo" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Match Info" />
-            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#switchToDeleteMatch" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Match" />
+            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#deleteMatch" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Delete Match" />
          </children>
       </VBox>
       <Button fx:id="backBtn" layoutX="20.33333396911621" layoutY="662.6666259765625" mnemonicParsing="false" onAction="#switchToStartMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" />

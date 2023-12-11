@@ -116,6 +116,12 @@ public class ManagerController implements Initializable {
                 Manager manager = new Manager(name, dateOfBirth, nationality, id, numOfTrophies, formerPlayer);
                 Logic.addManager(manager);
                 success.show();
+                nameField.clear();
+                idField.clear();
+                nationalityField.clear();
+                dobPicker.setValue(null);
+                trophiesSpinner.getValueFactory().setValue(trophiesSpinner.getValueFactory().getConverter().fromString("0"));
+                wasPlayer.selectToggle(null);
             }
         }
     }
