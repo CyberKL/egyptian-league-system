@@ -55,6 +55,9 @@ public class Logic {
     public static void addReferee(Referee referee){
         referees.add(referee);
     }
+    public static void removeReferee(Referee referee){
+        referees.remove(referee);
+    }
 
     public static ArrayList<Manager> getManagers() {
         return managers;

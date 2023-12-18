@@ -76,7 +76,7 @@ public class Referee extends FootballCharacter{
 
     public void updateReferee (){
         System.out.println("what do you want ? ");
-        System.out.println("1.Name\n2.Date Of Birth\n3.Nationality\n4.Matches Referee\n5.Yellow Cards\n6.Red Cards");
+        System.out.println("1.Name\n2.Date Of Birth\n3.Nationality\n4.Matches Refereed\n5.Yellow Cards\n6.Red Cards");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         try {

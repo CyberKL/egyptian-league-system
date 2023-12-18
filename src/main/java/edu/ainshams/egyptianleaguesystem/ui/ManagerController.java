@@ -128,7 +128,7 @@ public class ManagerController implements Initializable {
         Period period = Period.between(dateOfBirth, LocalDate.now());
         if (period.getYears()<30){
             validDob = false;
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Manager Can't be under 30 years old!");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Manager Can't be under 30 years!");
             alert.show();
         }
         if (!duplicateId && validDob){

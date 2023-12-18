@@ -68,6 +68,7 @@ public class TeamController {
     }
 
     public void createTeam(){
+        Alert success = new Alert(Alert.AlertType.INFORMATION, "Team created successfully!");
         boolean duplicateName = false;
         boolean duplicateId = false;
         String name = teamName.getText();
@@ -89,44 +90,12 @@ public class TeamController {
         if (!duplicateName && !duplicateId) {
             Team team = new Team(name, id);
             Logic.addTeam(team);
+            success.show();
         }
         System.out.println("Available teams:");
         Logic.displayTotalTeams();
     }
 
-
-
-    private void removeNodeById(AnchorPane container, String nodeId) {
-        container.getChildren().stream()
-                .filter(node -> node.getId() != null && node.getId().equals(nodeId))
-                .findFirst()
-                .ifPresent(node -> node.setVisible(false));
-    }
-
-
-    private int id;
-    private boolean isIdAvailable = false;
-
-    public void displayTeamInfo(){
-        Team currentTeam;
-        boolean found = false;
-        String name = nameField.getText();
-        for (Team team: Logic.getTeams()){
-            if (team.getName().equalsIgnoreCase(name)){
-                found = true;
-                currentTeam = team;
-                removeNodeById(root, "idBox");
-                teamInfo(currentTeam);
-                isIdAvailable = true;
-                break;
-            }
-        }
-        if (!found){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Team not found!");
-            alert.show();
-        }
-    }
 
     public void teamInfo(Team team){
         Label teamName = new Label(team.getName());
@@ -315,6 +284,9 @@ public class TeamController {
                     }
                 }
             }
+            newInfoField.setText("");
+            choice.selectToggle(null);
+            editBox.setVisible(false);
         }
         else{
             Alert error = new Alert(Alert.AlertType.ERROR, "An error occurred please try again");

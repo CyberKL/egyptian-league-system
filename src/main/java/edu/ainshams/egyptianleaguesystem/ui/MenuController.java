@@ -661,6 +661,113 @@ public class MenuController {
         }
     }
 
+    //Referee menu methods
+    public void switchToNewReferee(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newReferee.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    private Referee findRefereeById(int enteredId) {
+        for (Referee referee : Logic.getReferees()) {
+            if (referee.getRefereeId()==enteredId) {
+                return referee;
+            }
+        }
+        return null; // Manager not found
+    }
+    public void switchToEditReferee(ActionEvent event) throws IOException {
+        TextDialogController textDialogController = openTextDialog(event, "Edit Referee");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Referee existingReferee = findRefereeById(enteredId);
+                if (existingReferee != null) {
+                    // Proceed to switch to the EditManager scene with the existing manager
+                    FXMLLoader editRefereeLoader = new FXMLLoader(getClass().getResource("editReferee.fxml"));
+                    Parent editRefereeRoot = editRefereeLoader.load();
+                    RefereeController refereeController = editRefereeLoader.getController();
+                    refereeController.initialize(existingReferee);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(editRefereeRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Referee not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+    public void switchToRefereeInfo(ActionEvent event) throws IOException{
+        TextDialogController textDialogController = openTextDialog(event, "Referee Information");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Referee existingReferee = findRefereeById(enteredId);
+                if (existingReferee != null) {
+                    // Proceed to switch to the EditManager scene with the existing manager
+                    FXMLLoader refereeInfoLoader = new FXMLLoader(getClass().getResource("refereeInfo.fxml"));
+                    Parent refereeRInfoRoot = refereeInfoLoader.load();
+                    RefereeController refereeController = refereeInfoLoader.getController();
+                    refereeController.refereeInfo(existingReferee);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(refereeRInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Referee not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+    public void deleteReferee(ActionEvent event) {
+        TextDialogController textDialogController = openTextDialog(event, "Delete Referee");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Referee existingReferee = findRefereeById(enteredId);
+                if (existingReferee != null) {
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingReferee.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
+                    if (choice.isPresent() && choice.get() == ButtonType.OK) {
+                        Logic.removeReferee(existingReferee);
+                        Alert success = new Alert(Alert.AlertType.INFORMATION);
+                        success.setTitle("Success");
+                        success.setHeaderText(null);
+                        success.setContentText("Referee deleted successfully!");
+                        success.showAndWait();
+                    }
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Referee not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+    }
 
 
 }

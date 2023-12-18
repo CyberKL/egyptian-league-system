@@ -9,9 +9,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.ManagerInfoController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.RefereeController">
    <children>
-      <GridPane fx:id="infoGrid" layoutX="308.0" layoutY="102.0" prefHeight="707.0" prefWidth="1091.0" visible="false" AnchorPane.bottomAnchor="102.66666666666663" AnchorPane.leftAnchor="308.0">
+      <GridPane fx:id="infoGrid" layoutX="322.0" layoutY="112.0" prefHeight="613.0" prefWidth="1087.0" visible="false">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -42,17 +43,7 @@
                         <Font size="55.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="254.0" text="Team:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="254.0" text="Number of trophies:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="335.0" text="Former Player:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="335.0" text="Matches Refereed" textFill="WHITE">
                      <font>
                         <Font size="55.0" />
                      </font>
@@ -71,6 +62,6 @@
             </VBox>
          </children>
       </GridPane>
-      <Button fx:id="backBtn" layoutX="60.33333396911621" layoutY="702.6666259765625" mnemonicParsing="false" onAction="#switchManagerMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+      <Button fx:id="backBtn" layoutX="70.33333396911621" layoutY="712.6666259765625" mnemonicParsing="false" onAction="#switchRefereesMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
    </children>
 </AnchorPane>

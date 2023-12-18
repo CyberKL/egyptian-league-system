@@ -219,6 +219,7 @@ public class EditManagerController {
                 manager.setRedCards(numOfRedCards);
                 success.show();
             }
+            newInfoField.setText("");
             choice.selectToggle(null);
             editBox.setVisible(false);
         }

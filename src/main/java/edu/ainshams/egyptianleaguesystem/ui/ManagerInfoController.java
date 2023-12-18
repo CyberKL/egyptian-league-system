@@ -25,14 +25,9 @@ public class ManagerInfoController {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
     private GridPane infoGrid;
-    @FXML
-    private TextField idLookupField;
-    @FXML
-    private VBox lookupBox;
+
     @FXML
     private Button backBtn;
-
-    Alert managerNotFound = new Alert(Alert.AlertType.WARNING, "Manager not found!");
 
 
     public void defaultButton(MouseEvent event){
@@ -50,20 +45,6 @@ public class ManagerInfoController {
         stage.show();
     }
 
-    public void displayManagerInfo() {
-        boolean found = false;
-        int id = Integer.parseInt(idLookupField.getText());
-        for (Manager manager : Logic.getManagers()) {
-            if (manager.getManagerId() == id) {
-                found = true;
-                managerInfo(manager);
-                break;
-            }
-        }
-        if (!found) {
-            managerNotFound.show();
-        }
-    }
     public void managerInfo(Manager manager){
         Label nameLabel = new Label(manager.getName());
         Label idLabel = new Label(Integer.toString(manager.getManagerId()));
@@ -81,7 +62,6 @@ public class ManagerInfoController {
         Label yellowCardLabel = new Label(Integer.toString(manager.getYellowCards()));
         Label redCardLabel = new Label(Integer.toString(manager.getRedCards()));
         VBox labelsBox = new VBox(nameLabel, idLabel, ageLabel, nationalityLabel, teamLabel, numOfTrophies, formerPlayerLabel, yellowCardLabel, redCardLabel);
-        lookupBox.setVisible(false);
         infoGrid.add(labelsBox, 1, 0);
         infoGrid.setVisible(true);
     }
