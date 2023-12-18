@@ -299,8 +299,12 @@ public class TeamController {
                     boolean managerFound = false;
                     for (Manager manager : Logic.getManagers()){
                         if (manager.getManagerId()==id){
-                            team.setManager(manager);
                             managerFound = true;
+                            if (manager.getTeam()!=null){
+                                manager.getTeam().setManager(null);
+                            }
+                            team.setManager(manager);
+                            manager.setTeam(team);
                             success.show();
                             break;
                         }
