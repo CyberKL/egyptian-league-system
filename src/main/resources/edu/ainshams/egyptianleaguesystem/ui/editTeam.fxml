@@ -3,47 +3,72 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
    <children>
-      <VBox layoutX="8.0" layoutY="158.0" prefHeight="405.0" prefWidth="275.0" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="0.0">
+      <Button fx:id="backBtn" layoutX="20.33333396911621" layoutY="658.6666259765625" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+      <VBox alignment="CENTER" layoutX="62.0" layoutY="198.0" prefHeight="516.0" prefWidth="324.0" spacing="20.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#editName" text="Name" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editId" text="ID" />
-            <Button layoutX="10.0" layoutY="96.0" mnemonicParsing="false" onAction="#editPlayer" text="Players" />
-            <Button layoutX="10.0" layoutY="182.0" mnemonicParsing="false" onAction="#editCaptain" text="Captain" />
-            <Button layoutX="10.0" layoutY="268.0" mnemonicParsing="false" text="Manager" />
+            <ToggleButton maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Name">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="choice" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="ID" toggleGroup="$choice">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </ToggleButton>
+            <ToggleButton layoutX="10.0" layoutY="35.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Players" toggleGroup="$choice">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </ToggleButton>
+            <ToggleButton layoutX="10.0" layoutY="61.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Captain" toggleGroup="$choice">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </ToggleButton>
+            <ToggleButton layoutX="10.0" layoutY="86.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Manager" toggleGroup="$choice">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </ToggleButton>
          </children>
       </VBox>
-      <GridPane fx:id="editGrid" layoutX="525.0" layoutY="311.0" prefHeight="271.0" prefWidth="657.0" AnchorPane.bottomAnchor="329.66666666666674" AnchorPane.leftAnchor="675.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-      <VBox fx:id="idBox" layoutX="630.0" layoutY="581.0" prefHeight="149.0" prefWidth="486.0" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="675.0">
+      <VBox fx:id="editBox" alignment="CENTER" layoutX="857.0" layoutY="236.0" visible="false" AnchorPane.bottomAnchor="350.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Enter the id of the team you want to edit" textFill="WHITE">
+            <Label fx:id="currentInfoLabel" alignment="CENTER" textFill="WHITE">
                <font>
-                  <Font size="26.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
-            <TextField fx:id="idField" prefHeight="27.0" prefWidth="260.0" />
-            <Button fx:id="okBtn" alignment="CENTER" mnemonicParsing="false" onAction="#determineTeamId" text="ok" />
+            <Label fx:id="currentInfo" alignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="newInfoLabel" alignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <TextField fx:id="newInfoField" />
+            <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#editTeamInfo" text="Confirm" />
          </children>
       </VBox>
-      <Button fx:id="backBtn" layoutX="20.33333396911621" layoutY="658.6666259765625" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
-      <Pane fx:id="confirmPane" layoutX="779.0" layoutY="628.0" prefHeight="86.0" prefWidth="191.0" AnchorPane.bottomAnchor="198.0" AnchorPane.leftAnchor="900.0" />
-      <HBox fx:id="choiceBox" layoutX="767.0" layoutY="207.0" prefHeight="69.0" prefWidth="301.0" />
+      <Label fx:id="teamNameLabel" alignment="CENTER" layoutX="892.0" layoutY="137.0" textFill="WHITE">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

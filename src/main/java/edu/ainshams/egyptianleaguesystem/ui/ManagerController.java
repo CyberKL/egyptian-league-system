@@ -14,9 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -24,7 +21,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ManagerController implements Initializable {
@@ -57,7 +53,7 @@ public class ManagerController implements Initializable {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
     public void switchManagerMenu(ActionEvent event) throws IOException {
@@ -67,16 +63,8 @@ public class ManagerController implements Initializable {
         stage.setScene(startMenu);
         stage.show();
     }
-    private void removeNodeById(AnchorPane container, String nodeId) {
-        container.getChildren().stream()
-                .filter(node -> node.getId() != null && node.getId().equals(nodeId))
-                .findFirst()
-                .ifPresent(node -> node.setVisible(false));
-    }
-
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
-    Alert managerNotFound = new Alert(Alert.AlertType.WARNING, "Manager not found!");
 
     int currentValue;
     @Override

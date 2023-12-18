@@ -31,10 +31,8 @@ public class MenuController {
     private Button backBtn;
     @FXML
     private Button quitBtn;
-    @FXML
-    private GridPane managerInfoGrid;
 
-    public void redQuit(MouseEvent event){
+    public void redQuit(){
         quitBtn.setStyle("-fx-background-color: red;");
     }
     public void defaultButton(MouseEvent event){
@@ -47,7 +45,7 @@ public class MenuController {
         btn.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
     }
 
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
@@ -151,9 +149,9 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
-    private Team findTeamById(String enteredId) {
+    private Team findTeamById(int enteredId) {
         for (Team team : Logic.getTeams()) {
-            if (team.getTeamId()==Integer.parseInt(enteredId)) {
+            if (team.getTeamId() == enteredId) {
                 return team;
             }
         }
@@ -162,14 +160,15 @@ public class MenuController {
     public void deleteTeam(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Team");
 
-        if (textDialogController != null) {
-            String enteredId = textDialogController.getEnteredId();
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
 
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Team existingTeam = findTeamById(enteredId);
                 if (existingTeam != null) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingTeam.getName());
-                    Optional<ButtonType> choice = alert.showAndWait();
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingTeam.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
                     if (choice.isPresent() && choice.get() == ButtonType.OK) {
                         Logic.removeTeam(existingTeam);
                         Alert success = new Alert(Alert.AlertType.INFORMATION);
@@ -180,39 +179,130 @@ public class MenuController {
                     }
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Team not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
     }
     public void switchToEditTeam(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("editTeam.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Edit Team");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Team existingTeam = findTeamById(enteredId);
+                if (existingTeam != null) {
+                    // Proceed to switch to the EditManager scene with the existing manager
+                    FXMLLoader editTeamLoader = new FXMLLoader(getClass().getResource("editTeam.fxml"));
+                    Parent editTeamRoot = editTeamLoader.load();
+                    TeamController teamController = editTeamLoader.getController();
+                    teamController.initialize(existingTeam);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(editTeamRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                    notFound.show();
+                }
+            } catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
     public void switchToTeamInfo(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("teamInfo.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Team Info");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Team existingTeam = findTeamById(enteredId);
+                if (existingTeam != null) {
+                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamInfo.fxml"));
+                    Parent teamInfoRoot = teamInfoLoader.load();
+                    TeamController teamController = teamInfoLoader.getController();
+                    teamController.teamInfo(existingTeam);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                    notFound.show();
+                }
+            } catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
     public void switchToTeamMatches(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("teamMatches.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Team Matches");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Team existingTeam = findTeamById(enteredId);
+                if (existingTeam != null) {
+                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamMatches.fxml"));
+                    Parent teamInfoRoot = teamInfoLoader.load();
+                    TeamController teamController = teamInfoLoader.getController();
+                    teamController.teamMatches(existingTeam);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                    notFound.show();
+                }
+            } catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
     public void switchToTeamPlayers(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("teamPlayers.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(startMenu);
-        stage.show();
+        TextDialogController textDialogController = openTextDialog(event, "Team Players");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Team existingTeam = findTeamById(enteredId);
+                if (existingTeam != null) {
+                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamPlayers.fxml"));
+                    Parent teamInfoRoot = teamInfoLoader.load();
+                    TeamController teamController = teamInfoLoader.getController();
+                    teamController.teamPlayers(existingTeam);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                } else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                    notFound.show();
+                }
+            } catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
     }
 
     //Stadium menu methods
@@ -223,9 +313,9 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
-    private Stadium findStadiumById(String enteredId) {
+    private Stadium findStadiumById(int enteredId) {
         for (Stadium stadium : Logic.getStadiums()) {
-            if (stadium.getId() == Integer.parseInt(enteredId)) {
+            if (stadium.getId() == enteredId) {
                 return stadium;
             }
         }
@@ -234,14 +324,14 @@ public class MenuController {
     public void deleteStadium(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Stadium");
 
-        if (textDialogController != null) {
-            String enteredId = textDialogController.getEnteredId();
-
-            if (enteredId != null && !enteredId.isEmpty()) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Stadium existingStadium = findStadiumById(enteredId);
                 if (existingStadium != null) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingStadium.getName());
-                    Optional<ButtonType> choice = alert.showAndWait();
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingStadium.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
                     if (choice.isPresent() && choice.get() == ButtonType.OK) {
                         Logic.removeStadium(existingStadium);
                         Alert success = new Alert(Alert.AlertType.INFORMATION);
@@ -252,19 +342,22 @@ public class MenuController {
                     }
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
     }
     public void switchToStadiumInfo(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Stadium Info");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Stadium existingStadium = findStadiumById(enteredId);
                 if (existingStadium != null) {
                     FXMLLoader stadiumInfoLoader = new FXMLLoader(getClass().getResource("stadiumInfo.fxml"));
@@ -277,9 +370,11 @@ public class MenuController {
                     stage.setScene(startMenu);
                     stage.show();
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -287,10 +382,11 @@ public class MenuController {
     public void switchToStadiumMatches(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Stadium upcoming matches");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Stadium existingStadium = findStadiumById(enteredId);
                 if (existingStadium != null) {
                     FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
@@ -303,9 +399,11 @@ public class MenuController {
                     stage.setScene(startMenu);
                     stage.show();
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -319,9 +417,9 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
-    private Match findMatchById(String enteredId) {
+    private Match findMatchById(int enteredId) {
         for (Match match : Logic.getMatches()) {
-            if (match.getMatchId() == Integer.parseInt(enteredId)) {
+            if (match.getMatchId() == enteredId) {
                 return match;
             }
         }
@@ -370,14 +468,14 @@ public class MenuController {
     public void deleteMatch(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Match");
 
-        if (textDialogController != null) {
-            String enteredId = textDialogController.getEnteredId();
-
-            if (enteredId != null && !enteredId.isEmpty()) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Match existingMatch = findMatchById(enteredId);
                 if (existingMatch != null) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingMatch.matchHeader());
-                    Optional<ButtonType> choice = alert.showAndWait();
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingMatch.matchHeader());
+                    Optional<ButtonType> choice = delete.showAndWait();
                     if (choice.isPresent() && choice.get() == ButtonType.OK) {
                         updateEntitiesDelete(existingMatch);
                         Logic.removeMatch(existingMatch);
@@ -389,19 +487,22 @@ public class MenuController {
                     }
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
+                    notFound.show();
                 }
+            }catch (NumberFormatException nfe){
+                alert.show();
             }
         }
     }
     public void switchToMatchInfo(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Match Info");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Match existingMatch = findMatchById(enteredId);
                 if (existingMatch != null) {
                     FXMLLoader matchInfoLoader = new FXMLLoader(getClass().getResource("matchInfo.fxml"));
@@ -414,9 +515,11 @@ public class MenuController {
                     stage.setScene(startMenu);
                     stage.show();
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Match not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Match not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -424,10 +527,11 @@ public class MenuController {
     public void switchToEditMatch(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Edit Match");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Match existingMatch = findMatchById(enteredId);
                 if (existingMatch != null) {
                     // Proceed to switch to the EditManager scene with the existing manager
@@ -441,9 +545,11 @@ public class MenuController {
                     stage.setScene(startMenu);
                     stage.show();
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Match not found!");
+                    notFound.show();
                 }
+            } catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -457,9 +563,9 @@ public class MenuController {
         stage.setScene(startMenu);
         stage.show();
     }
-    private Manager findManagerById(String enteredId) {
+    private Manager findManagerById(int enteredId) {
         for (Manager manager : Logic.getManagers()) {
-            if (manager.getManagerId()==Integer.parseInt(enteredId)) {
+            if (manager.getManagerId()==enteredId) {
                 return manager;
             }
         }
@@ -468,10 +574,11 @@ public class MenuController {
     public void switchToManagerInfo(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Manager Info");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Manager existingManager = findManagerById(enteredId);
                 if (existingManager != null) {
                     FXMLLoader managerInfoLoader = new FXMLLoader(getClass().getResource("managerInfo.fxml"));
@@ -484,9 +591,11 @@ public class MenuController {
                     stage.setScene(startMenu);
                     stage.show();
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                    notFound.show();
                 }
+            }catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -494,10 +603,11 @@ public class MenuController {
     public void switchToEditManager(ActionEvent event) throws IOException {
         TextDialogController textDialogController = openTextDialog(event, "Edit Manager");
 
-        if (textDialogController != null) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
             // Check if the user entered a valid ID
-            String enteredId = textDialogController.getEnteredId();
-            if (enteredId != null && !enteredId.isEmpty()) {
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Manager existingManager = findManagerById(enteredId);
                 if (existingManager != null) {
                     // Proceed to switch to the EditManager scene with the existing manager
@@ -510,10 +620,13 @@ public class MenuController {
                     Scene startMenu = new Scene(editManagerRoot, screenSize.getWidth(), screenSize.getHeight());
                     stage.setScene(startMenu);
                     stage.show();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
-                    alert.show();
                 }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
             }
         }
         // If the user canceled or closed the dialog, do nothing
@@ -521,14 +634,14 @@ public class MenuController {
     public void deleteManager(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Manager");
 
-        if (textDialogController != null) {
-            String enteredId = textDialogController.getEnteredId();
-
-            if (enteredId != null && !enteredId.isEmpty()) {
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Manager existingManager = findManagerById(enteredId);
                 if (existingManager != null) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingManager.getName());
-                    Optional<ButtonType> choice = alert.showAndWait();
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingManager.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
                     if (choice.isPresent() && choice.get() == ButtonType.OK) {
                         Logic.removeManager(existingManager);
                         Alert success = new Alert(Alert.AlertType.INFORMATION);
@@ -539,9 +652,11 @@ public class MenuController {
                     }
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
-                    alert.show();
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                    notFound.show();
                 }
+            }catch (NumberFormatException nfe){
+                alert.show();
             }
         }
     }

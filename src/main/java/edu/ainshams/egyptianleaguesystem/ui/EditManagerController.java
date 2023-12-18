@@ -159,6 +159,7 @@ public class EditManagerController {
     }
 
     public void editManagerInfo(){
+        Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager updated successfully!");
         Manager manager = currentManager;
         String editing = getSelectedButtonText();
         if (manager != null && editing != null){
@@ -166,6 +167,7 @@ public class EditManagerController {
                 String name = newInfoField.getText();
                 manager.setName(name);
                 managerNameLabel.setText(manager.getName());
+                success.show();
             }
             else if (editing.equalsIgnoreCase("date of birth")){
                 LocalDate dob = newDate.getValue();
@@ -176,6 +178,7 @@ public class EditManagerController {
                 }
                 else {
                     manager.setDateOfBirth(dob);
+                    success.show();
                 }
             }
             else if (editing.equalsIgnoreCase("team")){
@@ -186,32 +189,36 @@ public class EditManagerController {
                             manager.getTeam().setManager(null);
                         }
                         manager.setTeam(team);
+                        success.show();
                     }
                 }
             }
             else if (editing.equalsIgnoreCase("trophies")){
                 int trophies = Integer.parseInt(newInfoField.getText());
                 manager.setTrophies(trophies);
+                success.show();
             }
             else if (editing.equalsIgnoreCase("nationality")){
                 String nationality = newInfoField.getText();
                 manager.setNationality(nationality);
+                success.show();
             }
             else if (editing.equalsIgnoreCase("former player")) {
                 RadioButton selectedRadioButton = (RadioButton) wasPlayerGroup.getSelectedToggle();
                 boolean wasPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
                 manager.setWasPlayer(wasPlayer);
+                success.show();
             }
             else if (editing.equalsIgnoreCase("yellow cards")) {
                 int numOfYellowCards = Integer.parseInt(newInfoField.getText());
                 manager.setYellowCards(numOfYellowCards);
+                success.show();
             }
             else {
                 int numOfRedCards = Integer.parseInt(newInfoField.getText());
                 manager.setRedCards(numOfRedCards);
+                success.show();
             }
-            Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager updated successfully!");
-            success.show();
             choice.selectToggle(null);
             editBox.setVisible(false);
         }

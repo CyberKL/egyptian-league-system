@@ -1,16 +1,11 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
-import edu.ainshams.egyptianleaguesystem.model.Logic;
-import edu.ainshams.egyptianleaguesystem.model.Match;
-import edu.ainshams.egyptianleaguesystem.model.Player;
-import edu.ainshams.egyptianleaguesystem.model.Team;
+import edu.ainshams.egyptianleaguesystem.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +18,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class TeamController {
 
@@ -35,19 +29,26 @@ public class TeamController {
     @FXML
     private TextField teamId;
     @FXML
-    private GridPane editGrid;
-    @FXML
-    private TextField idField;
-    @FXML
     private AnchorPane root;
-    @FXML
-    private Pane confirmPane;
-    @FXML
-    private HBox choiceBox;
     @FXML
     private GridPane infoGrid;
     @FXML
     private TextField nameField;
+    @FXML
+    private ToggleGroup choice;
+    @FXML
+    private Label teamNameLabel;
+    @FXML
+    private Label currentInfoLabel;
+    @FXML
+    private Label currentInfo;
+    @FXML
+    private Label newInfoLabel;
+    @FXML
+    private TextField newInfoField;
+    @FXML
+    private VBox editBox;
+    private Team currentTeam;
 
     public void defaultButton(MouseEvent event){
         Button btn = (Button) event.getSource();
@@ -127,7 +128,7 @@ public class TeamController {
         }
     }
 
-    private void teamInfo(Team team){
+    public void teamInfo(Team team){
         Label teamName = new Label(team.getName());
         Label teamId = new Label(Integer.toString(team.getTeamId()));
         Label teamManager = new Label(team.getManager().getName());
@@ -144,27 +145,7 @@ public class TeamController {
         infoGrid.add(infoList, 1, 0);
         infoGrid.setVisible(true);
     }
-    public void displayTeamMatches(){
-        Team currentTeam;
-        boolean found = false;
-        String name = nameField.getText();
-        for (Team team: Logic.getTeams()){
-            if (team.getName().equalsIgnoreCase(name)){
-                found = true;
-                currentTeam = team;
-                removeNodeById(root, "idBox");
-                teamMatches(currentTeam);
-                isIdAvailable = true;
-                break;
-            }
-        }
-        if (!found){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Team not found!");
-            alert.show();
-        }
-    }
-    private void teamMatches(Team team){
+    public void teamMatches(Team team){
         FlowPane matchesPane = new FlowPane();
         for (Match match : team.getMatches()){
             Label label = new Label(match.matchHeader());
@@ -174,27 +155,7 @@ public class TeamController {
         }
         root.getChildren().add(matchesPane);
     }
-    public void displayTeamPlayers(){
-        Team currentTeam;
-        boolean found = false;
-        String name = nameField.getText();
-        for (Team team: Logic.getTeams()){
-            if (team.getName().equalsIgnoreCase(name)){
-                found = true;
-                currentTeam = team;
-                removeNodeById(root, "idBox");
-                teamPlayers(currentTeam);
-                isIdAvailable = true;
-                break;
-            }
-        }
-        if (!found){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Team not found!");
-            alert.show();
-        }
-    }
-    private   void teamPlayers(Team team){
+    public void teamPlayers(Team team){
         FlowPane playersPane = new FlowPane();
         playersPane.setOrientation(Orientation.VERTICAL);
         for (Player player : team.getPlayers()){
@@ -203,358 +164,158 @@ public class TeamController {
         }
     }
 
-    public void determineTeamId(){
-        boolean found = false;
-        int id = Integer.parseInt(idField.getText());
-        for (Team team: Logic.getTeams()){
-            if (team.getTeamId()==id){
-                this.id = id;
-                found = true;
-                removeNodeById(root, "idBox");
-                Label chooseLabel = new Label("Please select a choice");
-                chooseLabel.setFont(new Font(50));
-                chooseLabel.setTextFill(Color.WHITE);
-                chooseLabel.setId("chooseLabel");
-                AnchorPane.setLeftAnchor(chooseLabel, 700.0);
-                AnchorPane.setBottomAnchor(chooseLabel, 400.0);
-                root.getChildren().add(chooseLabel);
-                isIdAvailable = true;
-                break;
+
+    private String getSelectedButtonText() {
+        Toggle selectedToggle = choice.getSelectedToggle();
+
+        if (selectedToggle != null) {
+            // Assuming ToggleButton is used in the ToggleGroup
+            return ((ToggleButton) selectedToggle).getText();
+        } else {
+            // Handle the case where no toggle is selected, return an appropriate value
+            return "No toggle selected";
+        }
+    }
+    public void showNodes(Team currentTeam){
+        String editing = getSelectedButtonText();
+        if (currentTeam != null){
+            if (editing.equalsIgnoreCase("name")){
+                currentInfoLabel.setText("Current team name:");
+                currentInfo.setText(currentTeam.getName());
+                newInfoLabel.setText("New team name:");
             }
-        }
-        if (!found){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Team not found!");
+            else if (editing.equalsIgnoreCase("id")) {
+                currentInfoLabel.setText("Current team ID:");
+                currentInfo.setText(Integer.toString(currentTeam.getTeamId()));
+                newInfoLabel.setText("New team ID:");
+            }
+            else if (editing.equalsIgnoreCase("players")){
+                //back to it later
+            }
+            else if (editing.equalsIgnoreCase("captain")){
+                currentInfoLabel.setText("Current team captain:");
+                currentInfo.setText(currentTeam.getCaptain().getName());
+                newInfoLabel.setText("New team captain:");
+            }
+            else {
+                currentInfoLabel.setText("Current team manager:");
+                currentInfo.setText(currentTeam.getManager().getName());
+                newInfoLabel.setText("New team manager:");
+            }
+            editBox.setVisible(true);
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Error occurred!");
             alert.show();
         }
     }
-
-    public void editName(){
-        if (!isIdAvailable){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Please enter team id first!");
-            alert.show();
-        }
-        else {
-            removeNodeById(root, "chooseLabel");
-            Label label = new Label("Enter new team name: ");
-            label.setTextFill(Color.WHITE);
-            label.setFont(new Font(40));
-            TextField textField = new TextField();
-            textField.setFont(new Font(15));
-            Button button = new Button("Confirm");
-            button.setFont(new Font(15));
-            choiceBox.getChildren().clear();
-            editGrid.getChildren().clear();
-            confirmPane.getChildren().clear();
-            GridPane.setHalignment(label, HPos.CENTER);
-            GridPane.setHalignment(textField, HPos.CENTER);
-            GridPane.setHalignment(button, HPos.CENTER);
-            GridPane.setValignment(label, VPos.TOP);
-            GridPane.setValignment(textField, VPos.CENTER);
-            GridPane.setValignment(button, VPos.BOTTOM);
-            editGrid.getChildren().addAll(label, textField);
-            confirmPane.getChildren().add(button);
-            button.setOnAction(actionEvent -> {
-                boolean duplicateTeam = false;
-                String name = textField.getText();
-                if(!name.isBlank()) {
-                    for (Team team : Logic.getTeams()) {
-                        if (team.getName().equalsIgnoreCase(name)) {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setContentText("There is already a team with this name!");
-                            alert.show();
-                            duplicateTeam = true;
-                            break;
-                        }
-                    }
-                    if (!duplicateTeam) {
-                        for (Team team : Logic.getTeams()) {
-                            if (team.getTeamId() == id) {
-                                team.setName(name);
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setContentText("Team name changed successfully");
-                                alert.show();
-                                break;
-                            }
-                        }
-                    }
-                    System.out.println("Available teams:");
-                    Logic.displayTotalTeams();
-                }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("Please enter a name!");
-                    alert.show();
-                }
-            });
-        }
+    public void initialize(Team team) {
+        teamNameLabel.setText(team.getName());
+        choice.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                showNodes(team);
+                currentTeam = team;
+            }
+        });
     }
-    public void editId(){
-        if (!isIdAvailable){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Please enter team id first!");
-            alert.show();
-        }
-        else {
-            removeNodeById(root, "chooseLabel");
-            Label label = new Label("Enter new team Id: ");
-            label.setTextFill(Color.WHITE);
-            label.setFont(new Font(40));
-            TextField textField = new TextField();
-            textField.setFont(new Font(15));
-            Button button = new Button("Confirm");
-            button.setFont(new Font(15));
-            choiceBox.getChildren().clear();
-            editGrid.getChildren().clear();
-            confirmPane.getChildren().clear();
-            GridPane.setHalignment(label, HPos.CENTER);
-            GridPane.setHalignment(textField, HPos.CENTER);
-            GridPane.setHalignment(button, HPos.CENTER);
-            GridPane.setValignment(label, VPos.TOP);
-            GridPane.setValignment(textField, VPos.CENTER);
-            GridPane.setValignment(button, VPos.BOTTOM);
-            editGrid.getChildren().addAll(label, textField);
-            confirmPane.getChildren().add(button);
-            button.setOnAction(actionEvent -> {
-                boolean duplicateTeam = false;
-                int newId = Integer.parseInt(textField.getText());
-                if(!textField.getText().isBlank()) {
-                    for (Team team : Logic.getTeams()) {
-                        if (team.getTeamId()==newId) {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setContentText("There is already a team with this id!");
-                            alert.show();
-                            duplicateTeam = true;
-                            break;
-                        }
+    public void editTeamInfo(){
+        Alert success = new Alert(Alert.AlertType.INFORMATION, "Team updated successfully!");
+        Team team = currentTeam;
+        String editing = getSelectedButtonText();
+        if (currentTeam != null && editing != null){
+            if (editing.equalsIgnoreCase("name")){
+                boolean isNameTaken = false;
+                String teamName = newInfoField.getText();
+                for (Team element : Logic.getTeams()){
+                    if (element.getName().equalsIgnoreCase(teamName)){
+                        Alert nameTaken = new Alert(Alert.AlertType.WARNING, "This name is already taken");
+                        nameTaken.show();
+                        isNameTaken = true;
                     }
-                    if (!duplicateTeam) {
-                        for (Team team : Logic.getTeams()) {
-                            if (team.getTeamId() == id) {
-                                team.setTeamId(newId);
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setContentText("Team id changed successfully");
-                                alert.show();
-                                break;
-                            }
-                        }
-                    }
-                    System.out.println("Available teams:");
-                    ArrayList<Team> teamList=Logic.getTeams();
-                    System.out.println(teamList.get(0).getTeamId());
                 }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("Please enter an Id!");
-                    alert.show();
+                if (!isNameTaken){
+                    team.setName(teamName);
+                    success.show();
+                    teamNameLabel.setText(team.getName());
                 }
-            });
-
-        }
-
-    }
-    public void editPlayer(){
-        if (!isIdAvailable){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Please enter team id first!");
-            alert.show();
-        }
-        else {
-            removeNodeById(root, "chooseLabel");
-            editGrid.getChildren().clear();
-            confirmPane.getChildren().clear();
-            choiceBox.getChildren().clear();
-            choiceBox.setSpacing(10);
-            AnchorPane.setLeftAnchor(choiceBox, 1000.0);
-            AnchorPane.setBottomAnchor(choiceBox, 800.0);
-            ToggleGroup choiceToggle = new ToggleGroup();
-            ToggleButton addBtn = new ToggleButton("Add");
-            addBtn.setToggleGroup(choiceToggle);
-            addBtn.setFont(new Font(30));
-            ToggleButton removeBtn = new ToggleButton("Remove");
-            removeBtn.setToggleGroup(choiceToggle);
-            removeBtn.setFont(new Font(30));
-            choiceBox.getChildren().addAll(addBtn,removeBtn);
-            Label nameLabel = new Label("Enter player name:");
-            Label idLabel = new Label("Enter player id: ");
-            nameLabel.setFont(new Font(40));
-            nameLabel.setTextFill(Color.WHITE);
-            idLabel.setFont(new Font(40));
-            idLabel.setTextFill(Color.WHITE);
-            TextField nameText = new TextField();
-            TextField idText = new TextField();
-            nameText.setFont(new Font(15));
-            idText.setFont(new Font(15));
-            Button confirm = new Button("Confirm");
-            GridPane.setHalignment(nameLabel, HPos.CENTER);
-            GridPane.setHalignment(idLabel, HPos.CENTER);
-            GridPane.setHalignment(nameText, HPos.CENTER);
-            GridPane.setHalignment(idText, HPos.CENTER);
-            GridPane.setValignment(nameLabel, VPos.TOP);
-            GridPane.setValignment(idLabel, VPos.TOP);
-            GridPane.setValignment(nameText, VPos.CENTER);
-            GridPane.setValignment(idText, VPos.CENTER);
-            editGrid.setHgap(30);
-            addBtn.setOnAction(actionEvent ->{
-                confirmPane.getChildren().add(confirm);
-                editGrid.add(nameLabel, 0, 0);
-                editGrid.add(nameText, 0, 0);
-                editGrid.add(idLabel, 1, 0);
-                editGrid.add(idText, 1, 0);
-                confirm.setOnAction(confirmEvent -> {
-                    if (nameText.getText().isBlank() || idText.getText().isBlank()){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setContentText("Please enter the required data!");
-                        alert.show();
+            }
+            else if (editing.equalsIgnoreCase("id")){
+                boolean isIdTaken = false;
+                int id = Integer.parseInt(newInfoField.getText());
+                for (Team element : Logic.getTeams()){
+                    if (element.getTeamId()==id){
+                        Alert idTaken = new Alert(Alert.AlertType.WARNING, "This id is already taken");
+                        idTaken.show();
+                        isIdTaken = true;
                     }
-                    else {
-                        boolean playerFound = false;
-                        String playerName = nameText.getText();
-                        int playerId = Integer.parseInt(idText.getText());
-                        for (Player player:Logic.getPlayers()){
-                            if (player.getName().equalsIgnoreCase(playerName)&&player.getPlayerId()==playerId){
-                                playerFound = true;
-                                for (Team team : Logic.getTeams()){
-                                    if (team.getTeamId()==id){
-                                        if (player.getTeam()!=null){
-                                            player.getTeam().deletePlayer(player);
-                                        }
-                                        team.addPlayer(player);
-                                        player.setTeam(team);
-                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                        alert.setContentText("Player added to "+team.getName()+" successfully!");
-                                        alert.show();
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        if (!playerFound){
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setContentText("Player not found!");
-                            alert.show();
-                        }
-                    }
-                });
-            });
-            removeBtn.setOnAction(actionEvent -> {
-                confirmPane.getChildren().add(confirm);
-                editGrid.add(nameLabel, 0, 0);
-                editGrid.add(nameText, 0, 0);
-                editGrid.add(idLabel, 1, 0);
-                editGrid.add(idText, 1, 0);
-                confirm.setOnAction(confirmEvent -> {
-                    if (nameText.getText().isBlank() || idText.getText().isBlank()){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setContentText("Please enter the required data!");
-                        alert.show();
-                    }
-                    else {
-                        boolean playerFound = false;
-                        String playerName = nameText.getText();
-                        int playerId = Integer.parseInt(idText.getText());
-                        for (Team team : Logic.getTeams()){
-                            if (team.getTeamId()==id){
-                                for (Player player : team.getPlayers()){
-                                    if (player.getName().equalsIgnoreCase(playerName) && player.getPlayerId()==playerId){
-                                        playerFound = true;
-                                        team.deletePlayer(player);
-                                        player.setTeam(null);
-                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                        alert.setContentText("Player removed from "+team.getName()+" successfully!");
-                                        alert.show();
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        if (!playerFound){
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setContentText("Player not found!");
-                            alert.show();
-                        }
-                    }
-                });
-            });
-
-        }
-    }
-
-    public void editCaptain(){
-        if (!isIdAvailable){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Please enter team id first!");
-            alert.show();
-        }
-        else {
-            removeNodeById(root, "chooseLabel");
-            editGrid.getChildren().clear();
-            confirmPane.getChildren().clear();
-            choiceBox.getChildren().clear();
-            Label nameLabel = new Label("Enter player name:");
-            Label idLabel = new Label("Enter player id: ");
-            nameLabel.setFont(new Font(40));
-            nameLabel.setTextFill(Color.WHITE);
-            idLabel.setFont(new Font(40));
-            idLabel.setTextFill(Color.WHITE);
-            TextField nameText = new TextField();
-            TextField idText = new TextField();
-            nameText.setFont(new Font(15));
-            idText.setFont(new Font(15));
-            Button confirm = new Button("Confirm");
-            GridPane.setHalignment(nameLabel, HPos.CENTER);
-            GridPane.setHalignment(idLabel, HPos.CENTER);
-            GridPane.setHalignment(nameText, HPos.CENTER);
-            GridPane.setHalignment(idText, HPos.CENTER);
-            GridPane.setValignment(nameLabel, VPos.TOP);
-            GridPane.setValignment(idLabel, VPos.TOP);
-            GridPane.setValignment(nameText, VPos.CENTER);
-            GridPane.setValignment(idText, VPos.CENTER);
-            editGrid.setHgap(30);
-            confirmPane.getChildren().add(confirm);
-            editGrid.add(nameLabel, 0, 0);
-            editGrid.add(nameText, 0, 0);
-            editGrid.add(idLabel, 1, 0);
-            editGrid.add(idText, 1, 0);
-            confirm.setOnAction(confirmEvent -> {
+                }
+                if (!isIdTaken){
+                    team.setTeamId(id);
+                    success.show();
+                }
+            }
+            else if (editing.equalsIgnoreCase("players")){
+                //back to it later
+            }
+            else if (editing.equalsIgnoreCase("captain")){
+                boolean captainFound = false;
                 boolean playerFound = false;
-                if (nameText.getText().isBlank() || idText.getText().isBlank()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("Please enter the required data!");
-                    alert.show();
-                } else {
-                    String playerName = nameText.getText();
-                    int playerId = Integer.parseInt(idText.getText());
-                    for (Team team : Logic.getTeams()){
-                        if (team.getTeamId()==id){
-                            if (team.getCaptain()!=null && playerName.equalsIgnoreCase(team.getCaptain().getName()) && playerId==team.getCaptain().getPlayerId()){
-                                Alert alert = new Alert(Alert.AlertType.WARNING);
-                                alert.setContentText("This player is already the team's captain!");
-                                alert.show();
-                                break;
-                            }
-                            else {
-                                for (Player player : team.getPlayers()) {
-                                    if (player.getName().equalsIgnoreCase(playerName) && player.getPlayerId() == playerId) {
-                                        playerFound = true;
-                                       team.setCaptain(player);
-                                       break;
-                                    }
-                                }
-                            }
+                int id = Integer.parseInt(newInfoField.getText());
+                for (Player player : team.getPlayers()){
+                    if (player.getPlayerId()==id && team.getCaptain().getPlayerId() != id){
+                        team.setCaptain(player);
+                        success.show();
+                        captainFound = true;
+                        break;
+                    }
+                }
+                if (!captainFound){
+                    if (team.getCaptain().getPlayerId() == id){
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is already the captain of this team");
+                        alert.show();
+                    }
+                    for (Player player : Logic.getPlayers()){
+                        if (player.getPlayerId()==id){
+                            playerFound = true;
                             break;
                         }
                     }
                     if (!playerFound){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setContentText("Player not found!");
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                        alert.show();
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is not a current player in this team");
                         alert.show();
                     }
                 }
-            });
+            }
+            else if (editing.equalsIgnoreCase("manager")){
+                int id = Integer.parseInt(newInfoField.getText());
+                if (team.getManager().getManagerId()==id){
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "This is already the team manager");
+                    alert.show();
+                }
+                else {
+                    boolean managerFound = false;
+                    for (Manager manager : Logic.getManagers()){
+                        if (manager.getManagerId()==id){
+                            team.setManager(manager);
+                            managerFound = true;
+                            success.show();
+                            break;
+                        }
+                    }
+                    if (!managerFound){
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                        alert.show();
+                    }
+                }
+            }
+        }
+        else{
+            Alert error = new Alert(Alert.AlertType.ERROR, "An error occurred please try again");
+            error.show();
         }
     }
+
 }
