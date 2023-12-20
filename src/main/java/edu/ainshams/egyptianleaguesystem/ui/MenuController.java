@@ -1,8 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -761,6 +756,115 @@ public class MenuController {
                 }
                 else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Referee not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+    }
+
+
+    //Player related methods
+    public void switchToNewPlayer (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newPlayer.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    private Player findPlayerById(int enteredId) {
+        for (Player player : Logic.getPlayers()) {
+            if (player.getPlayerId()==enteredId) {
+                return player;
+            }
+        }
+        return null; // Manager not found
+    }
+    public void switchToEditPlayer (ActionEvent event) throws IOException {
+        TextDialogController textDialogController = openTextDialog(event, "Edit Player");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    FXMLLoader editPlayerLoader = new FXMLLoader(getClass().getResource("editPlayer.fxml"));
+                    Parent editPlayerRoot = editPlayerLoader.load();
+                    EditPlayerController editPlayerController = editPlayerLoader.getController();
+                    editPlayerController.initialization(existingPlayer);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(editPlayerRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+
+    public void switchToPlayerInfo (ActionEvent event) throws IOException {
+        TextDialogController textDialogController = openTextDialog(event, "Player Info");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    FXMLLoader playerInfoLoader = new FXMLLoader(getClass().getResource("playerInfo.fxml"));
+                    Parent playerInfoRoot = playerInfoLoader.load();
+                    PlayerInfoController playerInfoController = playerInfoLoader.getController();
+                    playerInfoController.playerInfo(existingPlayer);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(playerInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+
+    public void deletePlayer (ActionEvent event) {
+        TextDialogController textDialogController = openTextDialog(event, "Delete player");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingPlayer.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
+                    if (choice.isPresent() && choice.get() == ButtonType.OK) {
+                        Logic.removePlayer(existingPlayer);
+                        Alert success = new Alert(Alert.AlertType.INFORMATION);
+                        success.setTitle("Success");
+                        success.setHeaderText(null);
+                        success.setContentText("Player deleted successfully!");
+                        success.showAndWait();
+                    }
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
                     notFound.show();
                 }
             }catch (NumberFormatException nfe){

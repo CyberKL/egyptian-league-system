@@ -11,8 +11,9 @@ public class Midfielder extends Player{
     private int interceptions;
     private int keyPasses;
 
-    public Midfielder(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position){
-        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot, position);
+    public Midfielder(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
+        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot);
+        this.position = "Midfielder";
         this.goalsScored = 0;
         this.assists= 0;
         this.interceptions = 0;
@@ -26,6 +27,38 @@ public class Midfielder extends Player{
                 "\nAssists: " + assists +
                 "\nInterceptions: " + interceptions +
                 "\nKey Passes: " + keyPasses;
+    }
+
+    public int getGoalsScored() {
+        return goalsScored;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public int getInterceptions() {
+        return interceptions;
+    }
+
+    public int getKeyPasses() {
+        return keyPasses;
+    }
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public void setInterceptions(int interceptions) {
+        this.interceptions = interceptions;
+    }
+
+    public void setKeyPasses(int keyPasses) {
+        this.keyPasses = keyPasses;
     }
 
     public void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException{

@@ -63,7 +63,6 @@ public class ManagerInfoController {
         Label redCardLabel = new Label(Integer.toString(manager.getRedCards()));
         VBox labelsBox = new VBox(nameLabel, idLabel, ageLabel, nationalityLabel, teamLabel, numOfTrophies, formerPlayerLabel, yellowCardLabel, redCardLabel);
         infoGrid.add(labelsBox, 1, 0);
-        infoGrid.setVisible(true);
     }
 
 }

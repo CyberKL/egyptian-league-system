@@ -13,8 +13,9 @@ public class Forward extends Player {
     private int assists;
 
 
-    public Forward(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position){
-        super(name, dateOfBirth, nationality, playerId, number, team, height,weight,preferredFoot,position);
+    public Forward(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
+        super(name, dateOfBirth, nationality, playerId, number, team, height,weight,preferredFoot);
+        this.position = "Forward";
         this.goalsScored = 0;
         this.expectedGoals = 0.0;
         this.shotsOnTarget = 0;
@@ -33,6 +34,38 @@ public class Forward extends Player {
                 "\nAssists: " + assists;
     }
 
+    public int getGoalsScored() {
+        return goalsScored;
+    }
+
+    public int getShotsOnTarget() {
+        return shotsOnTarget;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public double getExpectedGoals() {
+        return expectedGoals;
+    }
+
+    public double getConversionRate() {
+        return conversionRate;
+    }
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public void setShotsOnTarget(int shotsOnTarget) {
+        this.shotsOnTarget = shotsOnTarget;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
     @Override
     public void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
@@ -42,7 +75,7 @@ public class Forward extends Player {
         try{
         choice = scanner.nextInt();
         scanner.nextLine();}catch (InputMismatchException e){
-            System.out.println("Invalid occurunce, Please reenter a valid input");
+            System.out.println("Invalid occurrence, Please reenter a valid input");
         }
         if(choice >=1 && choice<=11){
             super.updatePlayerInfo(playersList, teams, choice);
@@ -103,7 +136,10 @@ public class Forward extends Player {
         this.expectedGoals = expectedGoalsFromShots + expectedGoalsFromConversion;
     }
 
-
+    public void updateStats () {
+        calcConversionRate();
+        calcExpectedGoals();
+    }
 
 
 

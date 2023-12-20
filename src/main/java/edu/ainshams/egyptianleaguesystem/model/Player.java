@@ -16,7 +16,7 @@ public abstract class Player extends FootballCharacter{
     protected String position;
     private static int numOfPlayers = 0;
 
-    protected Player(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position){
+    protected Player(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
         super(name, dateOfBirth, nationality);
         this.playerId = playerId;
         this.number = number;
@@ -24,7 +24,6 @@ public abstract class Player extends FootballCharacter{
         this.height = height;
         this.weight = weight;
         this.preferredFoot = preferredFoot;
-        this.position = position;
         numOfPlayers ++;
     }
 
@@ -47,6 +46,10 @@ public abstract class Player extends FootballCharacter{
         return playerId;
     }
 
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
     public Team getTeam() {
         return team;
     }
@@ -57,6 +60,38 @@ public abstract class Player extends FootballCharacter{
 
     public int getNumber() {
         return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getPreferredFoot() {
+        return preferredFoot;
+    }
+
+    public void setPreferredFoot(String preferredFoot) {
+        this.preferredFoot = preferredFoot;
     }
 
     public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
@@ -350,13 +385,13 @@ public abstract class Player extends FootballCharacter{
             System.out.println("Please enter a correct position");
         }
         if (playerPosition.equalsIgnoreCase("goalkeeper")){
-            Player goalkeeper = new Goalkeeper(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot, playerPosition);
+            Player goalkeeper = new Goalkeeper(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(goalkeeper);
         } else if (playerPosition.equalsIgnoreCase("midfielder")) {
-            Player midfielder = new Midfielder(playerName, playerDateOfBirth, playerNationality,playerID,playerNumber, playerTeam, playerHeight, playerWeight,playerPreferredFoot,playerPosition );
+            Player midfielder = new Midfielder(playerName, playerDateOfBirth, playerNationality,playerID,playerNumber, playerTeam, playerHeight, playerWeight,playerPreferredFoot);
             players.add(midfielder);
         } else if (playerPosition.equalsIgnoreCase("forward")) {
-            Player forward = new Forward(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot, playerPosition);
+            Player forward = new Forward(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(forward);
         }
 

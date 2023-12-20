@@ -363,6 +363,9 @@ public class Team {
     public void addPlayer(Player player){
         this.players.add(player);
     }
+    public void removePlayer (Player player){
+        this.players.remove(player);
+    }
 
     public void deletePlayer(Player player){
         this.players.remove(player);

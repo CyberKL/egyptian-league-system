@@ -85,11 +85,12 @@ public class ManagerController implements Initializable {
         return nameField.getText().isBlank() ||
                 idField.getText().isBlank() ||
                 dobPicker.getValue() == null || dobPicker.getValue().toString().isBlank() ||
-                nationalityField.getText().isBlank();
+                nationalityField.getText().isBlank() ||
+                wasPlayer.getSelectedToggle() == null;
     }
     public void createManager(){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager created successfully!");
-        if (isAnyFieldBlank() || wasPlayer.getSelectedToggle() == null){
+        if (isAnyFieldBlank()){
             missingDataAlert.show();
         }
         else {

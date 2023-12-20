@@ -9,8 +9,9 @@ public class Goalkeeper extends Player{
     private int cleanSheets;
     private int saves;
 
-    public Goalkeeper(String name, LocalDate dateOfBirth, String nationality,int playerId, int number, Team team, int height, int weight, String preferredFoot,String position){
-        super(name, dateOfBirth, nationality,playerId,number,team,height,weight,preferredFoot,position);
+    public Goalkeeper(String name, LocalDate dateOfBirth, String nationality,int playerId, int number, Team team, int height, int weight, String preferredFoot){
+        super(name, dateOfBirth, nationality,playerId,number,team,height,weight,preferredFoot);
+        this.position = "Goalkeeper";
         this.cleanSheets = 0;
         this.saves=0;
     }
@@ -20,6 +21,22 @@ public class Goalkeeper extends Player{
         return super.toString() +
                 "Clean Sheets: " + cleanSheets +
                 "\nSaves: " + saves;
+    }
+
+    public int getCleanSheets() {
+        return cleanSheets;
+    }
+
+    public int getSaves() {
+        return saves;
+    }
+
+    public void setCleanSheets(int cleanSheets) {
+        this.cleanSheets = cleanSheets;
+    }
+
+    public void setSaves(int saves) {
+        this.saves = saves;
     }
 
     @Override
