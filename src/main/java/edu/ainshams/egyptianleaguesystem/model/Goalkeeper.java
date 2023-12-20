@@ -3,6 +3,7 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Goalkeeper extends Player{
@@ -37,6 +38,14 @@ public class Goalkeeper extends Player{
 
     public void setSaves(int saves) {
         this.saves = saves;
+    }
+
+    @Override
+    public Optional<Integer> getGoalsScored() {
+        return Optional.empty();
+    }
+    public Optional<Integer> getAssists() {
+        return Optional.empty();
     }
 
     @Override

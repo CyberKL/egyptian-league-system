@@ -76,8 +76,8 @@ public class PlayerInfoController {
             case "Forward": {
                 Forward forward = (Forward) player;
                 labelsBox.getChildren().addAll(goalsScoredLabel, assistsLabel, shotsOnTargetLabel, conversionRateLabel, xGLabel);
-                Label goalsScored = new Label(Integer.toString(forward.getGoalsScored()));
-                Label assists = new Label(Integer.toString(forward.getAssists()));
+                Label goalsScored = new Label(forward.getGoalsScored().toString());
+                Label assists = new Label(String.valueOf(forward.getAssists()));
                 Label shotsOnTarget = new Label(Integer.toString(forward.getShotsOnTarget()));
                 Label conversionRate = new Label(Double.toString(forward.getConversionRate()));
                 Label xG = new Label(Double.toString(forward.getExpectedGoals()));
@@ -87,8 +87,8 @@ public class PlayerInfoController {
             case "Midfielder": {
                 Midfielder midfielder = (Midfielder) player;
                 labelsBox.getChildren().addAll(goalsScoredLabel, assistsLabel, keyPassesLabel, interceptionsLabel);
-                Label goalsScored = new Label(Integer.toString(midfielder.getGoalsScored()));
-                Label assists = new Label(Integer.toString(midfielder.getAssists()));
+                Label goalsScored = new Label(midfielder.getGoalsScored().toString());
+                Label assists = new Label(String.valueOf(midfielder.getAssists()));
                 Label keyPasses = new Label(Integer.toString(midfielder.getKeyPasses()));
                 Label interceptions = new Label(Integer.toString(midfielder.getInterceptions()));
                 infoBox.getChildren().addAll(goalsScored, assists, keyPasses, interceptions);

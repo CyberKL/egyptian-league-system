@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditPlayerController implements Initializable {
@@ -245,11 +246,11 @@ public class EditPlayerController implements Initializable {
               currentInfoLabel.setText("Current number of goals scored:");
               switch (player.getPosition()){
                   case "Forward":{
-                      currentInfo.setText(Integer.toString(forward.getGoalsScored()));
+                      currentInfo.setText(String.valueOf(forward.getGoalsScored()));
                       break;
                   }
                   case "Midfielder":{
-                      currentInfo.setText(Integer.toString(midfielder.getGoalsScored()));
+                      currentInfo.setText(String.valueOf(midfielder.getGoalsScored()));
                       break;
                   }
                   case "Defender":{
@@ -263,11 +264,11 @@ public class EditPlayerController implements Initializable {
               currentInfoLabel.setText("Current number of assists:");
               switch (player.getPosition()){
                   case "Forward":{
-                      currentInfo.setText(Integer.toString(forward.getAssists()));
+                      currentInfo.setText(String.valueOf(forward.getAssists()));
                       break;
                   }
                   case "Midfielder":{
-                      currentInfo.setText(Integer.toString(midfielder.getAssists()));
+                      currentInfo.setText(String.valueOf(midfielder.getAssists()));
                       break;
                   }
                   case "Defender":{
@@ -395,10 +396,12 @@ public class EditPlayerController implements Initializable {
              else if (editing.equalsIgnoreCase("nationality")){
                  String nationality = newInfoField.getText();
                  player.setNationality(nationality);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("number")){
                  int num = newNumSpinner.getValue();
                  player.setNumber(num);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("team")){
                  String teamName = newTeamChoice.getValue();
@@ -410,6 +413,7 @@ public class EditPlayerController implements Initializable {
                      if (team.getName().equalsIgnoreCase(teamName)){
                          player.setTeam(team);
                          team.addPlayer(player);
+                         success.show();
                          break;
                      }
                  }
@@ -417,22 +421,27 @@ public class EditPlayerController implements Initializable {
              else if (editing.equalsIgnoreCase("height")){
                  int height = Integer.parseInt(newInfoField.getText());
                  player.setHeight(height);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("weight")){
                  int weight = Integer.parseInt(newInfoField.getText());
                  player.setWeight(weight);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("preferred foot")){
                  String preferredFoot = footGroup.getSelectedToggle().toString();
                  player.setPreferredFoot(preferredFoot);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("yellow cards")){
                  int yellowCards = Integer.parseInt(newInfoField.getText());
                  player.setYellowCards(yellowCards);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("red cards")){
                  int redCards = Integer.parseInt(newInfoField.getText());
                  player.setRedCards(redCards);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("goals scored")){
                  int goalsScored = Integer.parseInt(newInfoField.getText());
@@ -453,6 +462,7 @@ public class EditPlayerController implements Initializable {
                          break;
                      }
                  }
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("assists")){
                  int assists = Integer.parseInt(newInfoField.getText());
@@ -472,7 +482,9 @@ public class EditPlayerController implements Initializable {
                          break;
                      }
                  }
-             } else if (editing.equalsIgnoreCase("clean sheets")) {
+                 success.show();
+             }
+             else if (editing.equalsIgnoreCase("clean sheets")) {
                  int cleanSheets = Integer.parseInt(newInfoField.getText());
                  switch (player.getPosition()) {
                      case "Defender": {
@@ -484,22 +496,26 @@ public class EditPlayerController implements Initializable {
                          goalkeeper.setCleanSheets(cleanSheets);
                      }
                  }
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("shots on target")){
                  int shotsOnTarget = Integer.parseInt(newInfoField.getText());
                  Forward forward = (Forward) player;
                  forward.setShotsOnTarget(shotsOnTarget);
                  forward.updateStats();
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("interceptions")){
                  int interceptions = Integer.parseInt(newInfoField.getText());
                  Midfielder midfielder = (Midfielder) player;
                  midfielder.setInterceptions(interceptions);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("key passes")){
                  int keyPasses = Integer.parseInt(newInfoField.getText());
                  Midfielder midfielder = (Midfielder) player;
                  midfielder.setInterceptions(keyPasses);
+                 success.show();
              }
              else if (editing.equalsIgnoreCase("Tackles won")){
                  int tacklesWon = Integer.parseInt(newInfoField.getText());
@@ -509,8 +525,8 @@ public class EditPlayerController implements Initializable {
                  int saves = Integer.parseInt(newInfoField.getText());
                  Goalkeeper goalkeeper = (Goalkeeper) player;
                  goalkeeper.setSaves(saves);
+                 success.show();
              }
-             success.show();
              newInfoField.clear();
              newDate.setValue(null);
              newTeamChoice.setValue(null);

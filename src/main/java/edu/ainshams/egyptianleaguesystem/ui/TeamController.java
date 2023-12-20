@@ -48,6 +48,12 @@ public class TeamController {
     private TextField newInfoField;
     @FXML
     private VBox editBox;
+    @FXML
+    private Button confirmBtn;
+    @FXML
+    private HBox playerChoiceBox;
+    @FXML
+    private ToggleGroup playerChoice;
     private Team currentTeam;
 
     public void defaultButton(MouseEvent event){
@@ -148,6 +154,7 @@ public class TeamController {
     public void showNodes(Team currentTeam){
         String editing = getSelectedButtonText();
         if (currentTeam != null){
+            playerChoiceBox.setVisible(false);
             if (editing.equalsIgnoreCase("name")){
                 currentInfoLabel.setText("Current team name:");
                 currentInfo.setText(currentTeam.getName());
@@ -159,7 +166,10 @@ public class TeamController {
                 newInfoLabel.setText("New team ID:");
             }
             else if (editing.equalsIgnoreCase("players")){
-                //back to it later
+                currentInfoLabel.setText("Add or Remove player from team");
+                currentInfo.setText("");
+                newInfoField.setText("Enter Player ID:");
+                playerChoiceBox.setVisible(true);
             }
             else if (editing.equalsIgnoreCase("captain")){
                 currentInfoLabel.setText("Current team captain:");
@@ -223,7 +233,35 @@ public class TeamController {
                 }
             }
             else if (editing.equalsIgnoreCase("players")){
-                //back to it later
+                int id = Integer.parseInt(newInfoField.getText());
+                for (Player player: Logic.getPlayers()){
+                    if (player.getPlayerId()==id){
+                        Toggle selectedToggle = playerChoice.getSelectedToggle();
+                        String operation = ((ToggleButton) selectedToggle).getText();
+                        switch (operation){
+                            case "Add":{
+                                if (!team.getPlayers().contains(player)){
+                                    team.addPlayer(player);
+                                    success.show();
+                                }
+                                else {
+                                    Alert alert = new Alert(Alert.AlertType.WARNING, "This player is already a part of this team!");
+                                    alert.show();
+                                }
+                            }
+                            case "Remove":{
+                                if (team.getPlayers().contains(player)){
+                                    team.removePlayer(player);
+                                    success.show();
+                                }
+                                else {
+                                    Alert alert = new Alert(Alert.AlertType.WARNING, "The player entered is not a part of this team!");
+                                    alert.show();
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else if (editing.equalsIgnoreCase("captain")){
                 boolean captainFound = false;

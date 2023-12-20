@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public abstract class Player extends FootballCharacter{
@@ -93,6 +94,9 @@ public abstract class Player extends FootballCharacter{
     public void setPreferredFoot(String preferredFoot) {
         this.preferredFoot = preferredFoot;
     }
+
+    public abstract Optional<Integer> getGoalsScored();
+    public abstract Optional<Integer> getAssists();
 
     public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);

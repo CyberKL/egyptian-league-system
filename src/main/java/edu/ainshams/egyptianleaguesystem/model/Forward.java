@@ -3,6 +3,7 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Forward extends Player {
@@ -34,16 +35,17 @@ public class Forward extends Player {
                 "\nAssists: " + assists;
     }
 
-    public int getGoalsScored() {
-        return goalsScored;
+    @Override
+    public Optional<Integer> getGoalsScored() {
+        return Optional.of(goalsScored);
     }
 
     public int getShotsOnTarget() {
         return shotsOnTarget;
     }
 
-    public int getAssists() {
-        return assists;
+    public Optional<Integer> getAssists() {
+        return Optional.of(assists);
     }
 
     public double getExpectedGoals() {

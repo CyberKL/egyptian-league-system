@@ -3,6 +3,7 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Midfielder extends Player{
@@ -29,12 +30,13 @@ public class Midfielder extends Player{
                 "\nKey Passes: " + keyPasses;
     }
 
-    public int getGoalsScored() {
-        return goalsScored;
+    @Override
+    public Optional<Integer> getGoalsScored() {
+        return Optional.of(goalsScored);
     }
 
-    public int getAssists() {
-        return assists;
+    public Optional<Integer> getAssists() {
+        return Optional.of(assists);
     }
 
     public int getInterceptions() {
