@@ -3,24 +3,26 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
-public class Defender {
+public class Defender extends Player{
 
     private int goalsScored;
 
     private int assists;
 
-    private int tackelsWon;
+    private int tacklesWon;
 
     private int cleanSheets;
 
 
-    public Defender(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position) {
-        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot, position);
+    public Defender(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot) {
+        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot);
+        this.position = "Defender";
         this.goalsScored = 0;
         this.assists = 0;
-        this.tackelsWon = 0;
+        this.tacklesWon = 0;
         this.cleanSheets = 0;
     }
 
@@ -30,10 +32,40 @@ public class Defender {
         return super.toString() +
                 "Goals Scored: " + goalsScored +
                 "\nAssists: " + assists +
-                "\nTackels Won: " + tackelsWon +
+                "\nTackles Won: " + tacklesWon +
                 "\nClean Sheets: " + cleanSheets;
     }
 
+    public Optional<Integer> getGoalsScored(){
+        return Optional.of(goalsScored);
+    }
+    public Optional<Integer> getAssists(){
+        return Optional.of(assists);
+    }
+
+    public int getTacklesWon() {
+        return tacklesWon;
+    }
+
+    public int getCleanSheets() {
+        return cleanSheets;
+    }
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public void setTacklesWon(int tacklesWon) {
+        this.tacklesWon = tacklesWon;
+    }
+
+    public void setCleanSheets(int cleanSheets) {
+        this.cleanSheets = cleanSheets;
+    }
 
     @Override
     public void updatePlayerInfo(ArrayList<Player> playersList, ArrayList<Team> teams, int choice) throws DuplicateException {
@@ -45,7 +77,7 @@ public class Defender {
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            System.out.println("Invalid occurunce, Please reenter a valid input");
+            System.out.println("Invalid occurrence, Please reenter a valid input");
         }
         if (choice >= 1 && choice <= 11){
             super.updatePlayerInfo(playersList, teams, choice);
@@ -64,15 +96,15 @@ public class Defender {
                     break;
                 }
                 case 13: {
-                    System.out.println("Enter amount of Shots to add");
-                    int newtackelsWon = 0;
+                    System.out.println("Enter amount of Tackles to add");
+                    int newTacklesWon = 0;
                     try {
-                        newtackelsWon = scanner.nextInt();
+                        newTacklesWon = scanner.nextInt();
                         scanner.nextLine();
                     } catch (InputMismatchException f) {
                         System.out.println("Please Enter valid Input");
                     }
-                    this.tackelsWon += newtackelsWon;
+                    this.tacklesWon += newTacklesWon;
                     break;
                 }
                 case 14: {
@@ -89,14 +121,14 @@ public class Defender {
                 }
                 case 15: {
                     System.out.println("Enter amount of Clean Sheets to add");
-                    int newcleanSheets = 0;
+                    int newCleanSheets = 0;
                     try {
-                        newcleanSheets = scanner.nextInt();
+                        newCleanSheets = scanner.nextInt();
                         scanner.nextLine();
                     } catch (InputMismatchException z) {
                         System.out.println("Please Enter valid Input");
                     }
-                    this.cleanSheets += newcleanSheets;
+                    this.cleanSheets += newCleanSheets;
                     break;
                 }
             }

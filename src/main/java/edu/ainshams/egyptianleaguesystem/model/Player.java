@@ -398,6 +398,10 @@ public abstract class Player extends FootballCharacter{
             Player forward = new Forward(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(forward);
         }
+        else if (playerPosition.equalsIgnoreCase("defender")){
+            Player defender = new Defender(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
+            players.add(defender);
+        }
 
 
     }

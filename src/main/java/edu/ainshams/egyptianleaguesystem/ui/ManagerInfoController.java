@@ -50,7 +50,13 @@ public class ManagerInfoController {
         Label idLabel = new Label(Integer.toString(manager.getManagerId()));
         Label ageLabel = new Label(Integer.toString(manager.getAge()));
         Label nationalityLabel = new Label(manager.getNationality());
-        Label teamLabel = new Label(manager.getTeam().getName());
+        Label teamLabel;
+        if (manager.getTeam() != null) {
+            teamLabel = new Label(manager.getTeam().getName());
+        }
+        else {
+            teamLabel = new Label("N/A");
+        }
         Label numOfTrophies = new Label(Integer.toString(manager.getTrophies()));
         String formerPlayer;
         if (manager.isWasPlayer()){

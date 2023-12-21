@@ -1,9 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
-import edu.ainshams.egyptianleaguesystem.model.Forward;
-import edu.ainshams.egyptianleaguesystem.model.Goalkeeper;
-import edu.ainshams.egyptianleaguesystem.model.Midfielder;
-import edu.ainshams.egyptianleaguesystem.model.Player;
+import edu.ainshams.egyptianleaguesystem.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +49,13 @@ public class PlayerInfoController {
         Label idLabel = new Label(Integer.toString(player.getPlayerId()));
         Label ageLabel = new Label(Integer.toString(player.getAge()));
         Label nationalityLabel = new Label(player.getNationality());
-        Label teamLabel = new Label(player.getTeam().getName());
+        Label teamLabel;
+        if (player.getTeam() != null){
+            teamLabel = new Label(player.getTeam().getName());
+        }
+        else {
+            teamLabel = new Label("N/A");
+        }
         Label numLabel = new Label(Integer.toString(player.getNumber()));
         Label positionLabel = new Label(player.getPosition());
         Label heightLabel = new Label(Integer.toString(player.getHeight()));
@@ -95,7 +98,13 @@ public class PlayerInfoController {
                 break;
             }
             case "Defender":{
-                //to be implemented
+                Defender defender = (Defender) player;
+                labelsBox.getChildren().addAll(goalsScoredLabel, assistsLabel, tackelsWonLabel, cleanSheetsLabel);
+                Label goalsScored = new Label(defender.getGoalsScored().toString());
+                Label assists = new Label(String.valueOf(defender.getAssists()));
+                Label tacklesWon = new Label(Integer.toString(defender.getTacklesWon()));
+                Label cleanSheets = new Label(Integer.toString(defender.getCleanSheets()));
+                infoBox.getChildren().addAll(goalsScored, assists, tacklesWon, cleanSheets);
                 break;
             }
             case "Goalkeeper":{

@@ -150,7 +150,7 @@ public class MenuController {
                 return team;
             }
         }
-        return null; // Manager not found
+        return null;
     }
     public void deleteTeam(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Team");
@@ -251,15 +251,21 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Team existingTeam = findTeamById(enteredId);
                 if (existingTeam != null) {
-                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamMatches.fxml"));
-                    Parent teamInfoRoot = teamInfoLoader.load();
-                    TeamController teamController = teamInfoLoader.getController();
-                    teamController.teamMatches(existingTeam);
+                    if (!existingTeam.getMatches().isEmpty()) {
+                        FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamMatches.fxml"));
+                        Parent teamInfoRoot = teamInfoLoader.load();
+                        TeamController teamController = teamInfoLoader.getController();
+                        teamController.teamMatches(existingTeam);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert notFound = new Alert(Alert.AlertType.WARNING, "This team doesn't have matches!");
+                        notFound.show();
+                    }
                 } else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
                     notFound.show();
@@ -280,15 +286,21 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Team existingTeam = findTeamById(enteredId);
                 if (existingTeam != null) {
-                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamPlayers.fxml"));
-                    Parent teamInfoRoot = teamInfoLoader.load();
-                    TeamController teamController = teamInfoLoader.getController();
-                    teamController.teamPlayers(existingTeam);
+                    if (!existingTeam.getPlayers().isEmpty()) {
+                        FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamPlayers.fxml"));
+                        Parent teamInfoRoot = teamInfoLoader.load();
+                        TeamController teamController = teamInfoLoader.getController();
+                        teamController.teamPlayers(existingTeam);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert notFound = new Alert(Alert.AlertType.WARNING, "This team doesn't have players!");
+                        notFound.show();
+                    }
                 } else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
                     notFound.show();
@@ -384,20 +396,27 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Stadium existingStadium = findStadiumById(enteredId);
                 if (existingStadium != null) {
-                    FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
-                    Parent stadiumMatchesRoot = stadiumMatchesLoader.load();
-                    StadiumController stadiumController = stadiumMatchesLoader.getController();
-                    stadiumController.stadiumUpcomingMatches(existingStadium);
+                    if (!existingStadium.getUpcomingMatches().isEmpty()) {
+                        FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
+                        Parent stadiumMatchesRoot = stadiumMatchesLoader.load();
+                        StadiumController stadiumController = stadiumMatchesLoader.getController();
+                        stadiumController.stadiumUpcomingMatches(existingStadium);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(stadiumMatchesRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
-                } else {
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(stadiumMatchesRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert noMatches = new Alert(Alert.AlertType.ERROR, "There is no upcoming matches on this stadium");
+                        noMatches.show();
+                    }
+                }
+                else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
                     notFound.show();
                 }
-            } catch (NumberFormatException nfe){
+            } catch (NumberFormatException nfe) {
                 alert.show();
             }
         }

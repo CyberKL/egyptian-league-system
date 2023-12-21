@@ -68,7 +68,7 @@ public class NewPlayerController implements Initializable {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
@@ -145,58 +145,72 @@ public class NewPlayerController implements Initializable {
             missingDataAlert.show();
         }
         else {
-            String name = nameField.getText();
-            int id = Integer.parseInt(idField.getText());
-            LocalDate dateOfBirth = dobPicker.getValue();
-            String nationality = nationalityField.getText();
-            int number = numSpinner.getValue();
-            String teamName = teamChoice.getValue();
-            int height = Integer.parseInt(heightField.getText());
-            int weight = Integer.parseInt(weightField.getText());
-            String preferredFoot = getSelectedButtonText();
-            String position = positionChoice.getValue();
-            if(validateData(id, dateOfBirth)){
-                Team currentTeam = null;
-                for (Team team : Logic.getTeams()){
-                    if (team.getName().equalsIgnoreCase(teamName)){
-                        currentTeam = team;
-                        break;
+            try {
+                String name = nameField.getText();
+                int id = Integer.parseInt(idField.getText());
+                LocalDate dateOfBirth = dobPicker.getValue();
+                String nationality = nationalityField.getText();
+                int number = numSpinner.getValue();
+                String teamName = teamChoice.getValue();
+                int height = Integer.parseInt(heightField.getText());
+                int weight = Integer.parseInt(weightField.getText());
+                String preferredFoot = getSelectedButtonText();
+                String position = positionChoice.getValue();
+                if (validateData(id, dateOfBirth)) {
+                    Team currentTeam = null;
+                    for (Team team : Logic.getTeams()) {
+                        if (team.getName().equalsIgnoreCase(teamName)) {
+                            currentTeam = team;
+                            break;
+                        }
+                    }
+                    if (currentTeam == null){
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Please choose a team, if there is no team available please add a team before adding a new player!");
+                        alert.show();
+                    }
+                    else {
+                        Player player = null;
+                        switch (position) {
+                            case "Forward": {
+                                player = new Forward(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
+                                break;
+                            }
+                            case "Midfielder": {
+                                player = new Midfielder(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
+                                break;
+                            }
+                            case "Defender": {
+                                player = new Defender(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
+                                break;
+                            }
+                            case "Goalkeeper": {
+                                player = new Goalkeeper(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
+                                break;
+                            }
+                        }
+                        Logic.addPlayer(player);
+                        currentTeam.addPlayer(player);
+                        success.show();
+                        nameField.clear();
+                        idField.clear();
+                        nationalityField.clear();
+                        heightField.clear();
+                        weightField.clear();
+                        dobPicker.setValue(null);
+                        numSpinner.getValueFactory().setValue(numSpinner.getValueFactory().getConverter().fromString("1"));
+                        foot.selectToggle(null);
+                        teamChoice.setValue(null);
+                        positionChoice.setValue(null);
                     }
                 }
-                Player player = null;
-                switch (position){
-                    case "Forward": {
-                        player = new Forward(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
-                        break;
-                    }
-                    case "Midfielder": {
-                        player = new Midfielder(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
-                        break;
-                    }
-                    case "Defender": {
-                        //Implement later
-                        break;
-                    }
-                    case "Goalkeeper": {
-                        player = new Goalkeeper(name, dateOfBirth, nationality, id, number, currentTeam, height, weight, preferredFoot);
-                        break;
-                    }
-                }
-                Logic.addPlayer(player);
-                currentTeam.addPlayer(player);
-                success.show();
-                nameField.clear();
-                idField.clear();
-                nationalityField.clear();
-                heightField.clear();
-                weightField.clear();
-                dobPicker.setValue(null);
-                numSpinner.getValueFactory().setValue(numSpinner.getValueFactory().getConverter().fromString("1"));
-                foot.selectToggle(null);
-                teamChoice.setValue(null);
-                positionChoice.setValue(null);
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input, please try again");
+                alert.show();
             }
-
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
+                alert.show();
+            }
         }
     }
 }

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditPlayerController implements Initializable {
@@ -82,7 +81,7 @@ public class EditPlayerController implements Initializable {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
@@ -188,7 +187,7 @@ public class EditPlayerController implements Initializable {
                     break;
                 }
                 case "Defender":{
-                    //to be implemented
+                    defender = (Defender) player;
                     break;
                 }
                 case "Goalkeeper":{
@@ -213,7 +212,12 @@ public class EditPlayerController implements Initializable {
           }
           else if (editing.equalsIgnoreCase("team")){
               currentInfoLabel.setText("Current "+editing+":");
-              currentInfo.setText(player.getTeam().getName());
+              if (player.getTeam() != null) {
+                  currentInfo.setText(player.getTeam().getName());
+              }
+              else {
+                  currentInfo.setText("N/A");
+              }
               newInfoLabel.setText("New "+editing+":");
           }
           else if (editing.equalsIgnoreCase("number")) {
@@ -254,7 +258,7 @@ public class EditPlayerController implements Initializable {
                       break;
                   }
                   case "Defender":{
-                      //to be implemented
+                      currentInfo.setText(String.valueOf(defender.getGoalsScored()));
                       break;
                   }
               }
@@ -272,7 +276,7 @@ public class EditPlayerController implements Initializable {
                       break;
                   }
                   case "Defender":{
-                      //to be implemented
+                      currentInfo.setText(String.valueOf(defender.getAssists()));
                       break;
                   }
               }
@@ -297,7 +301,7 @@ public class EditPlayerController implements Initializable {
               currentInfoLabel.setText("Current number of clean sheets:");
               switch (player.getPosition()){
                   case "Defender": {
-                      //to be implemented
+                      currentInfo.setText(Integer.toString(defender.getCleanSheets()));
                       break;
                   }
                   case "Goalkeeper":{
@@ -312,7 +316,11 @@ public class EditPlayerController implements Initializable {
               currentInfo.setText(Integer.toString(goalkeeper.getSaves()));
               newInfoLabel.setText("New number of saves:");
           }
-          //still to add defender specific editing
+          else if (editing.equalsIgnoreCase("Tackles won")){
+              currentInfoLabel.setText("Current number of Tackles won:");
+              currentInfo.setText(Integer.toString(defender.getTacklesWon()));
+              newInfoLabel.setText("New number of tackles won:");
+          }
 
 
           if (editing.equalsIgnoreCase("date of birth")){
@@ -359,181 +367,178 @@ public class EditPlayerController implements Initializable {
          Player player = currentPlayer;
          String editing = getSelectedButtonText();
          if (player != null && editing != null){
-             if (editing.equalsIgnoreCase("name")){
-                 String name = newInfoField.getText();
-                 player.setName(name);
-                 playerNameLabel.setText(player.getName());
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("id")){
-                 int id = Integer.parseInt(newInfoField.getText());
-                 boolean isIdDuplicate = false;
-                 for (Player element : Logic.getPlayers()){
-                     if (element.getPlayerId()==id){
-                         Alert alert = new Alert(Alert.AlertType.WARNING, "This id is already taken by another player!");
-                         alert.show();
-                         isIdDuplicate = true;
-                         break;
+             try {
+                 if (editing.equalsIgnoreCase("name")) {
+                     String name = newInfoField.getText();
+                     player.setName(name);
+                     playerNameLabel.setText(player.getName());
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("id")) {
+                     int id = Integer.parseInt(newInfoField.getText());
+                     boolean isIdDuplicate = false;
+                     for (Player element : Logic.getPlayers()) {
+                         if (element.getPlayerId() == id) {
+                             Alert alert = new Alert(Alert.AlertType.WARNING, "This id is already taken by another player!");
+                             alert.show();
+                             isIdDuplicate = true;
+                             break;
+                         }
                      }
-                 }
-                 if (!isIdDuplicate){
-                     player.setPlayerId(id);
-                     success.show();
-                 }
-             }
-             else if (editing.equalsIgnoreCase("date of birth")){
-                 LocalDate dob = newDate.getValue();
-                 Period period = Period.between(dob, LocalDate.now());
-                 if (period.getYears()<16){
-                     Alert alert = new Alert(Alert.AlertType.WARNING, "Player can't be younger than 16 years");
-                     alert.show();
-                 }
-                 else {
-                     player.setDateOfBirth(dob);
-                     success.show();
-                 }
-             }
-             else if (editing.equalsIgnoreCase("nationality")){
-                 String nationality = newInfoField.getText();
-                 player.setNationality(nationality);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("number")){
-                 int num = newNumSpinner.getValue();
-                 player.setNumber(num);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("team")){
-                 String teamName = newTeamChoice.getValue();
-                 player.getTeam().removePlayer(player);
-                 if (player.getTeam().getCaptain().getPlayerId()==player.getPlayerId()){
-                     player.getTeam().setCaptain(null);
-                 }
-                 for (Team team : Logic.getTeams()){
-                     if (team.getName().equalsIgnoreCase(teamName)){
-                         player.setTeam(team);
-                         team.addPlayer(player);
+                     if (!isIdDuplicate) {
+                         player.setPlayerId(id);
                          success.show();
-                         break;
                      }
+                 } else if (editing.equalsIgnoreCase("date of birth")) {
+                     LocalDate dob = newDate.getValue();
+                     Period period = Period.between(dob, LocalDate.now());
+                     if (period.getYears() < 16) {
+                         Alert alert = new Alert(Alert.AlertType.WARNING, "Player can't be younger than 16 years");
+                         alert.show();
+                     } else {
+                         player.setDateOfBirth(dob);
+                         success.show();
+                     }
+                 } else if (editing.equalsIgnoreCase("nationality")) {
+                     String nationality = newInfoField.getText();
+                     player.setNationality(nationality);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("number")) {
+                     int num = newNumSpinner.getValue();
+                     player.setNumber(num);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("team")) {
+                     String teamName = newTeamChoice.getValue();
+                     if (player.getTeam() != null) {
+                         player.getTeam().removePlayer(player);
+                         if (player.getTeam().getCaptain().getPlayerId() == player.getPlayerId()) {
+                             player.getTeam().setCaptain(null);
+                         }
+                     }
+                     for (Team team : Logic.getTeams()) {
+                         if (team.getName().equalsIgnoreCase(teamName)) {
+                             player.setTeam(team);
+                             team.addPlayer(player);
+                             success.show();
+                             break;
+                         }
+                     }
+                 } else if (editing.equalsIgnoreCase("height")) {
+                     int height = Integer.parseInt(newInfoField.getText());
+                     player.setHeight(height);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("weight")) {
+                     int weight = Integer.parseInt(newInfoField.getText());
+                     player.setWeight(weight);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("preferred foot")) {
+                     String preferredFoot = footGroup.getSelectedToggle().toString();
+                     player.setPreferredFoot(preferredFoot);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("yellow cards")) {
+                     int yellowCards = Integer.parseInt(newInfoField.getText());
+                     player.setYellowCards(yellowCards);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("red cards")) {
+                     int redCards = Integer.parseInt(newInfoField.getText());
+                     player.setRedCards(redCards);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("goals scored")) {
+                     int goalsScored = Integer.parseInt(newInfoField.getText());
+                     switch (player.getPosition()) {
+                         case "Forward": {
+                             Forward forward = (Forward) player;
+                             forward.setGoalsScored(goalsScored);
+                             forward.updateStats();
+                             break;
+                         }
+                         case "Midfielder": {
+                             Midfielder midfielder = (Midfielder) player;
+                             midfielder.setGoalsScored(goalsScored);
+                             break;
+                         }
+                         case "Defender": {
+                             Defender defender = (Defender) player;
+                             defender.setGoalsScored(goalsScored);
+                             break;
+                         }
+                     }
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("assists")) {
+                     int assists = Integer.parseInt(newInfoField.getText());
+                     switch (player.getPosition()) {
+                         case "Forward": {
+                             Forward forward = (Forward) player;
+                             forward.setGoalsScored(assists);
+                             break;
+                         }
+                         case "Midfielder": {
+                             Midfielder midfielder = (Midfielder) player;
+                             midfielder.setGoalsScored(assists);
+                             break;
+                         }
+                         case "Defender": {
+                             Defender defender = (Defender) player;
+                             defender.setAssists(assists);
+                             break;
+                         }
+                     }
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("clean sheets")) {
+                     int cleanSheets = Integer.parseInt(newInfoField.getText());
+                     switch (player.getPosition()) {
+                         case "Defender": {
+                             Defender defender = (Defender) player;
+                             defender.setCleanSheets(cleanSheets);
+                             break;
+                         }
+                         case "Goalkeeper": {
+                             Goalkeeper goalkeeper = (Goalkeeper) player;
+                             goalkeeper.setCleanSheets(cleanSheets);
+                         }
+                     }
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("shots on target")) {
+                     int shotsOnTarget = Integer.parseInt(newInfoField.getText());
+                     Forward forward = (Forward) player;
+                     forward.setShotsOnTarget(shotsOnTarget);
+                     forward.updateStats();
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("interceptions")) {
+                     int interceptions = Integer.parseInt(newInfoField.getText());
+                     Midfielder midfielder = (Midfielder) player;
+                     midfielder.setInterceptions(interceptions);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("key passes")) {
+                     int keyPasses = Integer.parseInt(newInfoField.getText());
+                     Midfielder midfielder = (Midfielder) player;
+                     midfielder.setInterceptions(keyPasses);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("Tackles won")) {
+                     int tacklesWon = Integer.parseInt(newInfoField.getText());
+                     Defender defender = (Defender) player;
+                     defender.setTacklesWon(tacklesWon);
+                     success.show();
+                 } else if (editing.equalsIgnoreCase("saves")) {
+                     int saves = Integer.parseInt(newInfoField.getText());
+                     Goalkeeper goalkeeper = (Goalkeeper) player;
+                     goalkeeper.setSaves(saves);
+                     success.show();
                  }
+                 newInfoField.clear();
+                 newDate.setValue(null);
+                 newTeamChoice.setValue(null);
+                 footGroup.selectToggle(null);
+                 newNumSpinner.getValueFactory().setValue(newNumSpinner.getValueFactory().getConverter().fromString("1"));
+                 choice.selectToggle(null);
+                 editBox.setVisible(false);
+             }catch (NumberFormatException nfe){
+                 Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input, please try again");
+                 alert.show();
              }
-             else if (editing.equalsIgnoreCase("height")){
-                 int height = Integer.parseInt(newInfoField.getText());
-                 player.setHeight(height);
-                 success.show();
+             catch (Exception e){
+                 Alert alert = new Alert(Alert.AlertType.ERROR, "An error has occurred");
+                 alert.show();
              }
-             else if (editing.equalsIgnoreCase("weight")){
-                 int weight = Integer.parseInt(newInfoField.getText());
-                 player.setWeight(weight);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("preferred foot")){
-                 String preferredFoot = footGroup.getSelectedToggle().toString();
-                 player.setPreferredFoot(preferredFoot);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("yellow cards")){
-                 int yellowCards = Integer.parseInt(newInfoField.getText());
-                 player.setYellowCards(yellowCards);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("red cards")){
-                 int redCards = Integer.parseInt(newInfoField.getText());
-                 player.setRedCards(redCards);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("goals scored")){
-                 int goalsScored = Integer.parseInt(newInfoField.getText());
-                 switch (player.getPosition()){
-                     case "Forward": {
-                         Forward forward = (Forward) player;
-                         forward.setGoalsScored(goalsScored);
-                         forward.updateStats();
-                         break;
-                     }
-                     case "Midfielder": {
-                         Midfielder midfielder = (Midfielder) player;
-                         midfielder.setGoalsScored(goalsScored);
-                         break;
-                     }
-                     case "Defender": {
-                         //still to be implemented
-                         break;
-                     }
-                 }
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("assists")){
-                 int assists = Integer.parseInt(newInfoField.getText());
-                 switch (player.getPosition()) {
-                     case "Forward": {
-                         Forward forward = (Forward) player;
-                         forward.setGoalsScored(assists);
-                         break;
-                     }
-                     case "Midfielder": {
-                         Midfielder midfielder = (Midfielder) player;
-                         midfielder.setGoalsScored(assists);
-                         break;
-                     }
-                     case "Defender": {
-                         //still to be implemented
-                         break;
-                     }
-                 }
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("clean sheets")) {
-                 int cleanSheets = Integer.parseInt(newInfoField.getText());
-                 switch (player.getPosition()) {
-                     case "Defender": {
-                         //still to be implemented
-                         break;
-                     }
-                     case "Goalkeeper": {
-                         Goalkeeper goalkeeper = (Goalkeeper) player;
-                         goalkeeper.setCleanSheets(cleanSheets);
-                     }
-                 }
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("shots on target")){
-                 int shotsOnTarget = Integer.parseInt(newInfoField.getText());
-                 Forward forward = (Forward) player;
-                 forward.setShotsOnTarget(shotsOnTarget);
-                 forward.updateStats();
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("interceptions")){
-                 int interceptions = Integer.parseInt(newInfoField.getText());
-                 Midfielder midfielder = (Midfielder) player;
-                 midfielder.setInterceptions(interceptions);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("key passes")){
-                 int keyPasses = Integer.parseInt(newInfoField.getText());
-                 Midfielder midfielder = (Midfielder) player;
-                 midfielder.setInterceptions(keyPasses);
-                 success.show();
-             }
-             else if (editing.equalsIgnoreCase("Tackles won")){
-                 int tacklesWon = Integer.parseInt(newInfoField.getText());
-                 //to be implemented
-             }
-             else if (editing.equalsIgnoreCase("saves")){
-                 int saves = Integer.parseInt(newInfoField.getText());
-                 Goalkeeper goalkeeper = (Goalkeeper) player;
-                 goalkeeper.setSaves(saves);
-                 success.show();
-             }
-             newInfoField.clear();
-             newDate.setValue(null);
-             newTeamChoice.setValue(null);
-             footGroup.selectToggle(null);
-             newNumSpinner.getValueFactory().setValue(newNumSpinner.getValueFactory().getConverter().fromString("1"));
-             choice.selectToggle(null);
-             editBox.setVisible(false);
          }
      }
 }
