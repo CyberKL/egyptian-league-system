@@ -12,7 +12,7 @@ public class Score {
 
     @Override
     public String toString(){
-        return homeTeam+":"+awayTeam;
+        return homeTeam+"-"+awayTeam;
     }
 
     public int getHomeTeam() {

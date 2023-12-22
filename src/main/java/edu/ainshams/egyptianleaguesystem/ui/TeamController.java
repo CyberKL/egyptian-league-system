@@ -33,8 +33,6 @@ public class TeamController {
     @FXML
     private GridPane infoGrid;
     @FXML
-    private TextField nameField;
-    @FXML
     private ToggleGroup choice;
     @FXML
     private Label teamNameLabel;
@@ -48,6 +46,10 @@ public class TeamController {
     private TextField newInfoField;
     @FXML
     private VBox editBox;
+    @FXML
+    private HBox playerChoiceBox;
+    @FXML
+    private ToggleGroup playerChoice;
     private Team currentTeam;
 
     public void defaultButton(MouseEvent event){
@@ -68,40 +70,57 @@ public class TeamController {
     }
 
     public void createTeam(){
-        Alert success = new Alert(Alert.AlertType.INFORMATION, "Team created successfully!");
-        boolean duplicateName = false;
-        boolean duplicateId = false;
-        String name = teamName.getText();
-        int id = Integer.parseInt(teamId.getText());
-        for (Team team : Logic.getTeams()){
-            if (team.getName().equalsIgnoreCase(name)){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("There is already a team with this name!");
-                alert.show();
-                duplicateName = true;
+        try {
+            Alert success = new Alert(Alert.AlertType.INFORMATION, "Team created successfully!");
+            boolean duplicateName = false;
+            boolean duplicateId = false;
+            String name = teamName.getText();
+            int id = Integer.parseInt(teamId.getText());
+            for (Team team : Logic.getTeams()) {
+                if (team.getName().equalsIgnoreCase(name)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("There is already a team with this name!");
+                    alert.show();
+                    duplicateName = true;
+                }
+                if (team.getTeamId() == id) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("There is already a team with this id!");
+                    alert.show();
+                    duplicateId = true;
+                }
             }
-            if (team.getTeamId()==id){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("There is already a team with this id!");
-                alert.show();
-                duplicateId = true;
+            if (!duplicateName && !duplicateId) {
+                Team team = new Team(name, id);
+                Logic.addTeam(team);
+                success.show();
             }
+            System.out.println("Available teams:");
+            Logic.displayTotalTeams();
+        }catch (NumberFormatException nfe){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+            alert.show();
         }
-        if (!duplicateName && !duplicateId) {
-            Team team = new Team(name, id);
-            Logic.addTeam(team);
-            success.show();
-        }
-        System.out.println("Available teams:");
-        Logic.displayTotalTeams();
     }
 
 
     public void teamInfo(Team team){
         Label teamName = new Label(team.getName());
         Label teamId = new Label(Integer.toString(team.getTeamId()));
-        Label teamManager = new Label(team.getManager().getName());
-        Label teamCaptain = new Label(team.getCaptain().getName());
+        Label teamManager;
+        if (team.getManager() != null) {
+            teamManager = new Label(team.getManager().getName());
+        }
+        else {
+            teamManager = new Label("N/A");
+        }
+        Label teamCaptain;
+        if (team.getCaptain() != null){
+            teamCaptain = new Label(team.getCaptain().getName());
+        }
+        else {
+            teamCaptain = new Label("N/A");
+        }
         Label matchesPlayed = new Label(Integer.toString(team.getMatchesPlayed()));
         Label teamWins = new Label(Integer.toString(team.getWins()));
         Label teamDraws = new Label(Integer.toString(team.getDraws()));
@@ -138,16 +157,15 @@ public class TeamController {
         Toggle selectedToggle = choice.getSelectedToggle();
 
         if (selectedToggle != null) {
-            // Assuming ToggleButton is used in the ToggleGroup
             return ((ToggleButton) selectedToggle).getText();
         } else {
-            // Handle the case where no toggle is selected, return an appropriate value
             return "No toggle selected";
         }
     }
     public void showNodes(Team currentTeam){
         String editing = getSelectedButtonText();
         if (currentTeam != null){
+            playerChoiceBox.setVisible(false);
             if (editing.equalsIgnoreCase("name")){
                 currentInfoLabel.setText("Current team name:");
                 currentInfo.setText(currentTeam.getName());
@@ -159,16 +177,29 @@ public class TeamController {
                 newInfoLabel.setText("New team ID:");
             }
             else if (editing.equalsIgnoreCase("players")){
-                //back to it later
+                currentInfoLabel.setText("Add or Remove player from team");
+                currentInfo.setText("");
+                newInfoField.setText("Enter Player ID:");
+                playerChoiceBox.setVisible(true);
             }
             else if (editing.equalsIgnoreCase("captain")){
                 currentInfoLabel.setText("Current team captain:");
-                currentInfo.setText(currentTeam.getCaptain().getName());
+                if (currentTeam.getCaptain() != null) {
+                    currentInfo.setText(currentTeam.getCaptain().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
                 newInfoLabel.setText("New team captain:");
             }
             else {
                 currentInfoLabel.setText("Current team manager:");
-                currentInfo.setText(currentTeam.getManager().getName());
+                if (currentTeam.getManager() != null) {
+                    currentInfo.setText(currentTeam.getManager().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
                 newInfoLabel.setText("New team manager:");
             }
             editBox.setVisible(true);
@@ -191,102 +222,127 @@ public class TeamController {
         Team team = currentTeam;
         String editing = getSelectedButtonText();
         if (currentTeam != null && editing != null){
-            if (editing.equalsIgnoreCase("name")){
-                boolean isNameTaken = false;
-                String teamName = newInfoField.getText();
-                for (Team element : Logic.getTeams()){
-                    if (element.getName().equalsIgnoreCase(teamName)){
-                        Alert nameTaken = new Alert(Alert.AlertType.WARNING, "This name is already taken");
-                        nameTaken.show();
-                        isNameTaken = true;
+            try {
+                if (editing.equalsIgnoreCase("name")) {
+                    boolean isNameTaken = false;
+                    String teamName = newInfoField.getText();
+                    for (Team element : Logic.getTeams()) {
+                        if (element.getName().equalsIgnoreCase(teamName)) {
+                            Alert nameTaken = new Alert(Alert.AlertType.WARNING, "This name is already taken");
+                            nameTaken.show();
+                            isNameTaken = true;
+                        }
                     }
-                }
-                if (!isNameTaken){
-                    team.setName(teamName);
-                    success.show();
-                    teamNameLabel.setText(team.getName());
-                }
-            }
-            else if (editing.equalsIgnoreCase("id")){
-                boolean isIdTaken = false;
-                int id = Integer.parseInt(newInfoField.getText());
-                for (Team element : Logic.getTeams()){
-                    if (element.getTeamId()==id){
-                        Alert idTaken = new Alert(Alert.AlertType.WARNING, "This id is already taken");
-                        idTaken.show();
-                        isIdTaken = true;
-                    }
-                }
-                if (!isIdTaken){
-                    team.setTeamId(id);
-                    success.show();
-                }
-            }
-            else if (editing.equalsIgnoreCase("players")){
-                //back to it later
-            }
-            else if (editing.equalsIgnoreCase("captain")){
-                boolean captainFound = false;
-                boolean playerFound = false;
-                int id = Integer.parseInt(newInfoField.getText());
-                for (Player player : team.getPlayers()){
-                    if (player.getPlayerId()==id && team.getCaptain().getPlayerId() != id){
-                        team.setCaptain(player);
+                    if (!isNameTaken) {
+                        team.setName(teamName);
                         success.show();
-                        captainFound = true;
-                        break;
+                        teamNameLabel.setText(team.getName());
                     }
-                }
-                if (!captainFound){
-                    if (team.getCaptain().getPlayerId() == id){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is already the captain of this team");
-                        alert.show();
-                    }
-                    for (Player player : Logic.getPlayers()){
-                        if (player.getPlayerId()==id){
-                            playerFound = true;
-                            break;
+                } else if (editing.equalsIgnoreCase("id")) {
+                    boolean isIdTaken = false;
+                    int id = Integer.parseInt(newInfoField.getText());
+                    for (Team element : Logic.getTeams()) {
+                        if (element.getTeamId() == id) {
+                            Alert idTaken = new Alert(Alert.AlertType.WARNING, "This id is already taken");
+                            idTaken.show();
+                            isIdTaken = true;
                         }
                     }
-                    if (!playerFound){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Player not found!");
-                        alert.show();
+                    if (!isIdTaken) {
+                        team.setTeamId(id);
+                        success.show();
                     }
-                    else {
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is not a current player in this team");
-                        alert.show();
-                    }
-                }
-            }
-            else if (editing.equalsIgnoreCase("manager")){
-                int id = Integer.parseInt(newInfoField.getText());
-                if (team.getManager().getManagerId()==id){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "This is already the team manager");
-                    alert.show();
-                }
-                else {
-                    boolean managerFound = false;
-                    for (Manager manager : Logic.getManagers()){
-                        if (manager.getManagerId()==id){
-                            managerFound = true;
-                            if (manager.getTeam()!=null){
-                                manager.getTeam().setManager(null);
+                } else if (editing.equalsIgnoreCase("players")) {
+                    int id = Integer.parseInt(newInfoField.getText());
+                    for (Player player : Logic.getPlayers()) {
+                        if (player.getPlayerId() == id) {
+                            Toggle selectedToggle = playerChoice.getSelectedToggle();
+                            String operation = ((ToggleButton) selectedToggle).getText();
+                            switch (operation) {
+                                case "Add": {
+                                    if (!team.getPlayers().contains(player)) {
+                                        team.addPlayer(player);
+                                        success.show();
+                                    } else {
+                                        Alert alert = new Alert(Alert.AlertType.WARNING, "This player is already a part of this team!");
+                                        alert.show();
+                                    }
+                                }
+                                case "Remove": {
+                                    if (team.getPlayers().contains(player)) {
+                                        team.removePlayer(player);
+                                        success.show();
+                                    } else {
+                                        Alert alert = new Alert(Alert.AlertType.WARNING, "The player entered is not a part of this team!");
+                                        alert.show();
+                                    }
+                                }
                             }
-                            team.setManager(manager);
-                            manager.setTeam(team);
+                        }
+                    }
+                } else if (editing.equalsIgnoreCase("captain")) {
+                    boolean captainFound = false;
+                    boolean playerFound = false;
+                    int id = Integer.parseInt(newInfoField.getText());
+                    for (Player player : team.getPlayers()) {
+                        if (player.getPlayerId() == id && team.getCaptain().getPlayerId() != id) {
+                            team.setCaptain(player);
                             success.show();
+                            captainFound = true;
                             break;
                         }
                     }
-                    if (!managerFound){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                    if (!captainFound) {
+                        if (team.getCaptain().getPlayerId() == id) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is already the captain of this team");
+                            alert.show();
+                        }
+                        for (Player player : Logic.getPlayers()) {
+                            if (player.getPlayerId() == id) {
+                                playerFound = true;
+                                break;
+                            }
+                        }
+                        if (!playerFound) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                            alert.show();
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is not a current player in this team");
+                            alert.show();
+                        }
+                    }
+                } else if (editing.equalsIgnoreCase("manager")) {
+                    int id = Integer.parseInt(newInfoField.getText());
+                    if (team.getManager().getManagerId() == id) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "This is already the team manager");
                         alert.show();
+                    } else {
+                        boolean managerFound = false;
+                        for (Manager manager : Logic.getManagers()) {
+                            if (manager.getManagerId() == id) {
+                                managerFound = true;
+                                if (manager.getTeam() != null) {
+                                    manager.getTeam().setManager(null);
+                                }
+                                team.setManager(manager);
+                                manager.setTeam(team);
+                                success.show();
+                                break;
+                            }
+                        }
+                        if (!managerFound) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
+                            alert.show();
+                        }
                     }
                 }
+                newInfoField.setText("");
+                choice.selectToggle(null);
+                editBox.setVisible(false);
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter number only");
+                alert.show();
             }
-            newInfoField.setText("");
-            choice.selectToggle(null);
-            editBox.setVisible(false);
         }
         else{
             Alert error = new Alert(Alert.AlertType.ERROR, "An error occurred please try again");

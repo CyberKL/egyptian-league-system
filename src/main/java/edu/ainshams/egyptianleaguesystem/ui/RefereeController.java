@@ -1,7 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
-import edu.ainshams.egyptianleaguesystem.model.Manager;
 import edu.ainshams.egyptianleaguesystem.model.Referee;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -74,7 +73,7 @@ public class RefereeController {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
@@ -115,18 +114,23 @@ public class RefereeController {
             missingDataAlert.show();
         }
         else {
-            String name = nameField.getText();
-            int id = Integer.parseInt(idField.getText());
-            LocalDate dateOfBirth = dobPicker.getValue();
-            String nationality = nationalityField.getText();
-            if (validateData(id,dateOfBirth)){
-                Referee referee = new Referee(name, dateOfBirth,nationality,id);
-                Logic.addReferee(referee);
-                success.show();
-                nameField.clear();
-                idField.clear();
-                nationalityField.clear();
-                dobPicker.setValue(null);
+            try {
+                String name = nameField.getText();
+                int id = Integer.parseInt(idField.getText());
+                LocalDate dateOfBirth = dobPicker.getValue();
+                String nationality = nationalityField.getText();
+                if (validateData(id, dateOfBirth)) {
+                    Referee referee = new Referee(name, dateOfBirth, nationality, id);
+                    Logic.addReferee(referee);
+                    success.show();
+                    nameField.clear();
+                    idField.clear();
+                    nationalityField.clear();
+                    dobPicker.setValue(null);
+                }
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+                alert.show();
             }
         }
     }
@@ -191,47 +195,46 @@ public class RefereeController {
         Referee referee = currentReferee;
         String editing = getSelectedButtonText();
         if (referee != null && editing != null){
-            if (editing.equalsIgnoreCase("name")){
-                String name = newInfoField.getText();
-                referee.setName(name);
-                success.show();
-                refereeNameLabel.setText(referee.getName());
-            }
-            else if (editing.equalsIgnoreCase("date of birth")){
-                LocalDate dob = newDate.getValue();
-                Period period = Period.between(dob, LocalDate.now());
-                if (period.getYears()<25){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Referee can't be younger than 25 years");
-                    alert.show();
-                }
-                else {
-                    referee.setDateOfBirth(dob);
+            try {
+                if (editing.equalsIgnoreCase("name")) {
+                    String name = newInfoField.getText();
+                    referee.setName(name);
+                    success.show();
+                    refereeNameLabel.setText(referee.getName());
+                } else if (editing.equalsIgnoreCase("date of birth")) {
+                    LocalDate dob = newDate.getValue();
+                    Period period = Period.between(dob, LocalDate.now());
+                    if (period.getYears() < 25) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Referee can't be younger than 25 years");
+                        alert.show();
+                    } else {
+                        referee.setDateOfBirth(dob);
+                        success.show();
+                    }
+                } else if (editing.equalsIgnoreCase("nationality")) {
+                    String nationality = newInfoField.getText();
+                    referee.setNationality(nationality);
+                    success.show();
+                } else if (editing.equalsIgnoreCase("matches refereed")) {
+                    int matchesRefereed = Integer.parseInt(newInfoField.getText());
+                    referee.setMatchesRefereed(matchesRefereed);
+                    success.show();
+                } else if (editing.equalsIgnoreCase("yellow cards")) {
+                    int yellowCards = Integer.parseInt(newInfoField.getText());
+                    referee.setYellowCards(yellowCards);
+                    success.show();
+                } else {
+                    int redCards = Integer.parseInt(newInfoField.getText());
+                    referee.setRedCards(redCards);
                     success.show();
                 }
+                newInfoField.setText("");
+                choice.selectToggle(null);
+                editBox.setVisible(false);
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+                alert.show();
             }
-            else if (editing.equalsIgnoreCase("nationality")){
-                String nationality = newInfoField.getText();
-                referee.setNationality(nationality);
-                success.show();
-            }
-            else if (editing.equalsIgnoreCase("matches refereed")){
-                int  matchesRefereed = Integer.parseInt(newInfoField.getText());
-                referee.setMatchesRefereed(matchesRefereed);
-                success.show();
-            }
-            else if (editing.equalsIgnoreCase("yellow cards")){
-                int  yellowCards = Integer.parseInt(newInfoField.getText());
-                referee.setYellowCards(yellowCards);
-                success.show();
-            }
-            else {
-                int  redCards = Integer.parseInt(newInfoField.getText());
-                referee.setRedCards(redCards);
-                success.show();
-            }
-            newInfoField.setText("");
-            choice.selectToggle(null);
-            editBox.setVisible(false);
         }
         else {
             Alert error = new Alert(Alert.AlertType.ERROR, "An error occurred please try again");

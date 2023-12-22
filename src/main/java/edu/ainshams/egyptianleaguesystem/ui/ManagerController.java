@@ -48,7 +48,6 @@ public class ManagerController implements Initializable {
     private ToggleGroup wasPlayer;
 
 
-
     public void defaultButton(MouseEvent event){
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
@@ -85,31 +84,37 @@ public class ManagerController implements Initializable {
         return nameField.getText().isBlank() ||
                 idField.getText().isBlank() ||
                 dobPicker.getValue() == null || dobPicker.getValue().toString().isBlank() ||
-                nationalityField.getText().isBlank();
+                nationalityField.getText().isBlank() ||
+                wasPlayer.getSelectedToggle() == null;
     }
     public void createManager(){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager created successfully!");
-        if (isAnyFieldBlank() || wasPlayer.getSelectedToggle() == null){
+        if (isAnyFieldBlank()){
             missingDataAlert.show();
         }
         else {
-            String name = nameField.getText();
-            int id = Integer.parseInt(idField.getText());
-            LocalDate dateOfBirth = dobPicker.getValue();
-            String nationality = nationalityField.getText();
-            int numOfTrophies = currentValue;
-            RadioButton selectedRadioButton = (RadioButton) wasPlayer.getSelectedToggle();
-            boolean formerPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
-            if (validateData(id, dateOfBirth)){
-                Manager manager = new Manager(name, dateOfBirth, nationality, id, numOfTrophies, formerPlayer);
-                Logic.addManager(manager);
-                success.show();
-                nameField.clear();
-                idField.clear();
-                nationalityField.clear();
-                dobPicker.setValue(null);
-                trophiesSpinner.getValueFactory().setValue(trophiesSpinner.getValueFactory().getConverter().fromString("0"));
-                wasPlayer.selectToggle(null);
+            try {
+                String name = nameField.getText();
+                int id = Integer.parseInt(idField.getText());
+                LocalDate dateOfBirth = dobPicker.getValue();
+                String nationality = nationalityField.getText();
+                int numOfTrophies = currentValue;
+                RadioButton selectedRadioButton = (RadioButton) wasPlayer.getSelectedToggle();
+                boolean formerPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
+                if (validateData(id, dateOfBirth)) {
+                    Manager manager = new Manager(name, dateOfBirth, nationality, id, numOfTrophies, formerPlayer);
+                    Logic.addManager(manager);
+                    success.show();
+                    nameField.clear();
+                    idField.clear();
+                    nationalityField.clear();
+                    dobPicker.setValue(null);
+                    trophiesSpinner.getValueFactory().setValue(trophiesSpinner.getValueFactory().getConverter().fromString("0"));
+                    wasPlayer.selectToggle(null);
+                }
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in the id field");
+                alert.show();
             }
         }
     }

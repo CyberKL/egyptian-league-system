@@ -10,9 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -87,11 +85,58 @@ public class MatchController {
             missingDataAlert.show();
         }
         else {
-            if (datePicker.getValue().isBefore(LocalDate.now())){
-                if (scoreField.getText().isBlank()){
-                    missingDataAlert.show();
-                }
-                else {
+            try {
+                if (datePicker.getValue().isBefore(LocalDate.now())) {
+                    if (scoreField.getText().isBlank()) {
+                        missingDataAlert.show();
+                    } else {
+                        Team homeTeam = null;
+                        Team awayTeam = null;
+                        Referee ref = null;
+                        Stadium stad = null;
+                        int matchId = Integer.parseInt(idField.getText());
+                        LocalDate matchDate = datePicker.getValue();
+                        String homeTeamName = homeTeamField.getText();
+                        String awayTeamName = awayTeamField.getText();
+                        String refName = refField.getText();
+                        String stadName = stadField.getText();
+                        String matchScore = scoreField.getText();
+                        if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.of(matchScore))) {
+                            for (Team team : Logic.getTeams()) {
+                                if (team.getName().equalsIgnoreCase(homeTeamName)) {
+                                    homeTeam = team;
+                                } else if (team.getName().equalsIgnoreCase(awayTeamName)) {
+                                    awayTeam = team;
+                                }
+                            }
+                            for (Referee referee : Logic.getReferees()) {
+                                if (referee.getName().equalsIgnoreCase(refName)) {
+                                    ref = referee;
+                                    break;
+                                }
+                            }
+                            for (Stadium stadium : Logic.getStadiums()) {
+                                if (stadium.getName().equalsIgnoreCase(stadName)) {
+                                    stad = stadium;
+                                    break;
+                                }
+                            }
+                            if (homeTeam!= null && awayTeam != null) {
+                                Match match = new Match(matchId, matchDate, homeTeam, awayTeam, ref, stad);
+                                Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                                match.setScore(score);
+                                Match.result(match);
+                                Logic.addMatch(match);
+                                updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
+                                success.show();
+                            }
+                            else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter correct teams");
+                                alert.show();
+                            }
+                        }
+                    }
+                } else {
                     Team homeTeam = null;
                     Team awayTeam = null;
                     Referee ref = null;
@@ -102,76 +147,42 @@ public class MatchController {
                     String awayTeamName = awayTeamField.getText();
                     String refName = refField.getText();
                     String stadName = stadField.getText();
-                    String matchScore = scoreField.getText();
-                    if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.of(matchScore))){
-                        for (Team team : Logic.getTeams()){
-                            if (team.getName().equalsIgnoreCase(homeTeamName)){
+                    if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.empty())) {
+                        for (Team team : Logic.getTeams()) {
+                            if (team.getName().equalsIgnoreCase(homeTeamName)) {
                                 homeTeam = team;
-                            }
-                            else if (team.getName().equalsIgnoreCase(awayTeamName)){
+                            } else if (team.getName().equalsIgnoreCase(awayTeamName)) {
                                 awayTeam = team;
                             }
                         }
-                        for (Referee referee : Logic.getReferees()){
-                            if (referee.getName().equalsIgnoreCase(refName)){
+                        for (Referee referee : Logic.getReferees()) {
+                            if (referee.getName().equalsIgnoreCase(refName)) {
                                 ref = referee;
                                 break;
                             }
                         }
-                        for (Stadium stadium : Logic.getStadiums()){
-                            if (stadium.getName().equalsIgnoreCase(stadName)){
+                        for (Stadium stadium : Logic.getStadiums()) {
+                            if (stadium.getName().equalsIgnoreCase(stadName)) {
                                 stad = stadium;
                                 break;
                             }
                         }
-                        Match match = new Match(matchId, matchDate, homeTeam, awayTeam, ref, stad);
-                        Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
-                        match.setScore(score);
-                        Match.result(match);
-                        Logic.addMatch(match);
-                        updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
-                        success.show();
-                    }
-                }
-            }
-            else {
-                Team homeTeam = null;
-                Team awayTeam = null;
-                Referee ref = null;
-                Stadium stad = null;
-                int matchId = Integer.parseInt(idField.getText());
-                LocalDate matchDate = datePicker.getValue();
-                String homeTeamName = homeTeamField.getText();
-                String awayTeamName = awayTeamField.getText();
-                String refName = refField.getText();
-                String stadName = stadField.getText();
-                if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.empty())){
-                    for (Team team : Logic.getTeams()){
-                        if (team.getName().equalsIgnoreCase(homeTeamName)){
-                            homeTeam = team;
+                        if (homeTeam != null && awayTeam != null) {
+                            Match match = new Match(matchId, matchDate, homeTeam, awayTeam, ref, stad);
+                            Logic.addMatch(match);
+                            updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
+                            success.show();
                         }
-                        else if (team.getName().equalsIgnoreCase(awayTeamName)){
-                            awayTeam = team;
+                        else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter correct teams");
+                            alert.show();
                         }
                     }
-                    for (Referee referee : Logic.getReferees()){
-                        if (referee.getName().equalsIgnoreCase(refName)){
-                            ref = referee;
-                            break;
-                        }
-                    }
-                    for (Stadium stadium : Logic.getStadiums()){
-                        if (stadium.getName().equalsIgnoreCase(stadName)){
-                            stad = stadium;
-                            break;
-                        }
-                    }
-                    Match match = new Match(matchId, matchDate, homeTeam, awayTeam, ref, stad);
-                    Logic.addMatch(match);
-                    updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
-                    success.show();
-                }
 
+                }
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+                alert.show();
             }
         }
     }
@@ -313,10 +324,34 @@ public class MatchController {
     public void matchInfo(Match match){
         Label id = new Label(Integer.toString(match.getMatchId()));
         Label date = new Label(match.getDate().toString());
-        Label homeTeam = new Label(match.getHomeTeam().getName());
-        Label awayTeam = new Label(match.getAwayTeam().getName());
-        Label referee = new Label(match.getReferee().getName());
-        Label stadium = new Label(match.getStadium().getName());
+        Label homeTeam;
+        if (match.getHomeTeam() != null) {
+            homeTeam = new Label(match.getHomeTeam().getName());
+        }
+        else {
+            homeTeam = new Label("N/A");
+        }
+        Label awayTeam;
+        if (match.getAwayTeam() != null) {
+            awayTeam = new Label(match.getAwayTeam().getName());
+        }
+        else {
+            awayTeam = new Label("N/A");
+        }
+        Label referee;
+        if (match.getReferee() != null){
+            referee = new Label(match.getReferee().getName());
+        }
+        else {
+            referee = new Label("N/A");
+        }
+        Label stadium;
+        if (match.getStadium() != null){
+            stadium = new Label(match.getStadium().getName());
+        }
+        else {
+            stadium = new Label("N/A");
+        }
         VBox infoList = new VBox(id, date, homeTeam, awayTeam, referee, stadium);
         if (match.getDate().isBefore(LocalDate.now())){
             Label scoreLabel = new Label("Score:");
@@ -342,19 +377,67 @@ public class MatchController {
     }
     public void showNodes(Match currentMatch){
         String editing = getSelectedButtonText();
-        if (currentMatch != null){
-            matchHeaderLabel.setText(currentMatch.matchHeader());
-            currentInfoLabel.setText("Current "+editing+":");
-            currentInfo.setText(currentMatch.getDate().toString());
-            newInfoLabel.setText("New "+editing+":");
+        if (currentMatch != null && editing != null){
+            if (editing.equalsIgnoreCase("date")){
+                currentInfoLabel.setText("Current date:");
+                currentInfo.setText(currentMatch.getDate().toString());
+                newInfoLabel.setText("New date:");
+            }
+            else if (editing.equalsIgnoreCase("home team")){
+                currentInfoLabel.setText("Current home team:");
+                if (currentMatch.getHomeTeam()!=null){
+                    currentInfo.setText(currentMatch.getHomeTeam().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
+                newInfoLabel.setText("New home team:");
+            }
+            else if (editing.equalsIgnoreCase("away team")){
+                currentInfoLabel.setText("Current away team:");
+                if (currentMatch.getAwayTeam()!=null){
+                    currentInfo.setText(currentMatch.getAwayTeam().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
+                newInfoLabel.setText("New away team:");
+            }
+            else if (editing.equalsIgnoreCase("referee")){
+                currentInfoLabel.setText("Current referee:");
+                if (currentMatch.getReferee()!=null){
+                    currentInfo.setText(currentMatch.getReferee().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
+                newInfoLabel.setText("New referee:");
+            }
+            else if (editing.equalsIgnoreCase("stadium")){
+                currentInfoLabel.setText("Current stadium:");
+                if (currentMatch.getStadium()!=null){
+                    currentInfo.setText(currentMatch.getStadium().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
+                newInfoLabel.setText("New stadium:");
+            }
+            else if (editing.equalsIgnoreCase("score")){
+                currentInfoLabel.setText("Current score:");
+                currentInfo.setText(currentMatch.getScore().toString());
+                newInfoLabel.setText("New score:");
+            }
             matchHeaderLabel.setVisible(true);
             currentInfoLabel.setVisible(true);
             currentInfo.setVisible(true);
             newInfoLabel.setVisible(true);
             if (editing.equalsIgnoreCase("date")){
                 newDate.setVisible(true);
+                newInfoField.setVisible(false);
             }else {
                 newInfoField.setVisible(true);
+                newDate.setVisible(false);
             }
             confirmBtn.setVisible(true);
         }else {
@@ -373,186 +456,181 @@ public class MatchController {
     }
     public void editMatchInfo(){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Match updated successfully!");
-        if (currentMatch != null) {
-            String editing = getSelectedButtonText();
-            if (editing.equalsIgnoreCase("date")) {
-                LocalDate newDate = this.newDate.getValue();
-                if (newDate.isBefore(LocalDate.now())) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Date must be upcoming!");
-                    alert.show();
-                } else {
-                    Referee referee = currentMatch.getReferee();
-                    Team homeTeam = currentMatch.getHomeTeam();
-                    Team awayTeam = currentMatch.getAwayTeam();
-                    Stadium stadium = currentMatch.getStadium();
-                    if (currentMatch.getDate().isBefore(LocalDate.now())){
-                        referee.setMatchesRefereed(referee.getMatchesRefereed()-1);
-                        homeTeam.setMatchesPlayed(homeTeam.getMatchesPlayed()-1);
-                        awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed()-1);
-                        stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn()-1);
-                        stadium.addUpcomingMatch(currentMatch);
-                        updateResultDelete(currentMatch);
-                    }
-                    currentMatch.setDate(newDate);
-                }
-            }
-            else if (editing.equalsIgnoreCase("home team")){
-                String newTeam = newInfoField.getText();
-                boolean done = false;
-                if (currentMatch.getDate().isBefore(LocalDate.now())){
-                    for (Team team : Logic.getTeams()){
-                        if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)){
-                            updateTeam(currentMatch.getHomeTeam(), currentMatch);
-                            currentMatch.setHomeTeam(team);
-                            currentMatch.getHomeTeam().addMatch(currentMatch);
-                            currentMatch.getHomeTeam().setMatchesPlayed(currentMatch.getHomeTeam().getMatchesPlayed()+1);
-                            Match.result(currentMatch);
-                            done = true;
-                            success.show();
-                            break;
-                        }
-                    }
-                    if (!done){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
+        String editing = getSelectedButtonText();
+        if (currentMatch != null && editing != null) {
+            try {
+                if (editing.equalsIgnoreCase("date")) {
+                    LocalDate newDate = this.newDate.getValue();
+                    if (newDate.isBefore(LocalDate.now())) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Date must be upcoming!");
                         alert.show();
-                    }
-                }
-                else {
-                    for (Team team : Logic.getTeams()){
-                        if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)){
-                            currentMatch.getHomeTeam().removeMatch(currentMatch);
-                            currentMatch.setHomeTeam(team);
-                            currentMatch.getHomeTeam().setMatchesPlayed(currentMatch.getHomeTeam().getMatchesPlayed()+1);
-                            done = true;
-                            success.show();
-                            break;
+                    } else {
+                        Referee referee = currentMatch.getReferee();
+                        Team homeTeam = currentMatch.getHomeTeam();
+                        Team awayTeam = currentMatch.getAwayTeam();
+                        Stadium stadium = currentMatch.getStadium();
+                        if (currentMatch.getDate().isBefore(LocalDate.now())) {
+                            referee.setMatchesRefereed(referee.getMatchesRefereed() - 1);
+                            homeTeam.setMatchesPlayed(homeTeam.getMatchesPlayed() - 1);
+                            awayTeam.setMatchesPlayed(awayTeam.getMatchesPlayed() - 1);
+                            stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn() - 1);
+                            stadium.addUpcomingMatch(currentMatch);
+                            updateResultDelete(currentMatch);
                         }
-                    }
-                    if (!done){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
-                        alert.show();
-                    }
-
-                }
-            }
-            else if (editing.equalsIgnoreCase("away team")){
-                String newTeam = newInfoField.getText();
-                boolean done = false;
-                if (currentMatch.getDate().isBefore(LocalDate.now())){
-                    for (Team team : Logic.getTeams()){
-                        if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)){
-                            updateTeam(currentMatch.getAwayTeam(), currentMatch);
-                            currentMatch.setAwayTeam(team);
-                            currentMatch.getAwayTeam().addMatch(currentMatch);
-                            currentMatch.getAwayTeam().setMatchesPlayed(currentMatch.getAwayTeam().getMatchesPlayed()+1);
-                            Match.result(currentMatch);
-                            done = true;
-                            success.show();
-                            break;
-                        }
-                    }
-                    if (!done){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
-                        alert.show();
-                    }
-                }
-                else {
-                    for (Team team : Logic.getTeams()){
-                        if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)){
-                            currentMatch.getAwayTeam().removeMatch(currentMatch);
-                            currentMatch.setAwayTeam(team);
-                            currentMatch.getAwayTeam().setMatchesPlayed(currentMatch.getAwayTeam().getMatchesPlayed()+1);
-                            done = true;
-                            success.show();
-                            break;
-                        }
-                    }
-                    if (!done){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
-                        alert.show();
-                    }
-                }
-            }
-            else if (editing.equalsIgnoreCase("referee")){
-                String refName = newInfoField.getText();
-                boolean found = false;
-                for (Referee referee : Logic.getReferees()){
-                    if (referee.getName().equalsIgnoreCase(refName)){
-                        currentMatch.getReferee().setMatchesRefereed(currentMatch.getReferee().getMatchesRefereed()-1);
-                        currentMatch.setReferee(referee);
-                        currentMatch.getReferee().setMatchesRefereed(currentMatch.getReferee().getMatchesRefereed()+1);
+                        currentMatch.setDate(newDate);
                         success.show();
-                        break;
                     }
-                }
-                if (!found){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Referee not found");
-                    alert.show();
-                }
-            }
-            else if (editing.equalsIgnoreCase("stadium")) {
-                String stadiumName = newInfoField.getText();
-                boolean found = false;
-                for (Stadium stadium : Logic.getStadiums()){
-                    if (stadium.getName().equalsIgnoreCase(stadiumName)){
-                        found = true;
-                        for (Match match : stadium.getUpcomingMatches()){
-                            if (match.getDate().equals(currentMatch.getDate())){
-                                Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium is not available on "+currentMatch.getDate());
-                                alert.show();
-                            }
-                            else {
-                                if (currentMatch.getDate().isBefore(LocalDate.now())){
-                                    currentMatch.getStadium().setMatchesPlayedOn(currentMatch.getStadium().getMatchesPlayedOn()-1);
-                                    currentMatch.setStadium(stadium);
-                                    currentMatch.getStadium().setMatchesPlayedOn(currentMatch.getStadium().getMatchesPlayedOn()+1);
-                                }
-                                else {
-                                    currentMatch.getStadium().removeUpcomingMatch(currentMatch);
-                                    currentMatch.setStadium(stadium);
-                                    currentMatch.getStadium().addUpcomingMatch(currentMatch);
-                                }
+                } else if (editing.equalsIgnoreCase("home team")) {
+                    String newTeam = newInfoField.getText();
+                    boolean done = false;
+                    if (currentMatch.getDate().isBefore(LocalDate.now())) {
+                        for (Team team : Logic.getTeams()) {
+                            if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)) {
+                                updateTeam(currentMatch.getHomeTeam(), currentMatch);
+                                currentMatch.setHomeTeam(team);
+                                currentMatch.getHomeTeam().addMatch(currentMatch);
+                                currentMatch.getHomeTeam().setMatchesPlayed(currentMatch.getHomeTeam().getMatchesPlayed() + 1);
+                                Match.result(currentMatch);
+                                done = true;
                                 success.show();
+                                break;
                             }
+                        }
+                        if (!done) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
+                            alert.show();
+                        }
+                    } else {
+                        for (Team team : Logic.getTeams()) {
+                            if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)) {
+                                currentMatch.getHomeTeam().removeMatch(currentMatch);
+                                currentMatch.setHomeTeam(team);
+                                currentMatch.getHomeTeam().setMatchesPlayed(currentMatch.getHomeTeam().getMatchesPlayed() + 1);
+                                done = true;
+                                success.show();
+                                break;
+                            }
+                        }
+                        if (!done) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
+                            alert.show();
+                        }
+
+                    }
+                } else if (editing.equalsIgnoreCase("away team")) {
+                    String newTeam = newInfoField.getText();
+                    boolean done = false;
+                    if (currentMatch.getDate().isBefore(LocalDate.now())) {
+                        for (Team team : Logic.getTeams()) {
+                            if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)) {
+                                updateTeam(currentMatch.getAwayTeam(), currentMatch);
+                                currentMatch.setAwayTeam(team);
+                                currentMatch.getAwayTeam().addMatch(currentMatch);
+                                currentMatch.getAwayTeam().setMatchesPlayed(currentMatch.getAwayTeam().getMatchesPlayed() + 1);
+                                Match.result(currentMatch);
+                                done = true;
+                                success.show();
+                                break;
+                            }
+                        }
+                        if (!done) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
+                            alert.show();
+                        }
+                    } else {
+                        for (Team team : Logic.getTeams()) {
+                            if (team.getName().equalsIgnoreCase(newTeam) && !currentMatch.getHomeTeam().getName().equalsIgnoreCase(newTeam) && !currentMatch.getAwayTeam().getName().equalsIgnoreCase(newTeam)) {
+                                currentMatch.getAwayTeam().removeMatch(currentMatch);
+                                currentMatch.setAwayTeam(team);
+                                currentMatch.getAwayTeam().setMatchesPlayed(currentMatch.getAwayTeam().getMatchesPlayed() + 1);
+                                done = true;
+                                success.show();
+                                break;
+                            }
+                        }
+                        if (!done) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Team already a side of this match or team not found!");
+                            alert.show();
+                        }
+                    }
+                } else if (editing.equalsIgnoreCase("referee")) {
+                    String refName = newInfoField.getText();
+                    boolean found = false;
+                    for (Referee referee : Logic.getReferees()) {
+                        if (referee.getName().equalsIgnoreCase(refName)) {
+                            currentMatch.getReferee().setMatchesRefereed(currentMatch.getReferee().getMatchesRefereed() - 1);
+                            currentMatch.setReferee(referee);
+                            currentMatch.getReferee().setMatchesRefereed(currentMatch.getReferee().getMatchesRefereed() + 1);
+                            success.show();
                             break;
                         }
                     }
-                }
-                if (!found){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found");
-                    alert.show();
-                }
-            }
-            else {
-                if (currentMatch.getDate().isBefore(LocalDate.now())) {
-                    String matchScore = newInfoField.getText();
-                    if (isValidScore(matchScore)) {
-                        Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
-                        currentMatch.getHomeTeam().setGoalsFor(currentMatch.getHomeTeam().getGoalsFor() - currentMatch.getScore().getHomeTeam());
-                        currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() - currentMatch.getScore().getAwayTeam());
-                        currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() - currentMatch.getScore().getAwayTeam());
-                        currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() - currentMatch.getScore().getHomeTeam());
-                        currentMatch.setScore(score);
-                        Match.result(currentMatch);
-                        currentMatch.getHomeTeam().setGoalsFor(currentMatch.getHomeTeam().getGoalsFor() + currentMatch.getScore().getHomeTeam());
-                        currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() + currentMatch.getScore().getAwayTeam());
-                        currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() + currentMatch.getScore().getAwayTeam());
-                        currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() + currentMatch.getScore().getHomeTeam());
-                        currentMatch.getHomeTeam().calcGoalDiff();
-                        currentMatch.getHomeTeam().calcTotalScore();
-                        currentMatch.getAwayTeam().calcGoalDiff();
-                        currentMatch.getAwayTeam().calcTotalScore();
-                        success.show();
+                    if (!found) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Referee not found");
+                        alert.show();
                     }
-                    else {
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a valid score!");
+                } else if (editing.equalsIgnoreCase("stadium")) {
+                    String stadiumName = newInfoField.getText();
+                    boolean found = false;
+                    for (Stadium stadium : Logic.getStadiums()) {
+                        if (stadium.getName().equalsIgnoreCase(stadiumName)) {
+                            found = true;
+                            for (Match match : stadium.getUpcomingMatches()) {
+                                if (match.getDate().equals(currentMatch.getDate())) {
+                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium is not available on " + currentMatch.getDate());
+                                    alert.show();
+                                } else {
+                                    if (currentMatch.getDate().isBefore(LocalDate.now())) {
+                                        currentMatch.getStadium().setMatchesPlayedOn(currentMatch.getStadium().getMatchesPlayedOn() - 1);
+                                        currentMatch.setStadium(stadium);
+                                        currentMatch.getStadium().setMatchesPlayedOn(currentMatch.getStadium().getMatchesPlayedOn() + 1);
+                                    } else {
+                                        currentMatch.getStadium().removeUpcomingMatch(currentMatch);
+                                        currentMatch.setStadium(stadium);
+                                        currentMatch.getStadium().addUpcomingMatch(currentMatch);
+                                    }
+                                    success.show();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found");
+                        alert.show();
+                    }
+                } else {
+                    if (currentMatch.getDate().isBefore(LocalDate.now())) {
+                        String matchScore = newInfoField.getText();
+                        if (isValidScore(matchScore)) {
+                            Score score = new Score(Integer.parseInt(matchScore.substring(0, 1)), Integer.parseInt(matchScore.substring(2)));
+                            currentMatch.getHomeTeam().setGoalsFor(currentMatch.getHomeTeam().getGoalsFor() - currentMatch.getScore().getHomeTeam());
+                            currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() - currentMatch.getScore().getAwayTeam());
+                            currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() - currentMatch.getScore().getAwayTeam());
+                            currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() - currentMatch.getScore().getHomeTeam());
+                            currentMatch.setScore(score);
+                            Match.result(currentMatch);
+                            currentMatch.getHomeTeam().setGoalsFor(currentMatch.getHomeTeam().getGoalsFor() + currentMatch.getScore().getHomeTeam());
+                            currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() + currentMatch.getScore().getAwayTeam());
+                            currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() + currentMatch.getScore().getAwayTeam());
+                            currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() + currentMatch.getScore().getHomeTeam());
+                            currentMatch.getHomeTeam().calcGoalDiff();
+                            currentMatch.getHomeTeam().calcTotalScore();
+                            currentMatch.getAwayTeam().calcGoalDiff();
+                            currentMatch.getAwayTeam().calcTotalScore();
+                            success.show();
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a valid score!");
+                            alert.show();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Match not played yet!");
                         alert.show();
                     }
                 }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Match not played yet!");
-                    alert.show();
-                }
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only");
+                alert.show();
             }
         }
         else {

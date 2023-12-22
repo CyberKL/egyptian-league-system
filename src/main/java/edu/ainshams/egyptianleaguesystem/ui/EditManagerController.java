@@ -6,7 +6,6 @@ import edu.ainshams.egyptianleaguesystem.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -19,11 +18,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class EditManagerController {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
@@ -66,7 +64,7 @@ public class EditManagerController {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
     public void switchManagerMenu(ActionEvent event) throws IOException {
@@ -110,7 +108,12 @@ public class EditManagerController {
             }
             else if (editing.equalsIgnoreCase("team")){
                 currentInfoLabel.setText("Current "+editing+":");
-                currentInfo.setText(manager.getTeam().getName());
+                if (manager.getTeam() != null) {
+                    currentInfo.setText(manager.getTeam().getName());
+                }
+                else {
+                    currentInfo.setText("N/A");
+                }
                 newInfoLabel.setText("New "+editing+":");
             }
             else if (editing.equalsIgnoreCase("Trophies")) {
@@ -162,66 +165,67 @@ public class EditManagerController {
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager updated successfully!");
         Manager manager = currentManager;
         String editing = getSelectedButtonText();
-        if (manager != null && editing != null){
-            if (editing.equalsIgnoreCase("name")){
-                String name = newInfoField.getText();
-                manager.setName(name);
-                managerNameLabel.setText(manager.getName());
-                success.show();
-            }
-            else if (editing.equalsIgnoreCase("date of birth")){
-                LocalDate dob = newDate.getValue();
-                Period period = Period.between(dob, LocalDate.now());
-                if (period.getYears()<30){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Manager can't be younger than 30 years");
-                    alert.show();
-                }
-                else {
-                    manager.setDateOfBirth(dob);
+        if (manager != null && editing != null) {
+            try {
+                if (editing.equalsIgnoreCase("name")) {
+                    String name = newInfoField.getText();
+                    manager.setName(name);
+                    managerNameLabel.setText(manager.getName());
                     success.show();
-                }
-            }
-            else if (editing.equalsIgnoreCase("team")){
-                String teamName = newInfoField.getText();
-                for (Team team : Logic.getTeams()){
-                    if (team.getName().equalsIgnoreCase(teamName)){
-                        if (manager.getTeam() != null){
-                            manager.getTeam().setManager(null);
-                        }
-                        manager.setTeam(team);
+                } else if (editing.equalsIgnoreCase("date of birth")) {
+                    LocalDate dob = newDate.getValue();
+                    Period period = Period.between(dob, LocalDate.now());
+                    if (period.getYears() < 30) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Manager can't be younger than 30 years");
+                        alert.show();
+                    } else {
+                        manager.setDateOfBirth(dob);
                         success.show();
                     }
+                } else if (editing.equalsIgnoreCase("team")) {
+                    String teamName = newInfoField.getText();
+                    for (Team team : Logic.getTeams()) {
+                        if (team.getName().equalsIgnoreCase(teamName)) {
+                            if (manager.getTeam() != null) {
+                                manager.getTeam().setManager(null);
+                            }
+                            manager.setTeam(team);
+                            success.show();
+                        }
+                    }
+                } else if (editing.equalsIgnoreCase("trophies")) {
+                    int trophies = Integer.parseInt(newInfoField.getText());
+                    manager.setTrophies(trophies);
+                    success.show();
+                } else if (editing.equalsIgnoreCase("nationality")) {
+                    String nationality = newInfoField.getText();
+                    manager.setNationality(nationality);
+                    success.show();
+                } else if (editing.equalsIgnoreCase("former player")) {
+                    RadioButton selectedRadioButton = (RadioButton) wasPlayerGroup.getSelectedToggle();
+                    boolean wasPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
+                    manager.setWasPlayer(wasPlayer);
+                    success.show();
+                } else if (editing.equalsIgnoreCase("yellow cards")) {
+                    int numOfYellowCards = Integer.parseInt(newInfoField.getText());
+                    manager.setYellowCards(numOfYellowCards);
+                    success.show();
+                } else {
+                    int numOfRedCards = Integer.parseInt(newInfoField.getText());
+                    manager.setRedCards(numOfRedCards);
+                    success.show();
                 }
+                newInfoField.setText("");
+                choice.selectToggle(null);
+                editBox.setVisible(false);
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input, please try again");
+                alert.show();
             }
-            else if (editing.equalsIgnoreCase("trophies")){
-                int trophies = Integer.parseInt(newInfoField.getText());
-                manager.setTrophies(trophies);
-                success.show();
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error has occurred");
+                alert.show();
             }
-            else if (editing.equalsIgnoreCase("nationality")){
-                String nationality = newInfoField.getText();
-                manager.setNationality(nationality);
-                success.show();
-            }
-            else if (editing.equalsIgnoreCase("former player")) {
-                RadioButton selectedRadioButton = (RadioButton) wasPlayerGroup.getSelectedToggle();
-                boolean wasPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
-                manager.setWasPlayer(wasPlayer);
-                success.show();
-            }
-            else if (editing.equalsIgnoreCase("yellow cards")) {
-                int numOfYellowCards = Integer.parseInt(newInfoField.getText());
-                manager.setYellowCards(numOfYellowCards);
-                success.show();
-            }
-            else {
-                int numOfRedCards = Integer.parseInt(newInfoField.getText());
-                manager.setRedCards(numOfRedCards);
-                success.show();
-            }
-            newInfoField.setText("");
-            choice.selectToggle(null);
-            editBox.setVisible(false);
         }
         else {
             Alert error = new Alert(Alert.AlertType.ERROR, "An error occurred please try again");

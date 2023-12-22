@@ -3,6 +3,7 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Forward extends Player {
@@ -13,8 +14,9 @@ public class Forward extends Player {
     private int assists;
 
 
-    public Forward(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot, String position){
-        super(name, dateOfBirth, nationality, playerId, number, team, height,weight,preferredFoot,position);
+    public Forward(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
+        super(name, dateOfBirth, nationality, playerId, number, team, height,weight,preferredFoot);
+        this.position = "Forward";
         this.goalsScored = 0;
         this.expectedGoals = 0.0;
         this.shotsOnTarget = 0;
@@ -34,15 +36,48 @@ public class Forward extends Player {
     }
 
     @Override
+    public Optional<Integer> getGoalsScored() {
+        return Optional.of(goalsScored);
+    }
+
+    public int getShotsOnTarget() {
+        return shotsOnTarget;
+    }
+
+    public Optional<Integer> getAssists() {
+        return Optional.of(assists);
+    }
+
+    public double getExpectedGoals() {
+        return expectedGoals;
+    }
+
+    public double getConversionRate() {
+        return conversionRate;
+    }
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public void setShotsOnTarget(int shotsOnTarget) {
+        this.shotsOnTarget = shotsOnTarget;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    @Override
     public void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
-        System.out.println("1.  Name\n2. Number\n3. Team\n 4. Height\n5. Weight\n6. Preferred Foot\n" +
+        System.out.println("1. Name\n2. Number\n3. Team\n 4. Height\n5. Weight\n6. Preferred Foot\n" +
                 "7. Nationality\n8. Data of birth\n9. Player ID\n10. Yellow cards\n11. Red cards\n12. Goals Scored\n13. Shots on Target\n14. Assists");
         try{
         choice = scanner.nextInt();
         scanner.nextLine();}catch (InputMismatchException e){
-            System.out.println("Invalid occurunce, Please reenter a valid input");
+            System.out.println("Invalid occurrence, Please reenter a valid input");
         }
         if(choice >=1 && choice<=11){
             super.updatePlayerInfo(playersList, teams, choice);
@@ -103,6 +138,10 @@ public class Forward extends Player {
         this.expectedGoals = expectedGoalsFromShots + expectedGoalsFromConversion;
     }
 
+    public void updateStats () {
+        calcConversionRate();
+        calcExpectedGoals();
+    }
 
 
 

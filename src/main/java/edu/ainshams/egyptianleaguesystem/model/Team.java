@@ -9,10 +9,10 @@ public class Team {
 
     private String name;
     private int teamId;
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<Player>();
     private Player captain;
     private Manager manager;
-    private  ArrayList<Match> matches;
+    private  ArrayList<Match> matches = new ArrayList<Match>();
     private int matchesPlayed;
     private int wins;
     private int draws;
@@ -21,7 +21,9 @@ public class Team {
     private int goalsAgainst;
     private int goalDifference;
     private int totalScore;
-    private  static int numOfTeams = 0;
+    private double averageAge;
+    private int numOfPlayers;
+    private static int numOfTeams = 0;
 
     public Team(String name, int teamId) {
         this.name = name;
@@ -352,6 +354,15 @@ public class Team {
         }
     }
 
+    private void calcAverageAge(){
+        numOfPlayers = players.size();
+        int totalAge = 0;
+        for (Player player : players){
+            totalAge += player.age;
+        }
+        averageAge = (double) totalAge/numOfPlayers;
+    }
+
     public void calcTotalScore() {
         this.totalScore = (3 * this.wins)+(this.draws);
     }
@@ -362,6 +373,9 @@ public class Team {
 
     public void addPlayer(Player player){
         this.players.add(player);
+    }
+    public void removePlayer (Player player){
+        this.players.remove(player);
     }
 
     public void deletePlayer(Player player){
@@ -393,5 +407,10 @@ public class Team {
 
     public void setCaptain(Player captain) {
         this.captain = captain;
+    }
+
+    public double getAverageAge() {
+        calcAverageAge();
+        return averageAge;
     }
 }

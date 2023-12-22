@@ -28,6 +28,12 @@ public class Logic {
     public static ArrayList<Player> getPlayers() {
         return players;
     }
+    public static void addPlayer(Player player){
+        players.add(player);
+    }
+    public static void removePlayer(Player player){
+        players.remove(player);
+    }
 
     public static ArrayList<Stadium> getStadiums() {
         return stadiums;

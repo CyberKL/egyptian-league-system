@@ -2,7 +2,6 @@ package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Match;
-import edu.ainshams.egyptianleaguesystem.model.Player;
 import edu.ainshams.egyptianleaguesystem.model.Stadium;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +20,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.concurrent.Flow;
 
 public class StadiumController {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
@@ -51,7 +49,7 @@ public class StadiumController {
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
     }
-    public void blueBack(MouseEvent event){
+    public void blueBack(){
         backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
@@ -62,37 +60,41 @@ public class StadiumController {
             missingDataAlert.show();
         }
         else {
-            boolean duplicateStadium = false;
-            String name = nameField.getText();
-            int id = Integer.parseInt(idField.getText());
-            int capacity = Integer.parseInt(capacityField.getText());
-            String city = cityField.getText();
-            for (Stadium stadium : Logic.getStadiums()){
-                if (stadium.getName().equalsIgnoreCase(name)){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("There is already a stadium with this name!");
-                    alert.show();
-                    duplicateStadium = true;
-                    break;
+            try {
+                boolean duplicateStadium = false;
+                String name = nameField.getText();
+                int id = Integer.parseInt(idField.getText());
+                int capacity = Integer.parseInt(capacityField.getText());
+                String city = cityField.getText();
+                for (Stadium stadium : Logic.getStadiums()) {
+                    if (stadium.getName().equalsIgnoreCase(name)) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setContentText("There is already a stadium with this name!");
+                        alert.show();
+                        duplicateStadium = true;
+                        break;
+                    }
                 }
-            }
-            for (Stadium stadium : Logic.getStadiums()){
-                if (stadium.getId()==id){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("There is already a stadium with this name!");
-                    alert.show();
-                    duplicateStadium = true;
-                    break;
+                for (Stadium stadium : Logic.getStadiums()) {
+                    if (stadium.getId() == id) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setContentText("There is already a stadium with this name!");
+                        alert.show();
+                        duplicateStadium = true;
+                        break;
+                    }
                 }
-            }
-            if (!duplicateStadium){
-                Stadium stadium = new Stadium(name, id, capacity, city);
-                Logic.addStadium(stadium);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Stadium created!");
+                if (!duplicateStadium) {
+                    Stadium stadium = new Stadium(name, id, capacity, city);
+                    Logic.addStadium(stadium);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Stadium created!");
+                    alert.show();
+                }
+            }catch (NumberFormatException nfe){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id and capacity field");
                 alert.show();
             }
-            System.out.println(Logic.getStadiums().getFirst().getName());
         }
     }
 

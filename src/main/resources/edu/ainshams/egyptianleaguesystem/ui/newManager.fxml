@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.ManagerController">
    <children>
       <GridPane layoutX="206.0" layoutY="290.0" prefHeight="403.0" prefWidth="985.0" AnchorPane.bottomAnchor="292.0" AnchorPane.leftAnchor="350.0">
@@ -74,7 +73,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <DatePicker fx:id="dobPicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" />
+                  <DatePicker fx:id="dobPicker" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" />
                   <TextField fx:id="nationalityField" layoutX="10.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0">
                      <font>
                         <Font size="20.0" />

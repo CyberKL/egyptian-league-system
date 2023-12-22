@@ -1,8 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -155,7 +150,7 @@ public class MenuController {
                 return team;
             }
         }
-        return null; // Manager not found
+        return null;
     }
     public void deleteTeam(ActionEvent event) {
         TextDialogController textDialogController = openTextDialog(event, "Delete Team");
@@ -256,15 +251,21 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Team existingTeam = findTeamById(enteredId);
                 if (existingTeam != null) {
-                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamMatches.fxml"));
-                    Parent teamInfoRoot = teamInfoLoader.load();
-                    TeamController teamController = teamInfoLoader.getController();
-                    teamController.teamMatches(existingTeam);
+                    if (!existingTeam.getMatches().isEmpty()) {
+                        FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamMatches.fxml"));
+                        Parent teamInfoRoot = teamInfoLoader.load();
+                        TeamController teamController = teamInfoLoader.getController();
+                        teamController.teamMatches(existingTeam);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert notFound = new Alert(Alert.AlertType.WARNING, "This team doesn't have matches!");
+                        notFound.show();
+                    }
                 } else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
                     notFound.show();
@@ -285,15 +286,21 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Team existingTeam = findTeamById(enteredId);
                 if (existingTeam != null) {
-                    FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamPlayers.fxml"));
-                    Parent teamInfoRoot = teamInfoLoader.load();
-                    TeamController teamController = teamInfoLoader.getController();
-                    teamController.teamPlayers(existingTeam);
+                    if (!existingTeam.getPlayers().isEmpty()) {
+                        FXMLLoader teamInfoLoader = new FXMLLoader(getClass().getResource("teamPlayers.fxml"));
+                        Parent teamInfoRoot = teamInfoLoader.load();
+                        TeamController teamController = teamInfoLoader.getController();
+                        teamController.teamPlayers(existingTeam);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(teamInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert notFound = new Alert(Alert.AlertType.WARNING, "This team doesn't have players!");
+                        notFound.show();
+                    }
                 } else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Team not found!");
                     notFound.show();
@@ -389,20 +396,27 @@ public class MenuController {
                 int enteredId = Integer.parseInt(textDialogController.getEnteredId());
                 Stadium existingStadium = findStadiumById(enteredId);
                 if (existingStadium != null) {
-                    FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
-                    Parent stadiumMatchesRoot = stadiumMatchesLoader.load();
-                    StadiumController stadiumController = stadiumMatchesLoader.getController();
-                    stadiumController.stadiumUpcomingMatches(existingStadium);
+                    if (!existingStadium.getUpcomingMatches().isEmpty()) {
+                        FXMLLoader stadiumMatchesLoader = new FXMLLoader(getClass().getResource("stadiumMatches.fxml"));
+                        Parent stadiumMatchesRoot = stadiumMatchesLoader.load();
+                        StadiumController stadiumController = stadiumMatchesLoader.getController();
+                        stadiumController.stadiumUpcomingMatches(existingStadium);
 
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene startMenu = new Scene(stadiumMatchesRoot, screenSize.getWidth(), screenSize.getHeight());
-                    stage.setScene(startMenu);
-                    stage.show();
-                } else {
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Scene startMenu = new Scene(stadiumMatchesRoot, screenSize.getWidth(), screenSize.getHeight());
+                        stage.setScene(startMenu);
+                        stage.show();
+                    }
+                    else {
+                        Alert noMatches = new Alert(Alert.AlertType.ERROR, "There is no upcoming matches on this stadium");
+                        noMatches.show();
+                    }
+                }
+                else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Stadium not found!");
                     notFound.show();
                 }
-            } catch (NumberFormatException nfe){
+            } catch (NumberFormatException nfe) {
                 alert.show();
             }
         }
@@ -761,6 +775,115 @@ public class MenuController {
                 }
                 else {
                     Alert notFound = new Alert(Alert.AlertType.WARNING, "Referee not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+    }
+
+
+    //Player related methods
+    public void switchToNewPlayer (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newPlayer.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
+        stage.setScene(startMenu);
+        stage.show();
+    }
+    private Player findPlayerById(int enteredId) {
+        for (Player player : Logic.getPlayers()) {
+            if (player.getPlayerId()==enteredId) {
+                return player;
+            }
+        }
+        return null; // Manager not found
+    }
+    public void switchToEditPlayer (ActionEvent event) throws IOException {
+        TextDialogController textDialogController = openTextDialog(event, "Edit Player");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    FXMLLoader editPlayerLoader = new FXMLLoader(getClass().getResource("editPlayer.fxml"));
+                    Parent editPlayerRoot = editPlayerLoader.load();
+                    EditPlayerController editPlayerController = editPlayerLoader.getController();
+                    editPlayerController.initialization(existingPlayer);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(editPlayerRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+
+    public void switchToPlayerInfo (ActionEvent event) throws IOException {
+        TextDialogController textDialogController = openTextDialog(event, "Player Info");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            // Check if the user entered a valid ID
+            try{
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    FXMLLoader playerInfoLoader = new FXMLLoader(getClass().getResource("playerInfo.fxml"));
+                    Parent playerInfoRoot = playerInfoLoader.load();
+                    PlayerInfoController playerInfoController = playerInfoLoader.getController();
+                    playerInfoController.playerInfo(existingPlayer);
+
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene startMenu = new Scene(playerInfoRoot, screenSize.getWidth(), screenSize.getHeight());
+                    stage.setScene(startMenu);
+                    stage.show();
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
+                    notFound.show();
+                }
+            }catch (NumberFormatException nfe){
+                alert.show();
+            }
+        }
+        // If the user canceled or closed the dialog, do nothing
+    }
+
+    public void deletePlayer (ActionEvent event) {
+        TextDialogController textDialogController = openTextDialog(event, "Delete player");
+
+        if (textDialogController != null && textDialogController.getEnteredId() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only!");
+            try {
+                int enteredId = Integer.parseInt(textDialogController.getEnteredId());
+                Player existingPlayer = findPlayerById(enteredId);
+                if (existingPlayer != null) {
+                    Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingPlayer.getName());
+                    Optional<ButtonType> choice = delete.showAndWait();
+                    if (choice.isPresent() && choice.get() == ButtonType.OK) {
+                        Logic.removePlayer(existingPlayer);
+                        Alert success = new Alert(Alert.AlertType.INFORMATION);
+                        success.setTitle("Success");
+                        success.setHeaderText(null);
+                        success.setContentText("Player deleted successfully!");
+                        success.showAndWait();
+                    }
+                }
+                else {
+                    Alert notFound = new Alert(Alert.AlertType.WARNING, "Player not found!");
                     notFound.show();
                 }
             }catch (NumberFormatException nfe){
