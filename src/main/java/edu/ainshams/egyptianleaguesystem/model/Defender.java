@@ -71,7 +71,7 @@ public class Defender extends Player{
     public void updatePlayerInfo(ArrayList<Player> playersList, ArrayList<Team> teams, int choice) throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
-        System.out.println("1. Number\n2. Team\n 3. Height\n4. Weight\n5. Preferred Foot\n6. Position\n" +
+        System.out.println("1. Name\n2. Number\n3. Team\n 4. Height\n5. Weight\n6. Preferred Foot\n" +
                 "7. Nationality\n8. Data of birth\n9. Player ID\n10. Yellow cards\n11. Red cards\n12. Goals Scored\n13. Tackles Won\n14. Assists\n15. Clean Sheets");
         try {
             choice = scanner.nextInt();
