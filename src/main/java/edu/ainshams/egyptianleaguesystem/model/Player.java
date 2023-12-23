@@ -98,7 +98,7 @@ public abstract class Player extends FootballCharacter{
     public abstract Optional<Integer> getGoalsScored();
     public abstract Optional<Integer> getAssists();
 
-    public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
+    public static String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter player name:");
         String playerName = scanner.nextLine();
@@ -139,6 +139,12 @@ public abstract class Player extends FootballCharacter{
         if (choice >= 1 && choice <= 11) {
             switch (choice) {
                 case 1: {
+                    System.out.print("Enter new name: ");
+                    String newName = scanner.nextLine();
+                    this.name = newName;
+                    break;
+                }
+                case 2: {
                     System.out.print("Enter new number: ");
                     try {
                         int newNumber = scanner.nextInt();
@@ -154,7 +160,7 @@ public abstract class Player extends FootballCharacter{
                     }
                     break;
                 }
-                case 2: {
+                case 3: {
                     System.out.print("Enter new Team name: ");
                     String newTeamName = scanner.nextLine();
 
@@ -173,7 +179,7 @@ public abstract class Player extends FootballCharacter{
                     break;
                 }
 
-                case 3: {
+                case 4: {
                     try {
                         System.out.print("Enter new Height: ");
                         int newHeight = scanner.nextInt();
@@ -185,7 +191,7 @@ public abstract class Player extends FootballCharacter{
                     }
                     break;
                 }
-                case 4: {
+                case 5: {
                     try {
                         System.out.print("Enter new Weight: ");
                         int newWeight = scanner.nextInt();
@@ -197,7 +203,7 @@ public abstract class Player extends FootballCharacter{
                     }
                     break;
                 }
-                case 5: {
+                case 6: {
                     System.out.print("Enter new Preferred Foot (left/right): ");
                     String newPreferredFoot = scanner.nextLine();
 
@@ -209,26 +215,6 @@ public abstract class Player extends FootballCharacter{
                     }
                     break;
                 }
-
-                case 6: {
-                    System.out.print("Enter new Position (Forward, Midfielder, Defender, Goalkeeper): ");
-                    String newPosition = scanner.nextLine();
-                    String[] validPositions = {"Forward", "Midfielder", "Defender", "Goalkeeper"};
-                    boolean isValidPosition = false;
-                    for (String validPos : validPositions) {
-                        if (validPos.equalsIgnoreCase(newPosition)) {
-                            this.position = newPosition;
-                            isValidPosition = true;
-                            break;
-                        }
-                    }
-                    if (!isValidPosition) {
-                        System.out.println("Invalid position, Please enter a valid position.");
-                        return;
-                    }
-                    break;
-                }
-
                 case 7: {
                     System.out.print("Enter new Nationality: ");
                     String newNationality = scanner.nextLine();
@@ -296,7 +282,7 @@ public abstract class Player extends FootballCharacter{
     }
 
 
-    protected void enterPlayerInfo(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
+    protected static void enterPlayerInfo(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         Team playerTeam = null;
         boolean isValidAge = false;
@@ -402,7 +388,6 @@ public abstract class Player extends FootballCharacter{
             Player defender = new Defender(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(defender);
         }
-
 
     }
 
