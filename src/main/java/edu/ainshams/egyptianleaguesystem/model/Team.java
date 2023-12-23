@@ -187,6 +187,8 @@ public class Team {
 
             Team team = new Team(teamName, id);
             teams.add(team);
+            System.out.println("Team created successful");
+
         }
         catch (InputMismatchException e){
             System.out.println("Id must be a number");

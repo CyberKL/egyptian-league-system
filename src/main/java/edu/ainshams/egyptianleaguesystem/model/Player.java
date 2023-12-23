@@ -98,7 +98,7 @@ public abstract class Player extends FootballCharacter{
     public abstract Optional<Integer> getGoalsScored();
     public abstract Optional<Integer> getAssists();
 
-    public String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
+    public static String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter player name:");
         String playerName = scanner.nextLine();
@@ -282,7 +282,7 @@ public abstract class Player extends FootballCharacter{
     }
 
 
-    protected void enterPlayerInfo(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
+    protected static void enterPlayerInfo(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         Team playerTeam = null;
         boolean isValidAge = false;
@@ -388,7 +388,6 @@ public abstract class Player extends FootballCharacter{
             Player defender = new Defender(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(defender);
         }
-
 
     }
 

@@ -1,5 +1,6 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
+import edu.ainshams.egyptianleaguesystem.model.DuplicateException;
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +15,9 @@ import java.io.IOException;
 
 public class Main extends Application{
 
-    public static void main(String[] args){
-        launch(args);
+    public static void main(String[] args) throws DuplicateException {
+        //launch(args);
+    Logic.startCLI();
     }
 
     @Override
