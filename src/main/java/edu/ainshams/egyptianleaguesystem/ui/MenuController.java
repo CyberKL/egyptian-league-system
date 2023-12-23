@@ -55,6 +55,12 @@ public class MenuController implements Initializable {
     private VBox refereesMenuBar;
     @FXML
     private VBox stadiumsMenuBar;
+    @FXML
+    private Label upcomingMatchesLabel;
+    @FXML
+    private Label mostAssistsLabel;
+    @FXML
+    private Label leagueLeadersLabel;
 
     private MFXButton createButton(String icon, String text, EventHandler action) {
         MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
@@ -132,6 +138,34 @@ public class MenuController implements Initializable {
                     topScorerLabel.setText(player.getName());
                 });
             }
+            if (!Logic.getPlayers().isEmpty()) {
+                Optional<Player> topAssistProvider = Logic.getPlayers().stream()
+                        .filter(player -> player.getAssists().isPresent())
+                        .max(Comparator.comparingInt(player -> player.getAssists().orElse(0)));
+                topAssistProvider.ifPresent(player -> {
+                    mostAssistsLabel.setText(player.getName());  // Assuming you have a label named topAssistLabel to display the top assist provider's name
+                });
+            }
+            if (!Logic.getTeams().isEmpty()) {
+                Team leagueLeader = Logic.getTeams().stream()
+                        .max(Comparator.comparingInt(Team::getTotalScore))
+                        .orElse(null);  // If there's no team, it will return null; handle as needed
+
+                if (leagueLeader != null) {
+                    leagueLeadersLabel.setText(leagueLeader.getName());  // Assuming you have a label named leagueLeaderLabel to display the league leader's name
+                }
+            }
+            if (!Logic.getMatches().isEmpty()) {
+                Optional<Match> upcomingMatch = Logic.getMatches().stream()
+                        .filter(match -> match.getDate().isAfter(LocalDate.now()))  // Filtering matches that occur after the current date
+                        .min(Comparator.comparing(Match::getDate));  // Finding the closest upcoming match based on date
+
+                upcomingMatch.ifPresent(match -> {
+                    upcomingMatchesLabel.setText(match.matchHeader());  // Assuming you have a label named upcomingMatchLabel to display the upcoming match details
+                });
+            }
+
+
         }
         if (teamMenuBar != null){
             MFXButton newTeam = createButton("fas-plus", "New", event -> {
@@ -376,14 +410,6 @@ public class MenuController implements Initializable {
 
     }
 
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
-    }
 
     private TextDialogController openTextDialog(ActionEvent event, String title) {
         try {

@@ -6,6 +6,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -110,6 +111,22 @@ public class StandingsController implements Initializable {
 
         standingsTable.getColumns().addAll(positionColumn, nameColumn, matchesPlayedColumn, winsColumn, drawsColumn, lossesColumn, goalsForColumn, goalsAgainstColumn, goalDifferenceColumn, totalScoreColumn);
 
+        totalScoreColumn.setSortType(TableColumn.SortType.DESCENDING);
+        ObservableList<Team> observableTeams = FXCollections.observableArrayList(Logic.getTeams());
+        // Creating a sorted list from the observable list.
+        SortedList<Team> sortedData = new SortedList<>(observableTeams);
+        sortedData.comparatorProperty().bind(standingsTable.comparatorProperty());
+
+        // Add a listener to the sort order to handle column sorting.
+        standingsTable.getSortOrder().add(totalScoreColumn);
+        standingsTable.setSortPolicy(tv -> {
+            FXCollections.sort(sortedData, (o1, o2) -> {
+                if (o1.getTotalScore() == o2.getTotalScore()) return 0;
+                return o1.getTotalScore() > o2.getTotalScore() ? -1 : 1;
+            });
+            return true;
+        });
+
         for (TableColumn<Team, ?> column : standingsTable.getColumns()) {
             column.setResizable(false);
             column.setSortable(false);
@@ -122,8 +139,8 @@ public class StandingsController implements Initializable {
                 column.setPrefWidth(80);
             }
         }
-        ObservableList<Team> observableTeams = FXCollections.observableArrayList(Logic.getTeams());
-        standingsTable.setItems(observableTeams);
+
+        standingsTable.setItems(sortedData);
         int rowHeight = 50;
         double preferredHeight = (Team.getNumOfTeams() + 1) * rowHeight;
         standingsTable.setPrefHeight(preferredHeight);
