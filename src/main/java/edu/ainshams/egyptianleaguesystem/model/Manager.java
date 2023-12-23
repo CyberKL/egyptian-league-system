@@ -118,6 +118,7 @@ public class Manager extends FootballCharacter{
         }
         Manager manager = new Manager(managerName, managerDateOfBirth, managerNationality, managerId, trophies, wasPlayer);
         managerList.add(manager);
+        System.out.println("Manger created successful");
     }
 
 
