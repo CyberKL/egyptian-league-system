@@ -16,8 +16,8 @@ import java.io.IOException;
 public class Main extends Application{
 
     public static void main(String[] args) throws DuplicateException {
-        //launch(args);
-    Logic.startCLI();
+        launch(args);
+  //  Logic.startCLI();
     }
 
     @Override
