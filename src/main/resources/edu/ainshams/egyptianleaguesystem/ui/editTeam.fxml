@@ -1,98 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
    <children>
-      <Button fx:id="backBtn" layoutX="20.33333396911621" layoutY="658.6666259765625" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
-      <VBox alignment="CENTER" layoutX="62.0" layoutY="198.0" prefHeight="516.0" prefWidth="324.0" spacing="20.0">
+      <VBox fx:id="sidebar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="893.0" prefWidth="257.0" styleClass="sidebar">
          <children>
-            <ToggleButton maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Name">
-               <font>
-                  <Font size="32.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="choice" />
-               </toggleGroup>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="ID" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="35.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Players" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="61.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Captain" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="86.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="65.0" prefWidth="240.0" text="Manager" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-         </children>
-      </VBox>
-      <VBox fx:id="editBox" alignment="CENTER" layoutX="857.0" layoutY="236.0" visible="false" AnchorPane.bottomAnchor="350.0">
-         <children>
-            <Label fx:id="currentInfoLabel" alignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="40.0" />
-               </font>
-            </Label>
-            <Pane prefHeight="57.0" prefWidth="212.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="currentInfo" alignment="CENTER" prefHeight="58.0" prefWidth="0.0" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <HBox fx:id="playerChoiceBox" layoutY="-1.0" prefHeight="57.0" prefWidth="212.0" spacing="20.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false" text="Add">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="playerChoice" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton mnemonicParsing="false" text="Remove" toggleGroup="$playerChoice">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </RadioButton>
-                     </children>
-                  </HBox>
+                  <ImageView fitHeight="101.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../logo.png" />
+                     </image>
+                  </ImageView>
                </children>
-            </Pane>
-            <Label fx:id="newInfoLabel" alignment="CENTER" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <Label prefHeight="45.0" prefWidth="247.0" styleClass="header" text="Egyptian League">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label styleClass="menuTitle" text="Edit team">
+               <VBox.margin>
+                  <Insets left="10.0" top="140.0" />
+               </VBox.margin>
+            </Label>
+            <VBox alignment="TOP_CENTER" prefHeight="581.0" prefWidth="257.0" spacing="20.0" styleClass="menuBar">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <children>
+                  <MFXRectangleToggleNode minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Name">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="choice" />
+                     </toggleGroup>
+                  </MFXRectangleToggleNode>
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="10.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="ID" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="43.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Players" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="77.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Captain" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="110.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Manager" toggleGroup="$choice" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <BorderPane fx:id="editForm" layoutX="681.0" layoutY="225.0" prefHeight="444.0" prefWidth="637.0" styleClass="editForm" visible="false">
+         <top>
+            <Label fx:id="teamNameLabel" alignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-            <TextField fx:id="newInfoField" />
-            <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#editTeamInfo" text="Confirm" />
-         </children>
-      </VBox>
-      <Label fx:id="teamNameLabel" alignment="CENTER" layoutX="892.0" layoutY="137.0" textFill="WHITE">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
+         </top>
+         <bottom>
+            <MFXButton onAction="#editTeamInfo" text="Confirm" textFill="WHITE" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </bottom>
+         <center>
+            <VBox fx:id="editBox1" alignment="TOP_CENTER" prefWidth="637.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="currentInfoLabel" styleClass="info-label" />
+                  <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="230.0">
+                     <children>
+                        <HBox fx:id="playerChoiceBox" layoutX="9.0" layoutY="2.0" prefHeight="46.0" prefWidth="212.0" spacing="20.0">
+                           <children>
+                              <RadioButton mnemonicParsing="false" text="Add" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="playerChoice" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Remove" textFill="WHITE" toggleGroup="$playerChoice">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                        <Label fx:id="currentInfo" layoutX="38.0" prefHeight="49.0" prefWidth="139.0" styleClass="info-label" />
+                     </children>
+                  </Pane>
+                  <Label fx:id="newInfoLabel" layoutX="269.0" layoutY="115.0" styleClass="info-label" />
+                  <MFXTextField fx:id="newInfoField" floatingText="New info" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

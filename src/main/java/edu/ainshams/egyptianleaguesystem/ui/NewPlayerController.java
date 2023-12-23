@@ -1,18 +1,22 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
+import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -25,9 +29,7 @@ import java.util.ResourceBundle;
 public class NewPlayerController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
-    private Button backBtn;
-    @FXML
-    private DatePicker dobPicker;
+    private MFXDatePicker dobPicker;
 
     @FXML
     private ToggleGroup foot;
@@ -48,13 +50,15 @@ public class NewPlayerController implements Initializable {
     private Spinner<Integer> numSpinner;
 
     @FXML
-    private ChoiceBox<String> positionChoice;
+    private MFXComboBox<String> positionChoice;
 
     @FXML
-    private ChoiceBox<String> teamChoice;
+    private MFXComboBox<String> teamChoice;
 
     @FXML
     private TextField weightField;
+    @FXML
+    private AnchorPane subMenuRoot;
 
 
     public void switchPlayersMenu(ActionEvent event) throws IOException {
@@ -64,20 +68,32 @@ public class NewPlayerController implements Initializable {
         stage.setScene(startMenu);
         stage.show();
     }
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
-    }
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
 
     private final String[] positions = {"Forward","Midfielder","Defender","Goalkeeper"};
     int currentValue;
+
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchPlayersMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
         for (Team team : Logic.getTeams()){
             teamChoice.getItems().add(team.getName());
         }

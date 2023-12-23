@@ -1,76 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MatchController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MatchController">
    <children>
-      <VBox alignment="CENTER" layoutX="25.0" layoutY="198.0" prefHeight="516.0" prefWidth="324.0" spacing="20.0">
+      <VBox fx:id="sidebar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="893.0" prefWidth="257.0" styleClass="sidebar">
          <children>
-            <ToggleButton mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Date">
-               <font>
-                  <Font size="32.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="choice" />
-               </toggleGroup>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Home Team" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="35.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Away Team" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="61.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Referee" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="86.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Stadium" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton layoutX="10.0" layoutY="111.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" text="Score" toggleGroup="$choice">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </ToggleButton>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="101.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <Label prefHeight="45.0" prefWidth="247.0" styleClass="header" text="Egyptian League">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label styleClass="menuTitle" text="Edit match">
+               <VBox.margin>
+                  <Insets left="10.0" top="140.0" />
+               </VBox.margin>
+            </Label>
+            <VBox alignment="TOP_CENTER" prefHeight="581.0" prefWidth="257.0" spacing="20.0" styleClass="menuBar">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <children>
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="10.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Date">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="choice" />
+                     </toggleGroup>
+                  </MFXRectangleToggleNode>
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="43.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Home Team" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="77.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Away Team" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="110.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Referee" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="10.0" layoutY="143.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Stadium" toggleGroup="$choice" />
+                  <MFXRectangleToggleNode layoutX="33.0" layoutY="199.0" minHeight="-Infinity" prefHeight="70.0" prefWidth="210.0" text="Score" toggleGroup="$choice" />
+               </children>
+            </VBox>
          </children>
       </VBox>
-      <Label fx:id="matchHeaderLabel" alignment="CENTER" layoutX="742.0" layoutY="210.0" textFill="WHITE" visible="false">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <Label fx:id="currentInfoLabel" alignment="CENTER" layoutX="760.0" layoutY="330.0" textFill="WHITE" visible="false">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <Label fx:id="currentInfo" alignment="CENTER" layoutX="776.0" layoutY="388.0" textFill="WHITE" visible="false">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <Label fx:id="newInfoLabel" alignment="CENTER" layoutX="786.0" layoutY="516.0" textFill="WHITE" visible="false">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <TextField fx:id="newInfoField" layoutX="803.0" layoutY="598.0" visible="false" />
-      <DatePicker fx:id="newDate" layoutX="791.0" layoutY="598.0" visible="false" />
-      <Button fx:id="confirmBtn" layoutX="772.0" layoutY="661.0" mnemonicParsing="false" onAction="#editMatchInfo" text="Confirm" visible="false" />
+      <BorderPane fx:id="editForm" layoutX="693.0" layoutY="234.0" prefHeight="444.0" prefWidth="637.0" styleClass="editForm" visible="false">
+         <top>
+            <Label fx:id="matchHeaderLabel" alignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+         </top>
+         <bottom>
+            <MFXButton onAction="#editMatchInfo" text="Confirm" textFill="WHITE" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </bottom>
+         <center>
+            <VBox fx:id="editBox" alignment="TOP_CENTER" prefWidth="637.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="currentInfoLabel" styleClass="info-label" />
+                  <Label fx:id="currentInfo" layoutX="269.0" layoutY="10.0" styleClass="info-label" />
+                  <Label fx:id="newInfoLabel" layoutX="269.0" layoutY="115.0" styleClass="info-label" />
+                  <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="190.0">
+                     <children>
+                        <MFXDatePicker id="custDatePicker" fx:id="newDate" closePopupOnChange="false" editable="false" floatMode="INLINE" floatingText="Date of birth" visible="false" />
+                        <MFXTextField fx:id="newInfoField" floatingText="New info" prefHeight="71.0" prefWidth="200.0">
+                           <textFill>
+                              <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                           </textFill>
+                        </MFXTextField>
+                     </children>
+                  </Pane>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

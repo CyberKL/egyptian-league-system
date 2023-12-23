@@ -2,30 +2,38 @@ package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Referee;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ResourceBundle;
 
-public class RefereeController {
+public class RefereeController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
-    private Button backBtn;
-    @FXML
-    private DatePicker dobPicker;
+    private MFXDatePicker dobPicker;
 
     @FXML
     private TextField idField;
@@ -48,7 +56,7 @@ public class RefereeController {
     private Label currentInfoLabel;
 
     @FXML
-    private VBox editBox;
+    private BorderPane editForm;
 
     @FXML
     private TextField newInfoField;
@@ -59,8 +67,39 @@ public class RefereeController {
     @FXML
     private Label refereeNameLabel;
     @FXML
-    private DatePicker newDate;
+    private MFXDatePicker newDate;
+    @FXML
+    private AnchorPane subMenuRoot;
     private Referee currentReferee;
+
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchRefereesMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+        if(choice!=null) {
+            choice.selectedToggleProperty().addListener(((observableValue, toggle, t1) -> {
+                if (t1 == null) {
+                    editForm.setVisible(false);
+                }
+            }));
+        }
+    }
 
     public void switchRefereesMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("refereesMenu.fxml"));
@@ -68,13 +107,6 @@ public class RefereeController {
         Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(startMenu);
         stage.show();
-    }
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
@@ -187,7 +219,15 @@ public class RefereeController {
                 currentInfo.setText(Integer.toString(referee.getRedCards()));
                 newInfoLabel.setText("New number of red cards issued");
             }
-            editBox.setVisible(true);
+            if (editing.equalsIgnoreCase("date of birth")){
+                newInfoField.setVisible(false);
+                newDate.setVisible(true);
+            }
+            else {
+                newInfoField.setVisible(true);
+                newDate.setVisible(false);
+            }
+            editForm.setVisible(true);
         }
     }
     public void editRefereeInfo(){
@@ -230,7 +270,7 @@ public class RefereeController {
                 }
                 newInfoField.setText("");
                 choice.selectToggle(null);
-                editBox.setVisible(false);
+                editForm.setVisible(false);
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
                 alert.show();
@@ -244,14 +284,27 @@ public class RefereeController {
 
     public void refereeInfo(Referee referee){
         Label nameLabel = new Label(referee.getName());
+        nameLabel.getStyleClass().add("info-label");
+
         Label idLabel = new Label(Integer.toString(referee.getRefereeId()));
+        idLabel.getStyleClass().add("info-label");
+
         Label ageLabel = new Label(Integer.toString(referee.getAge()));
+        ageLabel.getStyleClass().add("info-label");
+
         Label nationalityLabel = new Label(referee.getNationality());
+        nationalityLabel.getStyleClass().add("info-label");
+
         Label matchesRefereedLabel = new Label(Integer.toString(referee.getMatchesRefereed()));
+        matchesRefereedLabel.getStyleClass().add("info-label");
+
         Label yellowCardLabel = new Label(Integer.toString(referee.getYellowCards()));
+        yellowCardLabel.getStyleClass().add("info-label");
+
         Label redCardLabel = new Label(Integer.toString(referee.getRedCards()));
+        redCardLabel.getStyleClass().add("info-label");
         VBox labelsBox = new VBox(nameLabel, idLabel, ageLabel, nationalityLabel, matchesRefereedLabel, yellowCardLabel, redCardLabel);
+        labelsBox.setAlignment(Pos.CENTER);
         infoGrid.add(labelsBox, 1, 0);
-        infoGrid.setVisible(true);
     }
 }

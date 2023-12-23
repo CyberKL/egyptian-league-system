@@ -2,18 +2,23 @@ package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Manager;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -46,15 +51,20 @@ public class ManagerController implements Initializable {
 
     @FXML
     private ToggleGroup wasPlayer;
+    @FXML
+    private AnchorPane subMenuRoot;
+
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
 
 
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
-    }
+
     public void switchManagerMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("managersMenu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -68,6 +78,16 @@ public class ManagerController implements Initializable {
     int currentValue;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchManagerMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         valueFactory.setValue(0);
         trophiesSpinner.setValueFactory(valueFactory);

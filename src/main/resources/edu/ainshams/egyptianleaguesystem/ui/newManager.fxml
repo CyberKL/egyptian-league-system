@@ -1,110 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.mfxcore.controls.Label?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.ManagerController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.ManagerController">
    <children>
-      <GridPane layoutX="206.0" layoutY="290.0" prefHeight="403.0" prefWidth="985.0" AnchorPane.bottomAnchor="292.0" AnchorPane.leftAnchor="350.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <VBox prefHeight="289.0" prefWidth="215.0">
+      <BorderPane layoutX="616.0" layoutY="183.0" prefHeight="545.0" prefWidth="475.0" styleClass="createForm">
+         <top>
+            <Label styleClass="header" text="New Manager" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="50.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <bottom>
+            <MFXButton maxHeight="-Infinity" onAction="#createManager" prefHeight="54.0" prefWidth="135.0" text="Confirm" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </bottom>
+         <center>
+            <FlowPane alignment="CENTER" hgap="20.0" prefHeight="200.0" prefWidth="200.0" vgap="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Name:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label text="ID:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label text="Date of birth:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="173.0" text="Nationality:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="254.0" text="Number of trophies:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="335.0" text="Former Player:" textFill="WHITE">
-                     <font>
-                        <Font size="55.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="501.0" prefWidth="493.0" spacing="40.0" GridPane.columnIndex="1">
-               <children>
-                  <TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0">
+                  <MFXTextField fx:id="nameField" floatingText="Name" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <MFXTextField fx:id="idField" floatingText="ID" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <MFXDatePicker id="custDatePicker" fx:id="dobPicker" closePopupOnChange="false" editable="false" floatMode="INLINE" floatingText="Date of birth" />
+                  <MFXTextField fx:id="nationalityField" floatingText="Nationality" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <Label id="number" text="Trophies" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
-                  </TextField>
-                  <TextField fx:id="idField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <DatePicker fx:id="dobPicker" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" />
-                  <TextField fx:id="nationalityField" layoutX="10.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <Spinner fx:id="trophiesSpinner" prefHeight="25.0" prefWidth="84.0" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                  </Label>
+                  <Spinner fx:id="trophiesSpinner" prefHeight="27.0" prefWidth="85.0" />
+                  <HBox id="footBox" alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="422.0" spacing="50.0">
                      <children>
+                        <Label text="Former player:" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
                         <RadioButton mnemonicParsing="false" text="Yes" textFill="WHITE">
                            <font>
-                              <Font size="26.0" />
+                              <Font size="20.0" />
                            </font>
                            <toggleGroup>
                               <ToggleGroup fx:id="wasPlayer" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" text="No" textFill="WHITE" toggleGroup="$wasPlayer">
+                        <RadioButton layoutX="188.0" layoutY="37.0" mnemonicParsing="false" text="No" textFill="WHITE" toggleGroup="$wasPlayer">
                            <font>
-                              <Font size="26.0" />
+                              <Font size="20.0" />
                            </font>
                         </RadioButton>
                      </children>
                   </HBox>
                </children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </VBox>
-         </children>
-      </GridPane>
-      <Button fx:id="backBtn" layoutX="50.33333396911621" layoutY="692.6666259765625" mnemonicParsing="false" onAction="#switchManagerMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
-      <Button layoutX="761.0" layoutY="681.0" mnemonicParsing="false" onAction="#createManager" text="Create" />
+            </FlowPane>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

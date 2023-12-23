@@ -1,6 +1,7 @@
 module edu.ainshams.egyptianleaguesystem {
     requires javafx.controls;
     requires javafx.fxml;
+    requires MaterialFX;
 
 
     opens edu.ainshams.egyptianleaguesystem.ui to javafx.fxml;

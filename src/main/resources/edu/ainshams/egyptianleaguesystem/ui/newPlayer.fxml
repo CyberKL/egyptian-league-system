@@ -1,120 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.mfxcore.controls.Label?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.NewPlayerController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.NewPlayerController">
    <children>
-      <Button fx:id="backBtn" layoutX="40.33333396911621" layoutY="682.6666259765625" mnemonicParsing="false" onAction="#switchPlayersMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
-      <GridPane layoutX="521.3333333333334" layoutY="46.0" prefHeight="697.0" prefWidth="785.0" AnchorPane.leftAnchor="521.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <VBox prefHeight="289.0" prefWidth="379.0">
+      <BorderPane layoutX="616.0" layoutY="101.0" prefHeight="545.0" prefWidth="475.0" styleClass="createForm" AnchorPane.bottomAnchor="101.0">
+         <top>
+            <Label styleClass="header" text="New Player" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="50.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <bottom>
+            <MFXButton maxHeight="-Infinity" onAction="#createPlayer" prefHeight="54.0" prefWidth="135.0" text="Confirm" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </bottom>
+         <center>
+            <FlowPane alignment="CENTER" hgap="20.0" prefHeight="200.0" prefWidth="200.0" vgap="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="395.0" text="Name:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="476.0" text="ID:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" text="Date of birth:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="173.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Nationality:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="254.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Number:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="335.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Team:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="417.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Height:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="498.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Weight:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="579.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="373.0" text="Preferred Foot:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="661.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="341.0" text="Position:" textFill="WHITE">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox prefHeight="501.0" prefWidth="367.0" spacing="41.0" GridPane.columnIndex="1">
-               <children>
-                  <TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0">
+                  <MFXTextField fx:id="nameField" floatingText="Name" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <MFXTextField fx:id="idField" floatingText="ID" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <MFXDatePicker id="custDatePicker" fx:id="dobPicker" closePopupOnChange="false" editable="false" floatMode="INLINE" floatingText="Date of birth" />
+                  <MFXTextField fx:id="nationalityField" floatingText="Nationality" prefHeight="71.0" prefWidth="200.0">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <Label id="number" text="Number" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
-                  </TextField>
-                  <TextField fx:id="idField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <DatePicker fx:id="dobPicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0" />
-                  <TextField fx:id="nationalityField" layoutX="10.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <Spinner fx:id="numSpinner" />
-                  <ChoiceBox fx:id="teamChoice" prefWidth="150.0" />
-                  <TextField fx:id="heightField" layoutX="10.0" layoutY="230.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="weightField" layoutX="10.0" layoutY="441.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="220.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
-                  <HBox prefHeight="38.0" prefWidth="393.0" spacing="60.0">
+                  </Label>
+                  <Spinner fx:id="numSpinner" prefHeight="27.0" prefWidth="85.0" />
+                  <MFXComboBox id="customNCombo" fx:id="teamChoice" floatingText="Team" />
+                  <MFXTextField fx:id="heightField" floatingText="Height" prefHeight="71.0" prefWidth="200.0" promptText="cm">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <MFXTextField fx:id="weightField" floatingText="Weight" prefHeight="71.0" prefWidth="200.0" promptText="kg">
+                     <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+                     </textFill>
+                  </MFXTextField>
+                  <HBox id="footBox" alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="422.0" spacing="50.0">
                      <children>
+                        <Label text="Preferred foot:" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
                         <RadioButton mnemonicParsing="false" text="Right" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
@@ -123,21 +87,17 @@
                               <ToggleGroup fx:id="foot" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" text="Left" textFill="WHITE" toggleGroup="$foot">
+                        <RadioButton layoutX="188.0" layoutY="37.0" mnemonicParsing="false" text="Left" textFill="WHITE" toggleGroup="$foot">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </RadioButton>
                      </children>
                   </HBox>
-                  <ChoiceBox fx:id="positionChoice" layoutX="10.0" layoutY="372.0" prefWidth="150.0" />
+                  <MFXComboBox id="customNCombo" fx:id="positionChoice" floatingText="Position" layoutX="293.0" layoutY="194.0" />
                </children>
-               <GridPane.margin>
-                  <Insets top="15.0" />
-               </GridPane.margin>
-            </VBox>
-         </children>
-      </GridPane>
-      <Button layoutX="708.0" layoutY="766.0" mnemonicParsing="false" onAction="#createPlayer" text="Create" />
+            </FlowPane>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

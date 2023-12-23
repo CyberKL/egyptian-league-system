@@ -1,23 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import io.github.palexdev.mfxcore.controls.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="988.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MenuController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" styleClass="rootPane" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.MenuController">
    <children>
-      <VBox layoutX="5.0" layoutY="-54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="737.0" prefWidth="988.0" spacing="10.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="0.0">
+      <VBox fx:id="sidebar" layoutX="5.0" layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="893.0" prefWidth="257.0" styleClass="sidebar" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="0.0">
          <children>
-            <Button fx:id="teamBtn" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Teams" />
-            <Button fx:id="matchBtn" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#switchMatchMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Matches" />
-            <Button fx:id="playerBtn" layoutX="10.0" layoutY="189.0" mnemonicParsing="false" onAction="#switchPlayerMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Players" />
-            <Button fx:id="standingsBtn" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" onAction="#switchStandingsMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Standings" />
-            <Button fx:id="mngrBtn" layoutX="10.0" layoutY="275.0" mnemonicParsing="false" onAction="#switchManagerMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Managers" />
-            <Button fx:id="refBtn" layoutX="10.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchRefereeMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Refeeres" />
-            <Button fx:id="stadBtn" layoutX="10.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchStadiumMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stadiums" />
-            <Button fx:id="statsBtn" layoutX="10.0" layoutY="586.0" mnemonicParsing="false" onAction="#switchStatsMenu" onMouseEntered="#hoverButton" onMouseExited="#defaultButton" prefHeight="71.0" prefWidth="700.0" text="Stats" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="101.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <Label prefHeight="45.0" prefWidth="247.0" styleClass="header" text="Egyptian League">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label styleClass="menuTitle" text="Main menu">
+               <VBox.margin>
+                  <Insets left="10.0" top="140.0" />
+               </VBox.margin>
+            </Label>
+            <VBox fx:id="menuBar" prefHeight="581.0" prefWidth="257.0" styleClass="menuBar">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </VBox>
          </children>
       </VBox>
-      <Button fx:id="quitBtn" layoutX="10.333333969116211" layoutY="652.6666259765625" mnemonicParsing="false" onMouseEntered="#redQuit" onMouseExited="#defaultButton" prefHeight="57.0" prefWidth="107.0" text="Quit" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+      <GridPane fx:id="infoBarGrid" layoutX="489.0" layoutY="98.0" prefHeight="699.0" prefWidth="1035.0" styleClass="infoBarGrid">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox fx:id="topScorerBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="240.0" prefWidth="273.0" styleClass="infoBar" GridPane.halignment="CENTER">
+               <children>
+                  <Label fx:id="topScorerLabel" />
+               </children>
+            </VBox>
+            <VBox layoutX="148.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="240.0" prefWidth="273.0" styleClass="infoBar" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <VBox layoutX="10.0" layoutY="255.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="240.0" prefWidth="273.0" styleClass="infoBar" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <VBox layoutX="528.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="240.0" prefWidth="273.0" styleClass="infoBar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label forceDisableTextEllipsis="true" prefHeight="45.0" prefWidth="141.0" styleClass="header" text="Most Goals" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label forceDisableTextEllipsis="true" prefHeight="45.0" prefWidth="151.0" styleClass="header" text="Most Assists" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label forceDisableTextEllipsis="true" prefHeight="45.0" prefWidth="215.0" styleClass="header" text="Upcoming matches" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+            <Label forceDisableTextEllipsis="true" prefHeight="45.0" prefWidth="177.0" styleClass="header" text="League leaders" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <graphic>
+                  <StackPane prefHeight="9.0" prefWidth="11.0" />
+               </graphic>
+            </Label>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

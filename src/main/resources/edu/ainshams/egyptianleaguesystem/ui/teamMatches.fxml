@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import io.github.palexdev.mfxcore.controls.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" styleClass="rootPane" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
    <children>
-      <Button fx:id="backBtn" layoutX="40.33333396911621" layoutY="678.6666259765625" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
+      <VBox fx:id="infoBox" alignment="CENTER" layoutX="570.0" layoutY="224.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="464.0" prefWidth="565.0" styleClass="infoBar" />
+      <Label fx:id="teamNameMatchesLabel" layoutX="786.0" layoutY="138.0" style="-fx-font-size: 50; -fx-text-fill: #2a2922;" />
    </children>
 </AnchorPane>

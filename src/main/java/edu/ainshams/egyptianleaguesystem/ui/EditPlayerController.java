@@ -1,21 +1,22 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
+import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -28,8 +29,6 @@ import java.util.ResourceBundle;
 public class EditPlayerController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
-    private Button backBtn;
-    @FXML
     private ToggleGroup choice;
 
     @FXML
@@ -39,7 +38,7 @@ public class EditPlayerController implements Initializable {
     private Label currentInfoLabel;
 
     @FXML
-    private VBox editBox;
+    private BorderPane editForm;
 
     @FXML
     private HBox footBox;
@@ -48,7 +47,7 @@ public class EditPlayerController implements Initializable {
     private ToggleGroup footGroup;
 
     @FXML
-    private DatePicker newDate;
+    private MFXDatePicker newDate;
 
     @FXML
     private TextField newInfoField;
@@ -59,14 +58,33 @@ public class EditPlayerController implements Initializable {
     @FXML
     private Spinner<Integer> newNumSpinner;
 
-
     @FXML
-    private ChoiceBox<String> newTeamChoice;
+    private MFXComboBox<String> newTeamChoice;
 
     @FXML
     private Label playerNameLabel;
+
     @FXML
-    private FlowPane choicesPane;
+    private VBox choicesPane;
+
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private MFXRectangleToggleNode goalsScored;
+    @FXML
+    private MFXRectangleToggleNode assists;
+    @FXML
+    private MFXRectangleToggleNode shotsOnTarget;
+    @FXML
+    private MFXRectangleToggleNode keyPasses;
+    @FXML
+    private MFXRectangleToggleNode interceptions;
+    @FXML
+    private MFXRectangleToggleNode cleanSheets;
+    @FXML
+    private MFXRectangleToggleNode tacklesWon;
+    @FXML
+    private MFXRectangleToggleNode saves;
     private Player currentPlayer;
 
 
@@ -77,15 +95,15 @@ public class EditPlayerController implements Initializable {
         stage.setScene(startMenu);
         stage.show();
     }
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
-    }
 
-
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
     int currentValue;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -102,6 +120,23 @@ public class EditPlayerController implements Initializable {
                 currentValue = newNumSpinner.getValue();
             }
         });
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchPlayersMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+        if(choice!=null) {
+            choice.selectedToggleProperty().addListener(((observableValue, toggle, t1) -> {
+                if (t1 == null) {
+                    editForm.setVisible(false);
+                }
+            }));
+        }
     }
     private String getSelectedButtonText() {
         Toggle selectedToggle = choice.getSelectedToggle();
@@ -126,44 +161,22 @@ public class EditPlayerController implements Initializable {
      private void dynamicMenu (String position){
         switch (position){
             case "Forward": {
-                ToggleButton goalsScored = new ToggleButton("Goals scored");
-                ToggleButton shotsOnTarget = new ToggleButton("Shots on target");
-                ToggleButton assists = new ToggleButton("Assists");
-                goalsScored.setToggleGroup(choice);
-                shotsOnTarget.setToggleGroup(choice);
-                assists.setToggleGroup(choice);
-                choicesPane.getChildren().addAll(goalsScored, shotsOnTarget, assists);
+                choicesPane.getChildren().removeAll(goalsScored, assists, shotsOnTarget, keyPasses, interceptions, cleanSheets, tacklesWon, saves);
+                choicesPane.getChildren().addAll(goalsScored, assists, shotsOnTarget);
                 break;
             }
             case "Midfielder": {
-                ToggleButton goalsScored = new ToggleButton("Goals scored");
-                ToggleButton assists = new ToggleButton("Assists");
-                ToggleButton interceptions = new ToggleButton("Interceptions");
-                ToggleButton keyPasses = new ToggleButton("Key passes");
-                goalsScored.setToggleGroup(choice);
-                assists.setToggleGroup(choice);
-                interceptions.setToggleGroup(choice);
-                keyPasses.setToggleGroup(choice);
-                choicesPane.getChildren().addAll(goalsScored, assists, interceptions, keyPasses);
+                choicesPane.getChildren().removeAll(goalsScored, assists, shotsOnTarget, keyPasses, interceptions, cleanSheets, tacklesWon, saves);
+                choicesPane.getChildren().addAll(goalsScored, assists, keyPasses, interceptions);
                 break;
             }
             case "Defender": {
-                ToggleButton goalsScored = new ToggleButton("Goals scored");
-                ToggleButton assists = new ToggleButton("Assists");
-                ToggleButton tacklesWon = new ToggleButton("Tackles won");
-                ToggleButton cleanSheets = new ToggleButton("Clean sheets");
-                goalsScored.setToggleGroup(choice);
-                assists.setToggleGroup(choice);
-                tacklesWon.setToggleGroup(choice);
-                cleanSheets.setToggleGroup(choice);
-                choicesPane.getChildren().addAll(goalsScored, assists, tacklesWon, cleanSheets);
+                choicesPane.getChildren().removeAll(goalsScored, assists, shotsOnTarget, keyPasses, interceptions, cleanSheets, tacklesWon, saves);
+                choicesPane.getChildren().addAll(goalsScored, assists, cleanSheets, tacklesWon);
                 break;
             }
             case "Goalkeeper": {
-                ToggleButton cleanSheets = new ToggleButton("Clean sheets");
-                ToggleButton saves = new ToggleButton("Saves");
-                cleanSheets.setToggleGroup(choice);
-                saves.setToggleGroup(choice);
+                choicesPane.getChildren().removeAll(goalsScored, assists, shotsOnTarget, keyPasses, interceptions, cleanSheets, tacklesWon, saves);
                 choicesPane.getChildren().addAll(cleanSheets, saves);
                 break;
             }
@@ -230,6 +243,16 @@ public class EditPlayerController implements Initializable {
               currentInfo.setText(player.getNationality());
               newInfoLabel.setText("New "+editing+":");
           }
+          else if(editing.equalsIgnoreCase("height")){
+              currentInfoLabel.setText("Current height:");
+              currentInfo.setText(Integer.toString(player.getHeight()));
+              newInfoLabel.setText("New height:");
+          }
+          else if (editing.equalsIgnoreCase("weight")){
+              currentInfoLabel.setText("Current weight:");
+              currentInfo.setText(Integer.toString(player.getWeight()));
+              newInfoLabel.setText("New weight:");
+          }
           else if (editing.equalsIgnoreCase("preferred foot")){
               currentInfoLabel.setText("Current preferred foot:");
               currentInfo.setText(player.getPreferredFoot());
@@ -250,15 +273,15 @@ public class EditPlayerController implements Initializable {
               currentInfoLabel.setText("Current number of goals scored:");
               switch (player.getPosition()){
                   case "Forward":{
-                      currentInfo.setText(String.valueOf(forward.getGoalsScored()));
+                      currentInfo.setText(String.valueOf(forward.getGoalsScored().orElse(0)));
                       break;
                   }
                   case "Midfielder":{
-                      currentInfo.setText(String.valueOf(midfielder.getGoalsScored()));
+                      currentInfo.setText(String.valueOf(midfielder.getGoalsScored().orElse(0)));
                       break;
                   }
                   case "Defender":{
-                      currentInfo.setText(String.valueOf(defender.getGoalsScored()));
+                      currentInfo.setText(String.valueOf(defender.getGoalsScored().orElse(0)));
                       break;
                   }
               }
@@ -268,15 +291,15 @@ public class EditPlayerController implements Initializable {
               currentInfoLabel.setText("Current number of assists:");
               switch (player.getPosition()){
                   case "Forward":{
-                      currentInfo.setText(String.valueOf(forward.getAssists()));
+                      currentInfo.setText(String.valueOf(forward.getAssists().orElse(0)));
                       break;
                   }
                   case "Midfielder":{
-                      currentInfo.setText(String.valueOf(midfielder.getAssists()));
+                      currentInfo.setText(String.valueOf(midfielder.getAssists().orElse(0)));
                       break;
                   }
                   case "Defender":{
-                      currentInfo.setText(String.valueOf(defender.getAssists()));
+                      currentInfo.setText(String.valueOf(defender.getAssists().orElse(0)));
                       break;
                   }
               }
@@ -358,7 +381,7 @@ public class EditPlayerController implements Initializable {
               newNumSpinner.setVisible(false);
               footBox.setVisible(false);
           }
-          editBox.setVisible(true);
+          editForm.setVisible(true);
         }
      }
 
@@ -530,7 +553,7 @@ public class EditPlayerController implements Initializable {
                  footGroup.selectToggle(null);
                  newNumSpinner.getValueFactory().setValue(newNumSpinner.getValueFactory().getConverter().fromString("1"));
                  choice.selectToggle(null);
-                 editBox.setVisible(false);
+                 editForm.setVisible(false);
              }catch (NumberFormatException nfe){
                  Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input, please try again");
                  alert.show();

@@ -3,28 +3,32 @@ package edu.ainshams.egyptianleaguesystem.ui;
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Match;
 import edu.ainshams.egyptianleaguesystem.model.Stadium;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class StadiumController {
+public class StadiumController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-    @FXML
-    private Button backBtn;
     @FXML
     private TextField nameField;
     @FXML
@@ -34,9 +38,33 @@ public class StadiumController {
     @FXML
     private GridPane infoGrid;
     @FXML
-    private AnchorPane root;
-    @FXML
     private TextField idField;
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private VBox infoBox;
+
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchStadiumMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+    }
 
     public void switchStadiumMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("stadiumsMenu.fxml"));
@@ -44,13 +72,6 @@ public class StadiumController {
         Scene startMenu = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(startMenu);
         stage.show();
-    }
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
-    }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
     }
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
@@ -90,6 +111,10 @@ public class StadiumController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Stadium created!");
                     alert.show();
+                    nameField.clear();
+                    idField.clear();
+                    capacityField.clear();
+                    cityField.clear();
                 }
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id and capacity field");
@@ -100,22 +125,34 @@ public class StadiumController {
 
     public void stadiumInfo(Stadium stadium){
         Label stadiumName = new Label(stadium.getName());
+        stadiumName.getStyleClass().add("info-label");
+
         Label stadiumId = new Label(Integer.toString(stadium.getId()));
+        stadiumId.getStyleClass().add("info-label");
+
         Label stadiumCity = new Label(stadium.getCity());
+        stadiumCity.getStyleClass().add("info-label");
+
         Label stadiumCapacity = new Label(Integer.toString(stadium.getCapacity()));
+        stadiumCapacity.getStyleClass().add("info-label");
+
         Label stadiumNumOfMatches = new Label(Integer.toString(stadium.getMatchesPlayedOn()));
+        stadiumNumOfMatches.getStyleClass().add("info-label");
         VBox infoList = new VBox(stadiumName, stadiumId, stadiumCity, stadiumCapacity, stadiumNumOfMatches);
+        infoList.setAlignment(Pos.CENTER);
         infoGrid.add(infoList, 1, 0);
         infoGrid.setVisible(true);
     }
 
     public void stadiumUpcomingMatches(Stadium stadium){
-        FlowPane matchesPane = new FlowPane();
         for (Match match : stadium.getUpcomingMatches()){
             Label label = new Label(match.matchHeader());
-            matchesPane.getChildren().add(label);
+            label.setTextFill(Color.WHITE);
+            label.setFont(new Font(30));
+            HBox hBox = new HBox(label);
+            hBox.setPrefWidth(565);
+            infoBox.getChildren().add(hBox);
         }
-        root.getChildren().add(matchesPane);
     }
 
 }

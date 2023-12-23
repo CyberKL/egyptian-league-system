@@ -1,41 +1,56 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
-import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Manager;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ManagerInfoController {
+public class ManagerInfoController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
     private GridPane infoGrid;
-
     @FXML
-    private Button backBtn;
+    private AnchorPane subMenuRoot;
 
-
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
     }
-    public void blueBack(MouseEvent event){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchManagerMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
     }
     public void switchManagerMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("managersMenu.fxml"));
@@ -67,7 +82,17 @@ public class ManagerInfoController {
         Label formerPlayerLabel = new Label(formerPlayer);
         Label yellowCardLabel = new Label(Integer.toString(manager.getYellowCards()));
         Label redCardLabel = new Label(Integer.toString(manager.getRedCards()));
+        nameLabel.getStyleClass().add("info-label");
+        idLabel.getStyleClass().add("info-label");
+        ageLabel.getStyleClass().add("info-label");
+        nationalityLabel.getStyleClass().add("info-label");
+        teamLabel.getStyleClass().add("info-label");
+        numOfTrophies.getStyleClass().add("info-label");
+        formerPlayerLabel.getStyleClass().add("info-label");
+        yellowCardLabel.getStyleClass().add("info-label");
+        redCardLabel.getStyleClass().add("info-label");
         VBox labelsBox = new VBox(nameLabel, idLabel, ageLabel, nationalityLabel, teamLabel, numOfTrophies, formerPlayerLabel, yellowCardLabel, redCardLabel);
+        labelsBox.setAlignment(Pos.CENTER);
         infoGrid.add(labelsBox, 1, 0);
     }
 

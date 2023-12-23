@@ -1,43 +1,384 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.ResourceBundle;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 
-public class MenuController {
+public class MenuController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     private Stage stage;
 
     @FXML
     private Button backBtn;
     @FXML
-    private Button quitBtn;
+    private VBox menuBar;
+    @FXML
+    private Label topScorerLabel;
+    @FXML
+    private VBox teamMenuBar;
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private VBox matchesMenuBar;
+    @FXML
+    private VBox playersMenuBar;
+    @FXML
+    private VBox managersMenuBar;
+    @FXML
+    private VBox refereesMenuBar;
+    @FXML
+    private VBox stadiumsMenuBar;
 
-    public void redQuit(){
-        quitBtn.setStyle("-fx-background-color: red;");
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
     }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (menuBar != null) {
+            MFXButton teams = createButton("fas-people-group", "Teams", event -> {
+                try {
+                    switchTeamMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton matches = createButton("fas-futbol", "Matches", event -> {
+                try {
+                    switchMatchMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton players = createButton("fas-person-running", "Players", event -> {
+                try {
+                    switchPlayerMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton standings = createButton("fas-table", "Standings", event -> {
+                try {
+                    switchStandingsMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton managers = createButton("fas-user-tie", "Managers", event -> {
+                try {
+                    switchManagerMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton referees = createButton("fas-person", "Referees", event -> {
+                try {
+                    switchRefereeMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton stadiums = createButton("fas-location-dot", "Stadiums", event -> {
+                try {
+                    switchStadiumMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton stats = createButton("fas-chart-simple", "Stats", event -> {
+                try {
+                    switchStatsMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            menuBar.getChildren().addAll(teams, matches, players, standings, managers, referees, stadiums, stats);
+            if (!Logic.getPlayers().isEmpty()) {
+                Optional<Player> topScorer = Logic.getPlayers().stream()
+                        .filter(player -> player.getGoalsScored().isPresent())
+                        .max(Comparator.comparingInt(player -> player.getGoalsScored().orElse(0)));
+                topScorer.ifPresent(player -> {
+                    topScorerLabel.setText(player.getName());
+                });
+            }
+        }
+        if (teamMenuBar != null){
+            MFXButton newTeam = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewTeam((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton editTeam = createButton("fas-pen", "Edit", event -> {
+                try {
+                    switchToEditTeam((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton teamInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToTeamInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton teamMatches = createButton("fas-futbol", "Matches", event -> {
+                try {
+                    switchToTeamMatches((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton teamPlayers = createButton("fas-person-running", "Players", event -> {
+                try {
+                    switchToTeamPlayers((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deleteTeam = createButton("fas-trash-can", "Delete", event -> {
+                deleteTeam((ActionEvent) event);
+            });
+            teamMenuBar.getChildren().addAll(newTeam, editTeam, teamInfo, teamMatches, teamPlayers, deleteTeam);
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+        if (matchesMenuBar != null){
+            MFXButton newMatch = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewMatch((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton editMatch = createButton("fas-pen", "Edit", event -> {
+                try {
+                    switchToEditMatch((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton matchInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToMatchInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deleteMatch = createButton("fas-trash-can", "Delete", event -> {
+                deleteMatch((ActionEvent) event);
+            });
+            matchesMenuBar.getChildren().addAll(newMatch, editMatch, matchInfo, deleteMatch);
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+        if (playersMenuBar != null){
+            MFXButton newPlayer = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewPlayer((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton editPlayer = createButton("fas-pen", "Edit", event -> {
+                try {
+                    switchToEditPlayer((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton playerInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToPlayerInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deletePlayer = createButton("fas-trash-can", "Delete", event -> {
+                deletePlayer((ActionEvent) event);
+            });
+            playersMenuBar.getChildren().addAll(newPlayer, editPlayer, playerInfo, deletePlayer);
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+        if (managersMenuBar != null){
+            MFXButton newManager = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewManager((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton editManager = createButton("fas-pen", "Edit", event -> {
+                try {
+                    switchToEditManager((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton managerInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToManagerInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deleteManager = createButton("fas-trash-can", "Delete", event -> {
+                deleteManager((ActionEvent) event);
+            });
+            managersMenuBar.getChildren().addAll(newManager, editManager, managerInfo, deleteManager);
+
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+        if (refereesMenuBar != null){
+            MFXButton newReferee = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewReferee((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton editReferee = createButton("fas-pen", "Edit", event -> {
+                try {
+                    switchToEditReferee((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton refereeInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToRefereeInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deleteReferee = createButton("fas-trash-can", "Delete", event -> {
+                deleteReferee((ActionEvent) event);
+            });
+            refereesMenuBar.getChildren().addAll(newReferee, editReferee, refereeInfo, deleteReferee);
+
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+        if (stadiumsMenuBar != null){
+            MFXButton newStadium = createButton("fas-plus", "New", event -> {
+                try {
+                    switchToNewStadium((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton stadiumInfo = createButton("fas-circle-info", "Information", event -> {
+                try {
+                    switchToStadiumInfo((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton stadiumUpcomingMatches = createButton("fas-futbol", "Matches", event -> {
+                try {
+                    switchToStadiumMatches((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            MFXButton deleteStadium = createButton("fas-trash-can", "Delete", event -> {
+                deleteStadium((ActionEvent) event);
+            });
+            stadiumsMenuBar.getChildren().addAll(newStadium, stadiumInfo, stadiumUpcomingMatches, deleteStadium);
+
+            MFXButton back = createButton("fas-left-long", "Back", event -> {
+                try {
+                    switchToStartMenu((ActionEvent) event);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            });
+            subMenuRoot.getChildren().add(back);
+            AnchorPane.setRightAnchor(back, 0.5);
+            AnchorPane.setTopAnchor(back, 25.0);
+        }
+
+
+    }
+
     public void defaultButton(MouseEvent event){
         Button btn = (Button) event.getSource();
         btn.setStyle("-fx-background-color: transparent;");
-    }
-
-    public void hoverButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
     }
 
     public void blueBack(){

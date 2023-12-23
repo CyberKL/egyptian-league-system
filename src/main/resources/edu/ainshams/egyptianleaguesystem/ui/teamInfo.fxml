@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -9,10 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
+<AnchorPane fx:id="subMenuRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="912.0" prefWidth="1707.0" stylesheets="@../../../../menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ainshams.egyptianleaguesystem.ui.TeamController">
    <children>
-      <Button fx:id="backBtn" layoutX="30.33333396911621" layoutY="668.6666259765625" mnemonicParsing="false" onAction="#switchTeamMenu" onMouseEntered="#blueBack" onMouseExited="#defaultButton" prefHeight="69.0" prefWidth="114.0" text="Back" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" />
-      <GridPane fx:id="infoGrid" layoutX="392.0" layoutY="118.0" prefHeight="583.0" prefWidth="684.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="550.0">
+      <GridPane fx:id="infoGrid" layoutX="498.0" layoutY="144.0" prefHeight="623.0" prefWidth="709.0" styleClass="infoGrid" AnchorPane.bottomAnchor="144.66666666666663" AnchorPane.leftAnchor="498.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -21,64 +19,64 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox prefHeight="225.0" prefWidth="159.0">
+            <VBox alignment="CENTER" prefHeight="225.0" prefWidth="159.0">
                <children>
-                  <Label text="Name:" textFill="WHITE">
+                  <Label styleClass="info-label" text="Name:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="10.0" text="ID:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="10.0" styleClass="info-label" text="ID:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label text="Manager:" textFill="WHITE">
+                  <Label styleClass="info-label" text="Manager:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label text="Captain:" textFill="WHITE">
+                  <Label styleClass="info-label" text="Captain:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label text="Matches played:" textFill="WHITE">
+                  <Label styleClass="info-label" text="Matches played:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="207.0" text="Wins:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="207.0" styleClass="info-label" text="Wins:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="257.0" text="Draws:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="257.0" styleClass="info-label" text="Draws:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="306.0" text="Losses:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="306.0" styleClass="info-label" text="Losses:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="355.0" text="Goals for:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="355.0" styleClass="info-label" text="Goals for:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="405.0" text="Goals against:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="405.0" styleClass="info-label" text="Goals against:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="454.0" text="Goal difference:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="454.0" styleClass="info-label" text="Goal difference:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="503.0" text="Total Points:" textFill="WHITE">
+                  <Label layoutX="10.0" layoutY="503.0" styleClass="info-label" text="Total Points:" textFill="WHITE">
                      <font>
                         <Font size="33.0" />
                      </font>

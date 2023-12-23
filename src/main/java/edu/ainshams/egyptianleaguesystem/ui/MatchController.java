@@ -1,30 +1,38 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class MatchController {
+public class MatchController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
     @FXML
-    private Button backBtn;
-    @FXML
-    private DatePicker datePicker;
+    private MFXDatePicker datePicker;
     @FXML
     private TextField homeTeamField;
     @FXML
@@ -35,8 +43,6 @@ public class MatchController {
     private TextField refField;
     @FXML
     private TextField stadField;
-    @FXML
-    private Label scoreLabel;
     @FXML
     private TextField scoreField;
     @FXML
@@ -54,21 +60,45 @@ public class MatchController {
     @FXML
     private TextField newInfoField;
     @FXML
-    private DatePicker newDate;
-    @FXML
-    private Button confirmBtn;
+    private MFXDatePicker newDate;
     @FXML
     private ToggleGroup choice;
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private BorderPane editForm;
     private Match currentMatch;
 
 
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
     }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchMatchMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+        if(choice!=null) {
+            choice.selectedToggleProperty().addListener(((observableValue, toggle, t1) -> {
+                if (t1 == null) {
+                    editForm.setVisible(false);
+                }
+            }));
+        }
     }
+
     public void switchMatchMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("matchesMenu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -284,11 +314,9 @@ public class MatchController {
         LocalDate selectedDate = datePicker.getValue();
 
         if (selectedDate!=null && selectedDate.isBefore(LocalDate.now())){
-            scoreLabel.setDisable(false);
             scoreField.setDisable(false);
         }
         else {
-            scoreLabel.setDisable(true);
             scoreField.setDisable(true);
             scoreField.clear();
         }
@@ -323,44 +351,53 @@ public class MatchController {
 
     public void matchInfo(Match match){
         Label id = new Label(Integer.toString(match.getMatchId()));
+        id.getStyleClass().add("info-label");
+
         Label date = new Label(match.getDate().toString());
+        date.getStyleClass().add("info-label");
+
         Label homeTeam;
         if (match.getHomeTeam() != null) {
             homeTeam = new Label(match.getHomeTeam().getName());
-        }
-        else {
+        } else {
             homeTeam = new Label("N/A");
         }
+        homeTeam.getStyleClass().add("info-label");
+
         Label awayTeam;
         if (match.getAwayTeam() != null) {
             awayTeam = new Label(match.getAwayTeam().getName());
-        }
-        else {
+        } else {
             awayTeam = new Label("N/A");
         }
+        awayTeam.getStyleClass().add("info-label");
+
         Label referee;
-        if (match.getReferee() != null){
+        if (match.getReferee() != null) {
             referee = new Label(match.getReferee().getName());
-        }
-        else {
+        } else {
             referee = new Label("N/A");
         }
+        referee.getStyleClass().add("info-label");
+
         Label stadium;
-        if (match.getStadium() != null){
+        if (match.getStadium() != null) {
             stadium = new Label(match.getStadium().getName());
-        }
-        else {
+        } else {
             stadium = new Label("N/A");
         }
+        stadium.getStyleClass().add("info-label");
         VBox infoList = new VBox(id, date, homeTeam, awayTeam, referee, stadium);
+        infoList.setAlignment(Pos.CENTER);
         if (match.getDate().isBefore(LocalDate.now())){
             Label scoreLabel = new Label("Score:");
+            scoreLabel.getStyleClass().add("info-label");
             labelsBox.getChildren().add(scoreLabel);
             Label score = new Label(match.getScore().toString());
+            score.getStyleClass().add("info-label");
             infoList.getChildren().add(score);
         }
         infoGrid.add(infoList , 1, 0);
-        infoGrid.setVisible(true);
     }
 
     //Edit match methods
@@ -428,10 +465,7 @@ public class MatchController {
                 currentInfo.setText(currentMatch.getScore().toString());
                 newInfoLabel.setText("New score:");
             }
-            matchHeaderLabel.setVisible(true);
-            currentInfoLabel.setVisible(true);
-            currentInfo.setVisible(true);
-            newInfoLabel.setVisible(true);
+            editForm.setVisible(true);
             if (editing.equalsIgnoreCase("date")){
                 newDate.setVisible(true);
                 newInfoField.setVisible(false);
@@ -439,7 +473,6 @@ public class MatchController {
                 newInfoField.setVisible(true);
                 newDate.setVisible(false);
             }
-            confirmBtn.setVisible(true);
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Error occurred!");
             alert.show();

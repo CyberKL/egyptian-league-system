@@ -3,30 +3,37 @@ package edu.ainshams.egyptianleaguesystem.ui;
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Manager;
 import edu.ainshams.egyptianleaguesystem.model.Team;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ResourceBundle;
 
-public class EditManagerController {
+public class EditManagerController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-    @FXML
-    private Button backBtn;
 
     @FXML
     private ToggleGroup choice;
@@ -36,9 +43,6 @@ public class EditManagerController {
 
     @FXML
     private Label currentInfoLabel;
-
-    @FXML
-    private VBox editBox;
 
     @FXML
     private Label managerNameLabel;
@@ -59,14 +63,41 @@ public class EditManagerController {
     private ToggleGroup wasPlayerGroup;
 
     private Manager currentManager;
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private BorderPane editForm;
 
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
     }
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchManagerMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+        if(choice!=null) {
+            choice.selectedToggleProperty().addListener(((observableValue, toggle, t1) -> {
+                if (t1 == null) {
+                    editForm.setVisible(false);
+                }
+            }));
+        }
     }
+
+
     public void switchManagerMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("managersMenu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -157,7 +188,7 @@ public class EditManagerController {
                 newDate.setVisible(false);
                 wasPlayerBox.setVisible(false);
             }
-            editBox.setVisible(true);
+            editForm.setVisible(true);
         }
     }
 
@@ -217,7 +248,7 @@ public class EditManagerController {
                 }
                 newInfoField.setText("");
                 choice.selectToggle(null);
-                editBox.setVisible(false);
+                editForm.setVisible(false);
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input, please try again");
                 alert.show();

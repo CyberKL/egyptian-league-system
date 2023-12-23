@@ -1,10 +1,16 @@
 package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXIconWrapper;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -18,18 +24,17 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class TeamController {
+public class TeamController implements Initializable {
 
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-    @FXML
-    private Button backBtn;
+
     @FXML
     private TextField teamName;
     @FXML
     private TextField teamId;
-    @FXML
-    private AnchorPane root;
     @FXML
     private GridPane infoGrid;
     @FXML
@@ -45,21 +50,62 @@ public class TeamController {
     @FXML
     private TextField newInfoField;
     @FXML
-    private VBox editBox;
+    private BorderPane editForm;
     @FXML
     private HBox playerChoiceBox;
     @FXML
     private ToggleGroup playerChoice;
+    @FXML
+    private AnchorPane subMenuRoot;
+    @FXML
+    private VBox infoBox;
+    @FXML
+    private Label teamNameMatchesLabel;
+    @FXML
+    private VBox defendersBox;
+
+    @FXML
+    private VBox forwardsBox;
+
+    @FXML
+    private VBox goalkeepersBox;
+
+    @FXML
+    private VBox midfieldersBox;
+    @FXML
+    private Label teamNamePlayersLabel;
     private Team currentTeam;
 
-    public void defaultButton(MouseEvent event){
-        Button btn = (Button) event.getSource();
-        btn.setStyle("-fx-background-color: transparent;");
+
+    private MFXButton createButton(String icon, String text, EventHandler action) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+        MFXButton button = new MFXButton(text, wrapper);
+        button.setAlignment(Pos.CENTER_LEFT);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(action);
+        return button;
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MFXButton back = createButton("fas-left-long", "Back", event -> {
+            try {
+                switchTeamMenu((ActionEvent) event);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        });
+        subMenuRoot.getChildren().add(back);
+        AnchorPane.setRightAnchor(back, 0.5);
+        AnchorPane.setTopAnchor(back, 25.0);
+        if(choice!=null) {
+            choice.selectedToggleProperty().addListener(((observableValue, toggle, t1) -> {
+                if (t1 == null) {
+                    editForm.setVisible(false);
+                }
+            }));
+        }
     }
 
-    public void blueBack(){
-        backBtn.setStyle("-fx-background-color: #2377b8;");
-    }
 
     public void switchTeamMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("teamsMenu.fxml"));
@@ -97,6 +143,8 @@ public class TeamController {
             }
             System.out.println("Available teams:");
             Logic.displayTotalTeams();
+            teamId.clear();
+            teamName.clear();
         }catch (NumberFormatException nfe){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
             alert.show();
@@ -106,49 +154,92 @@ public class TeamController {
 
     public void teamInfo(Team team){
         Label teamName = new Label(team.getName());
+        teamName.getStyleClass().add("info-label");
+
         Label teamId = new Label(Integer.toString(team.getTeamId()));
+        teamId.getStyleClass().add("info-label");
+
         Label teamManager;
         if (team.getManager() != null) {
             teamManager = new Label(team.getManager().getName());
-        }
-        else {
+        } else {
             teamManager = new Label("N/A");
         }
+        teamManager.getStyleClass().add("info-label");
+
         Label teamCaptain;
-        if (team.getCaptain() != null){
+        if (team.getCaptain() != null) {
             teamCaptain = new Label(team.getCaptain().getName());
-        }
-        else {
+        } else {
             teamCaptain = new Label("N/A");
         }
+        teamCaptain.getStyleClass().add("info-label");
+
         Label matchesPlayed = new Label(Integer.toString(team.getMatchesPlayed()));
+        matchesPlayed.getStyleClass().add("info-label");
+
         Label teamWins = new Label(Integer.toString(team.getWins()));
+        teamWins.getStyleClass().add("info-label");
+
         Label teamDraws = new Label(Integer.toString(team.getDraws()));
+        teamDraws.getStyleClass().add("info-label");
+
         Label teamLosses = new Label(Integer.toString(team.getLosses()));
+        teamLosses.getStyleClass().add("info-label");
+
         Label teamGoalsFor = new Label(Integer.toString(team.getGoalsFor()));
+        teamGoalsFor.getStyleClass().add("info-label");
+
         Label teamGoalsAgainst = new Label(Integer.toString(team.getGoalsAgainst()));
+        teamGoalsAgainst.getStyleClass().add("info-label");
+
         Label teamGoalDifference = new Label(Integer.toString(team.getGoalDifference()));
+        teamGoalDifference.getStyleClass().add("info-label");
+
         Label teamTotalScore = new Label(Integer.toString(team.getTotalScore()));
+        teamTotalScore.getStyleClass().add("info-label");
         VBox infoList = new VBox(teamName, teamId, teamManager, teamCaptain, matchesPlayed, teamWins, teamDraws, teamLosses, teamGoalsFor, teamGoalsAgainst, teamGoalDifference, teamTotalScore);
+        infoList.setAlignment(Pos.CENTER);
         infoGrid.add(infoList, 1, 0);
-        infoGrid.setVisible(true);
     }
     public void teamMatches(Team team){
-        FlowPane matchesPane = new FlowPane();
+        teamNameMatchesLabel.setText(team.getName());
         for (Match match : team.getMatches()){
             Label label = new Label(match.matchHeader());
-            label.setFont(new Font(20));
+            label.setFont(new Font(30));
             label.setTextFill(Color.WHITE);
-            matchesPane.getChildren().add(label);
+            HBox hBox = new HBox(label);
+            hBox.setPrefWidth(565);
+            infoBox.getChildren().add(hBox);
         }
-        root.getChildren().add(matchesPane);
     }
     public void teamPlayers(Team team){
-        FlowPane playersPane = new FlowPane();
-        playersPane.setOrientation(Orientation.VERTICAL);
+        teamNamePlayersLabel.setText(team.getName());
         for (Player player : team.getPlayers()){
             Label label = new Label(player.getNumber()+"  "+player.getName());
-            playersPane.getChildren().add(label);
+            label.setFont(new Font(25));
+            label.setTextFill(Color.WHITE);
+            switch (player.getPosition()){
+                case "Forward": {
+                    forwardsBox.getChildren().add(label);
+                    break;
+                }
+                case "Midfielder": {
+                    label.setStyle("-fx-margin: 0 0 0 20;");
+                    midfieldersBox.getChildren().add(label);
+                    break;
+                }
+                case "Defender": {
+                    label.setStyle("-fx-margin: 0 0 0 20;");
+                    defendersBox.getChildren().add(label);
+                    break;
+                }
+                case "Goalkeeper": {
+                    label.setStyle("-fx-margin: 0 0 0 20;");
+                    goalkeepersBox.getChildren().add(label);
+                    break;
+                }
+            }
         }
     }
 
@@ -202,7 +293,7 @@ public class TeamController {
                 }
                 newInfoLabel.setText("New team manager:");
             }
-            editBox.setVisible(true);
+            editForm.setVisible(true);
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Error occurred!");
             alert.show();
@@ -338,7 +429,7 @@ public class TeamController {
                 }
                 newInfoField.setText("");
                 choice.selectToggle(null);
-                editBox.setVisible(false);
+                editForm.setVisible(false);
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter number only");
                 alert.show();
@@ -349,5 +440,6 @@ public class TeamController {
             error.show();
         }
     }
+
 
 }
