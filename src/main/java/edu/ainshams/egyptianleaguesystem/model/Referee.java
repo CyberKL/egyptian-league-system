@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Referee extends FootballCharacter{
 
     private int matchesRefereed;
-    private int refereeId;
+    private final int refereeId;
     private static int numOfReferees = 0;
 
     public Referee(String name, LocalDate dateOfBirth, String nationality, int refereeId){
@@ -46,7 +46,7 @@ public class Referee extends FootballCharacter{
                 "\nAge: " + age;
     }
 
-    public static void enterRefereeInfo(ArrayList<Referee> referees){
+    protected static void enterRefereeInfo(ArrayList<Referee> referees){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Referee Name: ");
         String refereeName = scanner.nextLine();
@@ -74,7 +74,7 @@ public class Referee extends FootballCharacter{
 
     }
 
-    public void updateReferee (){
+    protected void updateReferee (){
         System.out.println("what do you want ? ");
         System.out.println("1.Name\n2.Date Of Birth\n3.Nationality\n4.Matches Refereed\n5.Yellow Cards\n6.Red Cards");
         Scanner scanner = new Scanner(System.in);

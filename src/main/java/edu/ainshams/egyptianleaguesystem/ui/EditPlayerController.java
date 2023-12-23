@@ -491,12 +491,12 @@ public class EditPlayerController implements Initializable {
                      switch (player.getPosition()) {
                          case "Forward": {
                              Forward forward = (Forward) player;
-                             forward.setGoalsScored(assists);
+                             forward.setAssists(assists);
                              break;
                          }
                          case "Midfielder": {
                              Midfielder midfielder = (Midfielder) player;
-                             midfielder.setGoalsScored(assists);
+                             midfielder.setAssists(assists);
                              break;
                          }
                          case "Defender": {
@@ -534,7 +534,7 @@ public class EditPlayerController implements Initializable {
                  } else if (editing.equalsIgnoreCase("key passes")) {
                      int keyPasses = Integer.parseInt(newInfoField.getText());
                      Midfielder midfielder = (Midfielder) player;
-                     midfielder.setInterceptions(keyPasses);
+                     midfielder.setKeyPasses(keyPasses);
                      success.show();
                  } else if (editing.equalsIgnoreCase("Tackles won")) {
                      int tacklesWon = Integer.parseInt(newInfoField.getText());

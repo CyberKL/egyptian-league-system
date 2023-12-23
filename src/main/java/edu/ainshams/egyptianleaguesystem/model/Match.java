@@ -99,7 +99,7 @@ public class Match {
         return info;
     }
 
-    public static void enterMatchInfo (ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums, ArrayList<Match> matches){
+    protected static void enterMatchInfo (ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums, ArrayList<Match> matches){
         Team homeTeam = null;
         Team awayTeam = null;
         Referee referee = null;
@@ -236,6 +236,7 @@ public class Match {
     private static boolean isValidScore(String matchScore) {
         return matchScore.matches("\\d+-\\d+");
     }
+
     public static void result(Match match){
         if(match.score.getHomeTeam()>match.score.getAwayTeam()){
             match.homeTeam.setWins(match.homeTeam.getWins()+1);
@@ -264,7 +265,7 @@ public class Match {
         match.awayTeam.calcGoalDiff();
     }
 
-    public void updateMatch(ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums){
+    protected void updateMatch(ArrayList<Team> teams, ArrayList<Referee> referees, ArrayList<Stadium> stadiums){
 
         System.out.println("What do you want to update?");
         System.out.println("1. Date\n2. Home team\n 3. Away team\n4. Referee\n5. Stadium\n6. Score");

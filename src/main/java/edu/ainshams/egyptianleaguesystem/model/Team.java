@@ -123,6 +123,51 @@ public class Team {
         return matches;
     }
 
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+    public void removePlayer (Player player){
+        this.players.remove(player);
+    }
+
+    public void deletePlayer(Player player){
+        this.players.remove(player);
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return this.players;
+    }
+
+    public void setGoalsFor(int goalsFor) {
+        this.goalsFor = goalsFor;
+    }
+
+    public void setGoalsAgainst(int goalsAgainst) {
+        this.goalsAgainst = goalsAgainst;
+    }
+
+    public int getGoalsFor() {
+        return goalsFor;
+    }
+
+    public int getGoalsAgainst() {
+        return goalsAgainst;
+    }
+
+    public Player getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Player captain) {
+        this.captain = captain;
+    }
+
+    public double getAverageAge() {
+        calcAverageAge();
+        return averageAge;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name +
@@ -139,12 +184,10 @@ public class Team {
                 "\nTotal score: " + totalScore;
     }
 
-    public static void enterTeamInfo(ArrayList<Team> teams, ArrayList<Manager> managers) {
+    protected static void enterTeamInfo(ArrayList<Team> teams) {
 
-        Manager manager = null;
         Scanner scanner = new Scanner(System.in);
         boolean duplicateTeamName;
-        boolean managerFound = false;
         String teamName;
         try {
             do {
@@ -164,26 +207,6 @@ public class Team {
             int id = scanner.nextInt();
             scanner.nextLine();
             isTeamIdDuplicate(id, teams);
-
-            System.out.print("Enter the name of the manager: ");
-            String managerName = scanner.nextLine();
-            for (Manager element : managers) {
-                if (element.getName().equalsIgnoreCase(managerName)) {
-                    for (Team team : teams) {
-                        if (team.getManager().getName().equalsIgnoreCase(element.getName())) {
-                            System.out.println("This manager is already assigned to another team");
-                            return;
-                        }
-                    }
-                    manager = element;
-                    managerFound = true;
-                    break;
-                }
-            }
-            if (!managerFound) {
-                System.out.println("Manager not found!");
-                return;
-            }
 
             Team team = new Team(teamName, id);
             teams.add(team);
@@ -205,13 +228,13 @@ public class Team {
             }
         }
     }
-    public void displayTeamPlayers() {
+    protected void displayTeamPlayers() {
         for (Player player : this.players){
             System.out.println(player.getName());
         }
     }
 
-    public void updateTeam(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
+    protected void updateTeam(ArrayList<Team> teams, ArrayList<Player> players) throws DuplicateException{
         System.out.println("What do you want to update?");
         System.out.println("1. Name\n2. Id\n 3. Players\n4. Captain");
         Scanner scanner = new Scanner(System.in);
@@ -324,7 +347,7 @@ public class Team {
         }
     }
 
-    public void displayTeamMatches(){
+    protected void displayTeamMatches(){
         boolean heldMatches = false;
         boolean upcomingMatches = false;
         for (Match match : matches){
@@ -371,48 +394,5 @@ public class Team {
 
     public void calcGoalDiff(){
         this.goalDifference = this.goalsFor - this.goalsAgainst;
-    }
-
-    public void addPlayer(Player player){
-        this.players.add(player);
-    }
-    public void removePlayer (Player player){
-        this.players.remove(player);
-    }
-
-    public void deletePlayer(Player player){
-        this.players.remove(player);
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return this.players;
-    }
-    public void setGoalsFor(int goalsFor) {
-        this.goalsFor = goalsFor;
-    }
-
-    public void setGoalsAgainst(int goalsAgainst) {
-        this.goalsAgainst = goalsAgainst;
-    }
-
-    public int getGoalsFor() {
-        return goalsFor;
-    }
-
-    public int getGoalsAgainst() {
-        return goalsAgainst;
-    }
-
-    public Player getCaptain() {
-        return captain;
-    }
-
-    public void setCaptain(Player captain) {
-        this.captain = captain;
-    }
-
-    public double getAverageAge() {
-        calcAverageAge();
-        return averageAge;
     }
 }

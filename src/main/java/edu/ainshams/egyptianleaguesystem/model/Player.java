@@ -98,7 +98,7 @@ public abstract class Player extends FootballCharacter{
     public abstract Optional<Integer> getGoalsScored();
     public abstract Optional<Integer> getAssists();
 
-    public static String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
+    protected static String searchPlayer(ArrayList<Player> playersList, ArrayList<Team> teamsList) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter player name:");
         String playerName = scanner.nextLine();
@@ -390,6 +390,4 @@ public abstract class Player extends FootballCharacter{
         }
 
     }
-
-
 }

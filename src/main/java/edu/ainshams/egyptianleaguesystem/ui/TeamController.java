@@ -141,8 +141,6 @@ public class TeamController implements Initializable {
                 Logic.addTeam(team);
                 success.show();
             }
-            System.out.println("Available teams:");
-            Logic.displayTotalTeams();
             teamId.clear();
             teamName.clear();
         }catch (NumberFormatException nfe){

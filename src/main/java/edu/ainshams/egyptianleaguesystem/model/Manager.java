@@ -3,11 +3,12 @@ package edu.ainshams.egyptianleaguesystem.model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Manager extends FootballCharacter{
 
-    private int managerId;
+    private final int managerId;
     private Team team;
     private int trophies;
     private boolean wasPlayer;
@@ -16,7 +17,7 @@ public class Manager extends FootballCharacter{
 
     public Manager(String name, LocalDate dateOfBirth, String nationality, int managerId,  int trophies, boolean wasPlayer){
         super(name,dateOfBirth, nationality);
-        this.team = team;
+        //this.team = team;
         this.managerId = managerId;
         this.trophies = trophies;
         this.wasPlayer = wasPlayer;
@@ -70,9 +71,9 @@ public class Manager extends FootballCharacter{
     }
 
 
-    public static void enterManagerInfo(ArrayList<Team>teams,ArrayList<Manager>managerList) throws DuplicateException {
+    protected static void enterManagerInfo(ArrayList<Team>teams,ArrayList<Manager>managerList) throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
-        Team managerTeam=null;
+        //Team managerTeam = null;
         System.out.println("Enter manager name:");
         String managerName = scanner.nextLine();
 
@@ -89,11 +90,10 @@ public class Manager extends FootballCharacter{
             LocalDate currentDate = LocalDate.now();
             Period period = Period.between(managerDateOfBirth, currentDate);
             int age = period.getYears();
-
             if (age >= 30) {
                 isValidAge = true;
-                break;
-            } else {
+            }
+            else {
                 System.out.println("The manager must be at least 30 years old.");
             }
         }
@@ -121,7 +121,6 @@ public class Manager extends FootballCharacter{
         System.out.println("Manger created successful");
     }
 
-
     private static void isManagerIdDuplicate(int managerId, ArrayList<Manager> managerList) throws DuplicateException {
         for (Manager manager : managerList) {
             if (manager.getManagerId() == managerId) {
@@ -130,70 +129,70 @@ public class Manager extends FootballCharacter{
         }
     }
 
-
     protected void updateManagerInfo() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
         System.out.println("1. Name\n2. Team\n3. Trophies\n4. Was Player\n5. Nationality\n6. Date Of Birth\n7. Yellow Cards\n8. Red Cards");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
 
-        if (choice >= 1 && choice <= 8) {
-            switch (choice) {
-                case 1: {
-                    System.out.print("Enter new player name: ");
-                    String newPlayerName = scanner.nextLine();
-                    break;
-                }
-                case 2: {
-                    System.out.print("Enter new team: ");
-                    String newTeam = scanner.nextLine();
-                    break;
-                }
-                case 3: {
-                    System.out.print("Enter new number of trophies: ");
-                    int newTrophies = scanner.nextInt();
-                    scanner.nextLine();
-                    break;
-                }
-                case 4: {
-                    System.out.print("Was the manager player before (true/false): ");
-                    boolean wasPlayer = scanner.nextBoolean();
-                    scanner.nextLine();
-                    break;
-                }
-                case 5: {
-                    System.out.print("Enter new nationality: ");
-                    String newNationality = scanner.nextLine();
-                    break;
-                }
-                case 6: {
-                    System.out.print("Enter new Date Of Birth (yyyy-MM-dd): ");
-                    LocalDate newDOB = LocalDate.parse(scanner.nextLine());
-                    break;
-                }
-                case 7: {
-                    System.out.print("Enter new number of yellow cards: ");
-                    int yellowCards = scanner.nextInt();
-                    scanner.nextLine();
-                    this.yellowCards += yellowCards;
-                    break;
-                }
-                case 8: {
-                    System.out.print("Enter new number of red cards: ");
-                    int redCards = scanner.nextInt();
-                    scanner.nextLine();
-                    this.redCards += redCards;
-                    break;
-                }
-                default: {
-                    System.out.println("Please enter a valid choice");
-                    break;
-                }
-            }
-        } else {
-            System.out.println("Please enter a valid choice");
+        int choice = 0;
+        try {
+            choice  = scanner.nextInt();
+            scanner.nextLine();
+        }catch (InputMismatchException ime){
+            System.out.println("Please enter a number");
         }
 
+        switch (choice) {
+            case 1: {
+                System.out.print("Enter new player name: ");
+                String newPlayerName = scanner.nextLine();
+                break;
+            }
+            case 2: {
+                System.out.print("Enter new team: ");
+                String newTeam = scanner.nextLine();
+                break;
+            }
+            case 3: {
+                System.out.print("Enter new number of trophies: ");
+                int newTrophies = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            }
+            case 4: {
+                System.out.print("Was the manager player before (true/false): ");
+                boolean wasPlayer = scanner.nextBoolean();
+                scanner.nextLine();
+                break;
+            }
+            case 5: {
+                System.out.print("Enter new nationality: ");
+                String newNationality = scanner.nextLine();
+                break;
+            }
+            case 6: {
+                System.out.print("Enter new Date Of Birth (yyyy-MM-dd): ");
+                LocalDate newDOB = LocalDate.parse(scanner.nextLine());
+                break;
+            }
+            case 7: {
+                System.out.print("Enter new number of yellow cards: ");
+                int yellowCards = scanner.nextInt();
+                scanner.nextLine();
+                this.yellowCards += yellowCards;
+                break;
+            }
+            case 8: {
+                System.out.print("Enter new number of red cards: ");
+                int redCards = scanner.nextInt();
+                scanner.nextLine();
+                this.redCards += redCards;
+                break;
+            }
+            default: {
+                System.out.println("Please enter a valid choice");
+                break;
+            }
+        }
     }
 }

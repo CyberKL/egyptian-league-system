@@ -44,12 +44,13 @@ public class Goalkeeper extends Player{
     public Optional<Integer> getGoalsScored() {
         return Optional.empty();
     }
+
     public Optional<Integer> getAssists() {
         return Optional.empty();
     }
 
     @Override
-    public void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException {
+    protected void updatePlayerInfo(ArrayList<Player> playersList , ArrayList<Team> teams, int choice) throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to update?");
         System.out.println("1. Name\n2. Number\n3. Team\n 4. Height\n5. Weight\n6. Preferred Foot\n" +

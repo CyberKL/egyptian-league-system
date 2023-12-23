@@ -1,7 +1,5 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,11 +73,11 @@ public class Logic {
     }
 
     //Start of match related methods
-    public static void enterMatchInfo(){
+    private static void enterMatchInfo(){
         Match.enterMatchInfo(teams, referees, stadiums, matches);
     }
 
-    public static String displayMatchInfo(){
+    private static String displayMatchInfo(){
         System.out.print("Enter the id of the match you want to display: ");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
@@ -92,7 +90,7 @@ public class Logic {
         return "Match not found, please provide a valid match Id";
     }
 
-    public static void updateMatch(){
+    private static void updateMatch(){
         System.out.print("Enter the id of the match you want to update: ");
         Scanner idScanner = new Scanner(System.in);
         int id = idScanner.nextInt();
@@ -106,7 +104,7 @@ public class Logic {
         System.out.println("Match not found, please provide a valid match Id");
     }
 
-    public static void deleteMatch(){
+    private static void deleteMatch(){
         System.out.print("Enter the id of the match you want to delete: ");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
@@ -123,11 +121,11 @@ public class Logic {
     //End of match related methods
 
     //Start of team related methods
-    public static void enterTeamInfo(){
-        Team.enterTeamInfo(teams,managers);
+    private static void enterTeamInfo(){
+        Team.enterTeamInfo(teams);
     }
 
-    public static void updateTeam() throws DuplicateException{
+    private static void updateTeam() throws DuplicateException{
         System.out.print("Enter the name of the team you want to update: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -140,7 +138,7 @@ public class Logic {
         System.out.println("Match not found, please provide a valid match Id");
     }
 
-    public static String displayTeamInfo(){
+    private static String displayTeamInfo(){
         System.out.println("Enter team name: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -153,7 +151,7 @@ public class Logic {
         return "Team not found, please provide a valid team name";
     }
 
-    public static void displayTeamMatches(){
+    private static void displayTeamMatches(){
         System.out.println("Enter the name of the team you want to see its matches: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -164,7 +162,7 @@ public class Logic {
         }
     }
 
-    public static void displayTeamPlayers(){
+    private static void displayTeamPlayers(){
         System.out.println("Enter the name of the team you want to see its players: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -176,7 +174,7 @@ public class Logic {
     }
 
 
-    public static void addPlayerToTeam(){
+    private static void addPlayerToTeam(){
         String teamName = null;
         String playerName = null;
         int id = 0;
@@ -216,7 +214,7 @@ public class Logic {
         }
     }
 
-    public static void deletePlayerFromTeam(){
+    private static void deletePlayerFromTeam(){
         String teamName = null;
         String playerName = null;
         int id = 0;
@@ -256,17 +254,17 @@ public class Logic {
         }
     }
 
-    public static void displayTotalTeams (){
+    private static void displayTotalTeams (){
         for (Team team : teams){
             System.out.println(team.getName());
         }
     }
 
-    public static int calcNumOfTeams(){
+    private static int calcNumOfTeams(){
         return Team.getNumOfTeams();
     }
 
-    public static void deleteTeam(){
+    private static void deleteTeam(){
         System.out.print("Enter the Id of the team you want to delete: ");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
@@ -283,11 +281,11 @@ public class Logic {
     //End of team related methods
 
     //Start of stadium related methods
-    public static void enterStadiumInfo() throws DuplicateException{
+    private static void enterStadiumInfo() throws DuplicateException{
         Stadium.enterStadiumInfo(stadiums);
     }
 
-    public static String displayStadiumInfo(){
+    private static String displayStadiumInfo(){
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the name of the Stadium you want to display: ");
         String name = scanner.nextLine();
@@ -299,7 +297,7 @@ public class Logic {
         return "Stadium not found, please enter a valid name";
     }
 
-    public static String displayUpcomingMatches(){
+    private static String displayUpcomingMatches(){
         StringBuilder upcomingMatches = new StringBuilder();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the name of the Stadium to see upcoming matches: ");
@@ -320,7 +318,7 @@ public class Logic {
         return "Stadium not found, please enter a valid name";
     }
 
-    public static void deleteStadium(){
+    private static void deleteStadium(){
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the name of the Stadium you want to delete: ");
         String name = scanner.nextLine();
@@ -336,11 +334,11 @@ public class Logic {
     //End of stadium related methods
 
     //Start of referee related methods
-    public static void displayTotalReferees(){
+    private static void displayTotalReferees(){
         System.out.println("Total number of referees: " + Integer.toString(Referee.getNumOfReferees()));
     }
 
-    public static void deleteReferee(){
+    private static void deleteReferee(){
         Scanner scanner=new Scanner(System.in);
         System.out.println("Enter the ID of the referee you want to delete");
         int refereeId = scanner.nextInt();
@@ -354,10 +352,10 @@ public class Logic {
         System.out.println("Referee not found");
     }
 
-    public static void enterRefereeInfo() throws DuplicateException {
+    private static void enterRefereeInfo() throws DuplicateException {
         Referee.enterRefereeInfo(referees);
     }
-    public static void updateRefereeInfo() {
+    private static void updateRefereeInfo() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the referee you want to update: ");
@@ -377,11 +375,11 @@ public class Logic {
 
 
     //Start of Manager related methods
-    public static void enterManagerInfo() throws DuplicateException {
+    private static void enterManagerInfo() throws DuplicateException {
         Manager.enterManagerInfo(teams, managers);
     }
 
-    public static void updateManagerInfo() throws DuplicateException {
+    private static void updateManagerInfo() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the manager you want to update: ");
         int managerIdToUpdate = scanner.nextInt();
@@ -397,7 +395,7 @@ public class Logic {
         System.out.println("Manager with ID " + managerIdToUpdate + " not found.");
     }
 
-    public static void deleteManager() {
+    private static void deleteManager() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the manager you want to delete: ");
         int managerIdToDelete = scanner.nextInt();
@@ -412,7 +410,7 @@ public class Logic {
         }
         System.out.println("Manager with ID " + managerIdToDelete + " not found.");
     }
-    public static String displayManagerInfo() {
+    private static String displayManagerInfo() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the manager you want to display: ");
         int managerIdToDisplay = scanner.nextInt();
@@ -429,60 +427,59 @@ public class Logic {
 
     //Start of Player related methods
 
-        public static void enterPlayerInfo() throws DuplicateException {
-                Player.enterPlayerInfo(teams, players);
-        }
-        public static void searchPlayer() {
-
+    private static void enterPlayerInfo() throws DuplicateException {
+        Player.enterPlayerInfo(teams, players);
+    }
+    private static void searchPlayer() {
         Player.searchPlayer(players,teams);
-        }
+    }
 
-        public static void updatePlayer() throws DuplicateException{
+    private static void updatePlayer() throws DuplicateException{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the player you want to update: ");
         int playerIdToUpdate = scanner.nextInt();
         scanner.nextLine();
 
         for (Player player : players) {
-        if (player.getPlayerId() == playerIdToUpdate) {
-            int choice=0;
-            switch (player.position) {
+            if (player.getPlayerId() == playerIdToUpdate) {
+                int choice=0;
+                switch (player.position) {
 
-                case "Forward":{
+                    case "Forward":{
 
-                    Forward forward=(Forward) player;
-                    forward.updatePlayerInfo(players,teams,choice);
-                    break;
+                        Forward forward=(Forward) player;
+                        forward.updatePlayerInfo(players,teams,choice);
+                        break;
+                    }
+
+                    case "Midfielder":{
+                        Midfielder midfielder=(Midfielder) player;
+                        midfielder.updatePlayerInfo(players,teams,choice);
+                        break;
+                    }
+
+                    case "Defender":{
+                        Defender defender=(Defender) player;
+                        defender.updatePlayerInfo(players,teams,choice);
+                        break;
+                    }
+
+                    case "Goalkeeper":{
+                        Goalkeeper goalkeeper=(Goalkeeper) player;
+                        goalkeeper.updatePlayerInfo(players,teams,choice);
+                        break;
+                    }
+
                 }
-
-                case "Midfielder":{
-                    Midfielder midfielder=(Midfielder) player;
-                    midfielder.updatePlayerInfo(players,teams,choice);
-                    break;
-                }
-
-                case "Defender":{
-                    Defender defender=(Defender) player;
-                    defender.updatePlayerInfo(players,teams,choice);
-                    break;
-                }
-
-                case "Goalkeeper":{
-                    Goalkeeper goalkeeper=(Goalkeeper) player;
-                    goalkeeper.updatePlayerInfo(players,teams,choice);
-                    break;
-                }
-
-            }
 
             }
             System.out.println("Player information updated successfully!");
-                return;
-            }
+            return;
+        }
         System.out.println("Player with ID " + playerIdToUpdate + " not found.");
     }
 
-        public static void deletePlayer() {
+    private static void deletePlayer() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the ID of the player you want to delete: ");
         int playerIdToDelete = scanner.nextInt();
@@ -499,7 +496,7 @@ public class Logic {
     }
 
     //Start of stats related methods
-    public static void displayTopScorePlayers() {
+    private static void displayTopScorePlayers() {
         if (!Logic.getPlayers().isEmpty()) {
             List<Player> filteredPlayers = Logic.getPlayers().stream()
                     .filter(player -> !(player instanceof Goalkeeper))
@@ -538,7 +535,7 @@ public class Logic {
             System.out.println("There are no players to show");
         }
     }
-    public static void displayTopAssistPlayers() {
+    private static void displayTopAssistPlayers() {
 
         if (!Logic.getPlayers().isEmpty()) {
         List<Player> filteredPlayers = Logic.getPlayers().stream()
@@ -578,7 +575,7 @@ public class Logic {
         System.out.println("There are no players to show");
     }
     }
-    public static void displayTopCleanSheetsPlayers() {
+    private static void displayTopCleanSheetsPlayers() {
         List<Player> goalkeepers = Logic.getPlayers().stream()
                 .filter(player -> player instanceof Goalkeeper)
                 .collect(Collectors.toList());
@@ -604,9 +601,8 @@ public class Logic {
             System.out.println("There are no goalkeepers to show");
         }
     }
-    //End od Stats related methods
 
-    public static void displayTeamsByAverageAge() {
+    private static void displayTeamsByAverageAge() {
         List<Team> teamsByAge = teams;
 
         if (!teamsByAge.isEmpty()) {
@@ -622,59 +618,8 @@ public class Logic {
     }
     //End od Stats related methods
 
-
-        public static void startCLI() throws DuplicateException {
-            Scanner scanner = new Scanner(System.in);
-
-            while (true) {
-                System.out.println("Welcome to the Egyptian League System!");
-                System.out.println("Select an option:");
-                System.out.println("1. Teams");
-                System.out.println("2. Matches");
-                System.out.println("3. Players");
-                System.out.println("4. Managers");
-                System.out.println("5. Referees");
-                System.out.println("6. Stadiums");
-                System.out.println("7. Stats");
-                System.out.println("0. Exit");
-                System.out.print("Enter your choice: ");
-
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (choice) {
-                    case 0:
-                        System.out.println("Exiting...");
-                        return;
-                    case 1:
-                        handleTeams();
-                        break;
-                    case 2:
-                        handleMatches();
-                        break;
-                    case 3:
-                        handlePlayers();
-                        break;
-                    case 4:
-                        handleManagers();
-                        break;
-                    case 5:
-                        handleReferees();
-                        break;
-                    case 6:
-                        handleStadiums();
-                        break;
-                    case 7:
-                        handleStats();
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
-                }
-            }
-        }
-
-    public static void handleTeams() throws DuplicateException {
+    //Start of handling methods
+    private static void handleTeams() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -739,7 +684,7 @@ public class Logic {
     }
 
 
-    public static void handleMatches() {
+    private static void handleMatches() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -780,7 +725,7 @@ public class Logic {
 
 
 
-    public static void handlePlayers() throws DuplicateException {
+    private static void handlePlayers() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -819,7 +764,7 @@ public class Logic {
     }
 
 
-    public static void handleManagers() throws DuplicateException {
+    private static void handleManagers() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -857,7 +802,7 @@ public class Logic {
         }
     }
 
-    public static void handleReferees() throws DuplicateException {
+    private static void handleReferees() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -895,7 +840,7 @@ public class Logic {
         }
     }
 
-    public static void handleStadiums() throws DuplicateException {
+    private static void handleStadiums() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -934,7 +879,7 @@ public class Logic {
     }
 
 
-    public static void handleStats() {
+    private static void handleStats() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -964,6 +909,58 @@ public class Logic {
                     break;
                 case 4:
                     displayTeamsByAverageAge();
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+    //End of handling methods
+
+    public static void startCLI() throws DuplicateException {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Welcome to the Egyptian League System!");
+            System.out.println("Select an option:");
+            System.out.println("1. Teams");
+            System.out.println("2. Matches");
+            System.out.println("3. Players");
+            System.out.println("4. Managers");
+            System.out.println("5. Referees");
+            System.out.println("6. Stadiums");
+            System.out.println("7. Stats");
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 0:
+                    System.out.println("Exiting...");
+                    return;
+                case 1:
+                    handleTeams();
+                    break;
+                case 2:
+                    handleMatches();
+                    break;
+                case 3:
+                    handlePlayers();
+                    break;
+                case 4:
+                    handleManagers();
+                    break;
+                case 5:
+                    handleReferees();
+                    break;
+                case 6:
+                    handleStadiums();
+                    break;
+                case 7:
+                    handleStats();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
