@@ -29,6 +29,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class StandingsController implements Initializable {
@@ -114,24 +115,14 @@ public class StandingsController implements Initializable {
         totalScoreColumn.setSortType(TableColumn.SortType.DESCENDING);
         ObservableList<Team> observableTeams = FXCollections.observableArrayList(Logic.getTeams());
         // Creating a sorted list from the observable list.
-        SortedList<Team> sortedData = new SortedList<>(observableTeams);
-        sortedData.comparatorProperty().bind(standingsTable.comparatorProperty());
+        observableTeams.sort((team1, team2) -> Integer.compare(team2.getTotalScore(), team1.getTotalScore()));
 
-        // Add a listener to the sort order to handle column sorting.
-        standingsTable.getSortOrder().add(totalScoreColumn);
-        standingsTable.setSortPolicy(tv -> {
-            FXCollections.sort(sortedData, (o1, o2) -> {
-                if (o1.getTotalScore() == o2.getTotalScore()) return 0;
-                return o1.getTotalScore() > o2.getTotalScore() ? -1 : 1;
-            });
-            return true;
-        });
 
         for (TableColumn<Team, ?> column : standingsTable.getColumns()) {
             column.setResizable(false);
-            column.setSortable(false);
             column.setEditable(false);
             column.setReorderable(false);
+            column.setSortable(false);
             if(column.equals(nameColumn)){
                 column.setPrefWidth(200);
             }
@@ -140,7 +131,7 @@ public class StandingsController implements Initializable {
             }
         }
 
-        standingsTable.setItems(sortedData);
+        standingsTable.setItems(observableTeams);
         int rowHeight = 50;
         double preferredHeight = (Team.getNumOfTeams() + 1) * rowHeight;
         standingsTable.setPrefHeight(preferredHeight);

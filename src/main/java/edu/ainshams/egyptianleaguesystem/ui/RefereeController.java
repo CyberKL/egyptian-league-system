@@ -140,7 +140,7 @@ public class RefereeController implements Initializable {
         }
         return valid;
     }
-    public void createReferee(){
+    public void createReferee(ActionEvent event){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Referee created successfully!");
         if (isAnyFieldBlank()){
             missingDataAlert.show();
@@ -154,14 +154,15 @@ public class RefereeController implements Initializable {
                 if (validateData(id, dateOfBirth)) {
                     Referee referee = new Referee(name, dateOfBirth, nationality, id);
                     Logic.addReferee(referee);
-                    success.show();
-                    nameField.clear();
-                    idField.clear();
-                    nationalityField.clear();
-                    dobPicker.setValue(null);
+                    success.showAndWait();
+                    switchRefereesMenu(event);
                 }
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+                alert.show();
+            }
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
                 alert.show();
             }
         }

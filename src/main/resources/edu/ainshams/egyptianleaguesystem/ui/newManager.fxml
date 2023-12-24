@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.mfxcore.controls.Label?>
@@ -54,6 +55,7 @@
                         <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
                      </textFill>
                   </MFXTextField>
+                  <MFXComboBox id="customNCombo" fx:id="teamChoice" floatingText="Team" />
                   <Label id="number" text="Trophies" textFill="WHITE">
                      <font>
                         <Font size="20.0" />

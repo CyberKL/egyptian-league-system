@@ -1,20 +1,33 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+@JsonTypeName("Goalkeeper")
 public class Goalkeeper extends Player{
     private int cleanSheets;
     private int saves;
 
-    public Goalkeeper(String name, LocalDate dateOfBirth, String nationality,int playerId, int number, Team team, int height, int weight, String preferredFoot){
-        super(name, dateOfBirth, nationality,playerId,number,team,height,weight,preferredFoot);
+    public Goalkeeper(@JsonProperty("name") String name,
+                      @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                      @JsonProperty("nationality") String nationality,
+                      @JsonProperty("playerId") int playerId,
+                      @JsonProperty("number") int number,
+                      @JsonProperty("team") Team team,
+                      @JsonProperty("height") int height,
+                      @JsonProperty("weight") int weight,
+                      @JsonProperty("preferredFoot") String preferredFoot) {
+
+        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot);
         this.position = "Goalkeeper";
         this.cleanSheets = 0;
-        this.saves=0;
+        this.saves = 0;
     }
 
     @Override

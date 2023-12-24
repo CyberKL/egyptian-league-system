@@ -1,8 +1,16 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 public class Stadium {
 
     private final String name;
@@ -12,7 +20,10 @@ public class Stadium {
     private ArrayList<Match> upcomingMatches = new ArrayList<Match>();
     private int matchesPlayedOn;
 
-    public Stadium(String name, int id, int capacity, String city){
+    public Stadium(@JsonProperty("name") String name,
+                   @JsonProperty("id") int id,
+                   @JsonProperty("capacity") int capacity,
+                   @JsonProperty("city") String city){
         this.name = name;
         this.id = id;
         this.capacity = capacity;

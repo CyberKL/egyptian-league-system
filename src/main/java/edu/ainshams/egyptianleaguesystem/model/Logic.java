@@ -1,5 +1,15 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,6 +21,79 @@ public class Logic {
     private static ArrayList<Manager> managers = new ArrayList<Manager>();
     private static ArrayList<Referee> referees = new ArrayList<Referee>();
     private static ArrayList<Stadium> stadiums = new ArrayList<Stadium>();
+
+    //Start of reading and writing section
+    private static final String teamsFilePath = "src/main/resources/teams.json";
+    private static final String playersFilePath = "src/main/resources/players.json";
+    private static final String matchesFilePath = "src/main/resources/matches.json";
+    private static final String managersFilePath = "src/main/resources/managers.json";
+    private static final String refereesFilePath = "src/main/resources/referees.json";
+    private static final String stadiumsFilePath = "src/main/resources/stadiums.json";
+
+    public static void writeDataToJson(ArrayList<?> list, String filePath) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Jdk8Module());
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.writeValue(new File(filePath), list);
+    }
+
+    public static <T> ArrayList<T> readDataFromJson(String filePath, TypeReference<ArrayList<T>> typeReference) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Jdk8Module());
+        return objectMapper.readValue(new File(filePath), typeReference);
+    }
+
+    public static void write () {
+        try {
+            writeDataToJson(teams, teamsFilePath);
+            writeDataToJson(players, playersFilePath);
+            writeDataToJson(matches, matchesFilePath);
+            writeDataToJson(managers, managersFilePath);
+            writeDataToJson(referees, refereesFilePath);
+            writeDataToJson(stadiums, stadiumsFilePath);
+        }catch (IOException ie){
+            ie.printStackTrace();
+            System.out.println("Error while writing to files");
+        }
+    }
+
+    public static void read() {
+        try {
+            if (isFileNotEmpty(teamsFilePath)) {
+                teams = readDataFromJson(teamsFilePath, new TypeReference<ArrayList<Team>>() {});
+            }
+
+            if (isFileNotEmpty(playersFilePath)) {
+                players = readDataFromJson(playersFilePath, new TypeReference<ArrayList<Player>>() {});
+            }
+
+            if (isFileNotEmpty(matchesFilePath)) {
+                matches = readDataFromJson(matchesFilePath, new TypeReference<ArrayList<Match>>() {});
+            }
+
+            if (isFileNotEmpty(managersFilePath)) {
+                managers = readDataFromJson(managersFilePath, new TypeReference<ArrayList<Manager>>() {});
+            }
+
+            if (isFileNotEmpty(refereesFilePath)) {
+                referees = readDataFromJson(refereesFilePath, new TypeReference<ArrayList<Referee>>() {});
+            }
+
+            if (isFileNotEmpty(stadiumsFilePath)) {
+                stadiums = readDataFromJson(stadiumsFilePath, new TypeReference<ArrayList<Stadium>>() {});
+            }
+        } catch (IOException ie) {
+            ie.printStackTrace();
+            System.out.println("Error while reading from files");
+        }
+    }
+
+    private static boolean isFileNotEmpty(String filePath) throws IOException {
+        return Files.size(Paths.get(filePath)) > 3;
+    }
+    //End of reading and writing section
 
     public static ArrayList<Team> getTeams() {
         return teams;
@@ -608,7 +691,7 @@ public class Logic {
         if (!teamsByAge.isEmpty()) {
             teamsByAge.sort((team1, team2) -> Double.compare(team2.getAverageAge(), team1.getAverageAge()));
 
-            System.out.println("Teams sorted by Average Age (Descending):");
+            System.out.println("Teams sorted by Average Age:");
             for (Team team : teamsByAge) {
                 System.out.println("Team: " + team.getName() + " - Average Age: " + team.getAverageAge());
             }
@@ -616,7 +699,7 @@ public class Logic {
             System.out.println("There are no teams to show");
         }
     }
-    //End od Stats related methods
+    //End of Stats related methods
 
     //Start of handling methods
     private static void handleTeams() throws DuplicateException {
@@ -920,8 +1003,9 @@ public class Logic {
 
     public static void startCLI() throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
 
-        while (true) {
+        while (!exit) {
             System.out.println("Welcome to the Egyptian League System!");
             System.out.println("Select an option:");
             System.out.println("1. Teams");
@@ -938,9 +1022,10 @@ public class Logic {
             scanner.nextLine();
 
             switch (choice) {
-                case 0:
-                    System.out.println("Exiting...");
-                    return;
+                case 0: {
+                    exit = true;
+                    break;
+                }
                 case 1:
                     handleTeams();
                     break;

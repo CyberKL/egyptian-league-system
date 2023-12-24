@@ -2,7 +2,10 @@ package edu.ainshams.egyptianleaguesystem.ui;
 
 import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Manager;
+import edu.ainshams.egyptianleaguesystem.model.Team;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,11 +34,9 @@ import java.util.ResourceBundle;
 public class ManagerController implements Initializable {
     Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 
-    @FXML
-    protected Button backBtn;
 
     @FXML
-    private DatePicker dobPicker;
+    private MFXDatePicker dobPicker;
 
     @FXML
     private TextField idField;
@@ -51,8 +52,12 @@ public class ManagerController implements Initializable {
 
     @FXML
     private ToggleGroup wasPlayer;
+
     @FXML
     private AnchorPane subMenuRoot;
+
+    @FXML
+    private MFXComboBox<String> teamChoice;
 
     private MFXButton createButton(String icon, String text, EventHandler action) {
         MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
@@ -98,6 +103,9 @@ public class ManagerController implements Initializable {
                 currentValue = trophiesSpinner.getValue();
             }
         });
+        for (Team team : Logic.getTeams()){
+            teamChoice.getItems().add(team.getName());
+        }
     }
 
     private boolean isAnyFieldBlank() {
@@ -107,7 +115,7 @@ public class ManagerController implements Initializable {
                 nationalityField.getText().isBlank() ||
                 wasPlayer.getSelectedToggle() == null;
     }
-    public void createManager(){
+    public void createManager(ActionEvent event){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Manager created successfully!");
         if (isAnyFieldBlank()){
             missingDataAlert.show();
@@ -119,26 +127,43 @@ public class ManagerController implements Initializable {
                 LocalDate dateOfBirth = dobPicker.getValue();
                 String nationality = nationalityField.getText();
                 int numOfTrophies = currentValue;
+                String teamName = teamChoice.getValue();
                 RadioButton selectedRadioButton = (RadioButton) wasPlayer.getSelectedToggle();
                 boolean formerPlayer = selectedRadioButton.getText().equalsIgnoreCase("yes");
                 if (validateData(id, dateOfBirth)) {
-                    Manager manager = new Manager(name, dateOfBirth, nationality, id, numOfTrophies, formerPlayer);
-                    Logic.addManager(manager);
-                    success.show();
-                    nameField.clear();
-                    idField.clear();
-                    nationalityField.clear();
-                    dobPicker.setValue(null);
-                    trophiesSpinner.getValueFactory().setValue(trophiesSpinner.getValueFactory().getConverter().fromString("0"));
-                    wasPlayer.selectToggle(null);
+                    Team currentTeam = null;
+                    for (Team team : Logic.getTeams()) {
+                        if (team.getName().equalsIgnoreCase(teamName)) {
+                            currentTeam = team;
+                            break;
+                        }
+                    }
+                    if (currentTeam == null){
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Please choose a team, if there is no team available please add a team before adding a new player!");
+                        alert.show();
+                    }
+                    else {
+                        Manager manager = new Manager(name, dateOfBirth, nationality, id, numOfTrophies, formerPlayer, currentTeam);
+                        Logic.addManager(manager);
+                        if (currentTeam.getManager()!=null) {
+                            currentTeam.getManager().setTeam(null);
+                        }
+                        currentTeam.setManager(manager);
+                        success.showAndWait();
+                        switchManagerMenu(event);
+                    }
                 }
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in the id field");
                 alert.show();
             }
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
+                alert.show();
+            }
         }
     }
-    public boolean validateData(int id , LocalDate dateOfBirth){
+    private boolean validateData(int id , LocalDate dateOfBirth){
         boolean duplicateId = false;
         boolean validDob = true;
         boolean valid = false;

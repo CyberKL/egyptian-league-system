@@ -1,5 +1,9 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,6 +11,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 public class Match {
 
     private final int matchId;
@@ -18,7 +26,12 @@ public class Match {
     private Stadium stadium;
     private String winner;
 
-    public Match(int matchId, LocalDate date, Team homeTeam, Team awayTeam, Referee referee, Stadium stadium) {
+    public Match(@JsonProperty("matchId") int matchId,
+                 @JsonProperty("date") LocalDate date,
+                 @JsonProperty("homeTeam") Team homeTeam,
+                 @JsonProperty("awayTeam") Team awayTeam,
+                 @JsonProperty("referee") Referee referee,
+                 @JsonProperty("stadium") Stadium stadium) {
         this.matchId = matchId;
         this.date = date;
         this.homeTeam = homeTeam;

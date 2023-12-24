@@ -1,11 +1,16 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+@JsonTypeName("Forward")
 public class Forward extends Player {
     private int goalsScored;
     private double expectedGoals;
@@ -14,8 +19,17 @@ public class Forward extends Player {
     private int assists;
 
 
-    public Forward(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
-        super(name, dateOfBirth, nationality, playerId, number, team, height,weight,preferredFoot);
+    public Forward(@JsonProperty("name") String name,
+                   @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                   @JsonProperty("nationality") String nationality,
+                   @JsonProperty("playerId") int playerId,
+                   @JsonProperty("number") int number,
+                   @JsonProperty("team") Team team,
+                   @JsonProperty("height") int height,
+                   @JsonProperty("weight") int weight,
+                   @JsonProperty("preferredFoot") String preferredFoot) {
+
+        super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot);
         this.position = "Forward";
         this.goalsScored = 0;
         this.expectedGoals = 0.0;

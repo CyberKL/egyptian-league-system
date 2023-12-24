@@ -1,11 +1,14 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Score {
 
     private final int homeTeam;
     private final int awayTeam;
 
-    public Score(int homeTeam, int awayTeam){
+    public Score(@JsonProperty("homeTeam") int homeTeam,
+                 @JsonProperty("awayTeam") int awayTeam){
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
     }

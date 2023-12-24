@@ -4,6 +4,7 @@ import edu.ainshams.egyptianleaguesystem.model.Logic;
 import edu.ainshams.egyptianleaguesystem.model.Manager;
 import edu.ainshams.egyptianleaguesystem.model.Team;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,7 +49,7 @@ public class EditManagerController implements Initializable {
     private Label managerNameLabel;
 
     @FXML
-    private DatePicker newDate;
+    private MFXDatePicker newDate;
 
     @FXML
     private TextField newInfoField;
@@ -215,14 +216,23 @@ public class EditManagerController implements Initializable {
                     }
                 } else if (editing.equalsIgnoreCase("team")) {
                     String teamName = newInfoField.getText();
+                    boolean teamFound = false;
                     for (Team team : Logic.getTeams()) {
                         if (team.getName().equalsIgnoreCase(teamName)) {
+                            teamFound = true;
                             if (manager.getTeam() != null) {
                                 manager.getTeam().setManager(null);
+                            }
+                            if (team.getManager() != null){
+                                team.getManager().setTeam(null);
                             }
                             manager.setTeam(team);
                             success.show();
                         }
+                    }
+                    if (!teamFound){
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Team not found!");
+                        alert.show();
                     }
                 } else if (editing.equalsIgnoreCase("trophies")) {
                     int trophies = Integer.parseInt(newInfoField.getText());

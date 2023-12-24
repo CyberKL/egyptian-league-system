@@ -1,11 +1,19 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 public class Manager extends FootballCharacter{
 
     private final int managerId;
@@ -15,9 +23,15 @@ public class Manager extends FootballCharacter{
     private static int numOfManagers = 0;
 
 
-    public Manager(String name, LocalDate dateOfBirth, String nationality, int managerId,  int trophies, boolean wasPlayer){
+    public Manager( @JsonProperty("name") String name,
+                    @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                    @JsonProperty("nationality") String nationality,
+                    @JsonProperty("managerId") int managerId,
+                    @JsonProperty("trophies") int trophies,
+                    @JsonProperty("wasPlayer") boolean wasPlayer,
+                    @JsonProperty("team") Team team){
         super(name,dateOfBirth, nationality);
-        //this.team = team;
+        this.team = team;
         this.managerId = managerId;
         this.trophies = trophies;
         this.wasPlayer = wasPlayer;
@@ -73,7 +87,7 @@ public class Manager extends FootballCharacter{
 
     protected static void enterManagerInfo(ArrayList<Team>teams,ArrayList<Manager>managerList) throws DuplicateException {
         Scanner scanner = new Scanner(System.in);
-        //Team managerTeam = null;
+        Team managerTeam = null;
         System.out.println("Enter manager name:");
         String managerName = scanner.nextLine();
 
@@ -116,8 +130,25 @@ public class Manager extends FootballCharacter{
             System.out.println("Please enter 'true' or 'false'.");
             return;
         }
-        Manager manager = new Manager(managerName, managerDateOfBirth, managerNationality, managerId, trophies, wasPlayer);
+
+        boolean teamFound = false;
+        System.out.println("Enter manager team");
+        String teamName = scanner.nextLine();
+        for (Team team : Logic.getTeams()){
+            if (team.getName().equalsIgnoreCase(teamName)){
+                teamFound = true;
+                managerTeam = team;
+                break;
+            }
+        }
+        if (!teamFound){
+            System.out.println("Team not found!");
+            return;
+        }
+
+        Manager manager = new Manager(managerName, managerDateOfBirth, managerNationality, managerId, trophies, wasPlayer, managerTeam);
         managerList.add(manager);
+        managerTeam.setManager(manager);
         System.out.println("Manger created successful");
     }
 

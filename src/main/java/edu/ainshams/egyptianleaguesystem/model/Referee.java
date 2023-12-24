@@ -1,5 +1,9 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.chrono.ChronoPeriod;
@@ -7,13 +11,20 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 public class Referee extends FootballCharacter{
 
     private int matchesRefereed;
     private final int refereeId;
-    private static int numOfReferees = 0;
+    private static int numOfReferees = Logic.getReferees().size();
 
-    public Referee(String name, LocalDate dateOfBirth, String nationality, int refereeId){
+    public Referee(@JsonProperty("name") String name,
+                   @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                   @JsonProperty("nationality") String nationality,
+                   @JsonProperty("refereeId") int refereeId){
         super(name, dateOfBirth, nationality);
         this.refereeId = refereeId;
         this.matchesRefereed = 0;

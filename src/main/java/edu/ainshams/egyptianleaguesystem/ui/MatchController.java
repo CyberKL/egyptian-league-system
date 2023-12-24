@@ -109,7 +109,7 @@ public class MatchController implements Initializable {
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
 
-    public void createMatch(){
+    public void createMatch(ActionEvent event){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Match created successfully!");
         if (idField.getText().isBlank() || datePicker.getValue() == null || homeTeamField.getText().isBlank() || awayTeamField.getText().isBlank() || refField.getText().isBlank() || stadField.getText().isBlank()){
             missingDataAlert.show();
@@ -128,10 +128,10 @@ public class MatchController implements Initializable {
                         LocalDate matchDate = datePicker.getValue();
                         String homeTeamName = homeTeamField.getText();
                         String awayTeamName = awayTeamField.getText();
-                        String refName = refField.getText();
+                        int refId = Integer.parseInt(refField.getText());
                         String stadName = stadField.getText();
                         String matchScore = scoreField.getText();
-                        if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.of(matchScore))) {
+                        if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refId, stadName, Optional.of(matchScore))) {
                             for (Team team : Logic.getTeams()) {
                                 if (team.getName().equalsIgnoreCase(homeTeamName)) {
                                     homeTeam = team;
@@ -140,7 +140,7 @@ public class MatchController implements Initializable {
                                 }
                             }
                             for (Referee referee : Logic.getReferees()) {
-                                if (referee.getName().equalsIgnoreCase(refName)) {
+                                if (referee.getRefereeId()==refId) {
                                     ref = referee;
                                     break;
                                 }
@@ -158,7 +158,8 @@ public class MatchController implements Initializable {
                                 Match.result(match);
                                 Logic.addMatch(match);
                                 updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
-                                success.show();
+                                success.showAndWait();
+                                switchMatchMenu(event);
                             }
                             else {
                                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter correct teams");
@@ -175,9 +176,9 @@ public class MatchController implements Initializable {
                     LocalDate matchDate = datePicker.getValue();
                     String homeTeamName = homeTeamField.getText();
                     String awayTeamName = awayTeamField.getText();
-                    String refName = refField.getText();
+                    int refId = Integer.parseInt(refField.getText());
                     String stadName = stadField.getText();
-                    if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refName, stadName, Optional.empty())) {
+                    if (validateData(matchId, matchDate, homeTeamName, awayTeamName, refId, stadName, Optional.empty())) {
                         for (Team team : Logic.getTeams()) {
                             if (team.getName().equalsIgnoreCase(homeTeamName)) {
                                 homeTeam = team;
@@ -186,7 +187,7 @@ public class MatchController implements Initializable {
                             }
                         }
                         for (Referee referee : Logic.getReferees()) {
-                            if (referee.getName().equalsIgnoreCase(refName)) {
+                            if (referee.getRefereeId()==refId) {
                                 ref = referee;
                                 break;
                             }
@@ -201,7 +202,8 @@ public class MatchController implements Initializable {
                             Match match = new Match(matchId, matchDate, homeTeam, awayTeam, ref, stad);
                             Logic.addMatch(match);
                             updateEntitiesCreate(match, homeTeam, awayTeam, ref, stad, matchDate);
-                            success.show();
+                            success.showAndWait();
+                            switchMatchMenu(event);
                         }
                         else {
                             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter correct teams");
@@ -214,9 +216,13 @@ public class MatchController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
                 alert.show();
             }
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
+                alert.show();
+            }
         }
     }
-    private boolean validateData(int id, LocalDate date, String homeName, String awayName, String refereeName, String stadiumName, Optional<String> score){
+    private boolean validateData(int id, LocalDate date, String homeName, String awayName, int refereeId, String stadiumName, Optional<String> score){
         boolean isIdDuplicate = false;
         boolean homeTeam = false;
         boolean awayTeam = false;
@@ -249,7 +255,7 @@ public class MatchController implements Initializable {
             alert.show();
         }
         for (Referee referee : Logic.getReferees()){
-            if (referee.getName().equalsIgnoreCase(refereeName)){
+            if (referee.getRefereeId()==refereeId){
                 ref = true;
                 break;
             }
@@ -632,7 +638,7 @@ public class MatchController implements Initializable {
                         Alert alert = new Alert(Alert.AlertType.WARNING, "Stadium not found");
                         alert.show();
                     }
-                } else {
+                } else if (editing.equalsIgnoreCase("score")){
                     if (currentMatch.getDate().isBefore(LocalDate.now())) {
                         String matchScore = newInfoField.getText();
                         if (isValidScore(matchScore)) {
@@ -641,17 +647,26 @@ public class MatchController implements Initializable {
                             currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() - currentMatch.getScore().getAwayTeam());
                             currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() - currentMatch.getScore().getAwayTeam());
                             currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() - currentMatch.getScore().getHomeTeam());
+                            if (currentMatch.getWinner().equals(currentMatch.getHomeTeam().getName())){
+                                currentMatch.getHomeTeam().setWins(currentMatch.getHomeTeam().getWins()-1);
+                                currentMatch.getHomeTeam().setTotalScore(currentMatch.getHomeTeam().getTotalScore()-3);
+                                currentMatch.getAwayTeam().setLosses(currentMatch.getAwayTeam().getLosses()-1);
+                            }
+                            else if (currentMatch.getWinner().equals(currentMatch.getAwayTeam().getName())) {
+                                currentMatch.getAwayTeam().setWins(currentMatch.getAwayTeam().getWins()-1);
+                                currentMatch.getAwayTeam().setTotalScore(currentMatch.getAwayTeam().getTotalScore()-3);
+                                currentMatch.getHomeTeam().setLosses(currentMatch.getHomeTeam().getLosses()-1);
+                            }
+                            else {
+                                currentMatch.getHomeTeam().setDraws(currentMatch.getHomeTeam().getDraws()-1);
+                                currentMatch.getHomeTeam().setTotalScore(currentMatch.getHomeTeam().getTotalScore()-1);
+                                currentMatch.getAwayTeam().setDraws(currentMatch.getAwayTeam().getDraws()-1);
+                                currentMatch.getAwayTeam().setTotalScore(currentMatch.getAwayTeam().getTotalScore()-1);
+                            }
                             currentMatch.setScore(score);
                             Match.result(currentMatch);
-                            currentMatch.getHomeTeam().setGoalsFor(currentMatch.getHomeTeam().getGoalsFor() + currentMatch.getScore().getHomeTeam());
-                            currentMatch.getHomeTeam().setGoalsAgainst(currentMatch.getHomeTeam().getGoalsAgainst() + currentMatch.getScore().getAwayTeam());
-                            currentMatch.getAwayTeam().setGoalsFor(currentMatch.getAwayTeam().getGoalsFor() + currentMatch.getScore().getAwayTeam());
-                            currentMatch.getAwayTeam().setGoalsAgainst(currentMatch.getAwayTeam().getGoalsAgainst() + currentMatch.getScore().getHomeTeam());
-                            currentMatch.getHomeTeam().calcGoalDiff();
-                            currentMatch.getHomeTeam().calcTotalScore();
-                            currentMatch.getAwayTeam().calcGoalDiff();
-                            currentMatch.getAwayTeam().calcTotalScore();
                             success.show();
+                            matchHeaderLabel.setText(currentMatch.matchHeader());
                         } else {
                             Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a valid score!");
                             alert.show();

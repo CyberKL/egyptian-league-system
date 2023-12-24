@@ -1,14 +1,24 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 public class Team {
 
     private String name;
     private int teamId;
+
     private ArrayList<Player> players = new ArrayList<Player>();
     private Player captain;
     private Manager manager;
@@ -22,10 +32,9 @@ public class Team {
     private int goalDifference;
     private int totalScore;
     private double averageAge;
-    private int numOfPlayers;
     private static int numOfTeams = 0;
 
-    public Team(String name, int teamId) {
+    public Team(@JsonProperty("name") String name, @JsonProperty("teamId") int teamId) {
         this.name = name;
         this.teamId = teamId;
         this.matchesPlayed = 0;
@@ -36,6 +45,7 @@ public class Team {
         this.goalsFor = 0;
         this.goalsAgainst = 0;
         this.goalDifference = 0;
+        this.averageAge = 0.0;
         numOfTeams++;
     }
 
@@ -170,17 +180,20 @@ public class Team {
 
     @Override
     public String toString() {
+        String captainName = (captain != null) ? captain.getName() : "N/A";
+        String managerName = (manager != null) ? manager.getName() : "N/A";
+
         return "Name: " + name +
                 "\nTeam Id: " + teamId +
-                "\nCaptain: " + captain.getName() +
-                "\nManager: " + manager.getName() +
+                "\nCaptain: " + captainName +
+                "\nManager: " + managerName +
                 "\nMatches Played: " + matchesPlayed +
                 "\nWins: " + wins +
                 "\nDraws: " + draws +
                 "\nLosses: " + losses +
-                "\nGoals for: "+ goalsFor +
-                "\nGoals against: "+ goalsAgainst +
-                "\nGoals difference: "+ goalDifference +
+                "\nGoals for: " + goalsFor +
+                "\nGoals against: " + goalsAgainst +
+                "\nGoals difference: " + goalDifference +
                 "\nTotal score: " + totalScore;
     }
 
@@ -380,7 +393,7 @@ public class Team {
     }
 
     private void calcAverageAge(){
-        numOfPlayers = players.size();
+        int numOfPlayers = players.size();
         int totalAge = 0;
         for (Player player : players){
             totalAge += player.age;

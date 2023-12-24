@@ -1,11 +1,15 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+@JsonTypeName("Defender")
 public class Defender extends Player{
 
     private int goalsScored;
@@ -17,7 +21,16 @@ public class Defender extends Player{
     private int cleanSheets;
 
 
-    public Defender(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot) {
+    public Defender(@JsonProperty("name") String name,
+                    @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                    @JsonProperty("nationality") String nationality,
+                    @JsonProperty("playerId") int playerId,
+                    @JsonProperty("number") int number,
+                    @JsonProperty("team") Team team,
+                    @JsonProperty("height") int height,
+                    @JsonProperty("weight") int weight,
+                    @JsonProperty("preferredFoot") String preferredFoot) {
+
         super(name, dateOfBirth, nationality, playerId, number, team, height, weight, preferredFoot);
         this.position = "Defender";
         this.goalsScored = 0;

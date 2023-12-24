@@ -76,7 +76,8 @@ public class StadiumController implements Initializable {
 
     Alert missingDataAlert = new Alert(Alert.AlertType.WARNING, "Please fill in the required data!");
 
-    public void createStadium(){
+    public void createStadium(ActionEvent event){
+        Alert success = new Alert(Alert.AlertType.INFORMATION, "Stadium created successfully!");
         if (nameField.getText().isBlank() || idField.getText().isBlank() || capacityField.getText().isBlank() || cityField.getText().isBlank()){
             missingDataAlert.show();
         }
@@ -108,16 +109,14 @@ public class StadiumController implements Initializable {
                 if (!duplicateStadium) {
                     Stadium stadium = new Stadium(name, id, capacity, city);
                     Logic.addStadium(stadium);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Stadium created!");
-                    alert.show();
-                    nameField.clear();
-                    idField.clear();
-                    capacityField.clear();
-                    cityField.clear();
+                    success.showAndWait();
+                    switchStadiumMenu(event);
                 }
             }catch (NumberFormatException nfe){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id and capacity field");
+                alert.show();
+            }catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
                 alert.show();
             }
         }

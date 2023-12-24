@@ -1,23 +1,45 @@
 package edu.ainshams.egyptianleaguesystem.model;
+import com.fasterxml.jackson.annotation.*;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Forward.class, name = "Forward"),
+        @JsonSubTypes.Type(value = Midfielder.class, name = "Midfielder"),
+        @JsonSubTypes.Type(value = Goalkeeper.class, name = "Goalkeeper"),
+        @JsonSubTypes.Type(value = Defender.class, name = "Defender"),
+})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.UUIDGenerator.class,
+        property = "@json_id"
+)
 
 public abstract class Player extends FootballCharacter{
 
     protected  int playerId;
     protected int number;
-    protected Team team;
+    protected  Team team;
     protected int height;
     protected int weight;
     protected String preferredFoot;
+    @JsonProperty("type")
     protected String position;
     private static int numOfPlayers = 0;
 
-    protected Player(String name, LocalDate dateOfBirth, String nationality, int playerId, int number, Team team, int height, int weight, String preferredFoot){
+    protected Player(@JsonProperty("name") String name,
+                     @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
+                     @JsonProperty("nationality") String nationality,
+                     @JsonProperty("playerId") int playerId,
+                     @JsonProperty("number") int number,
+                     @JsonProperty("team") Team team,
+                     @JsonProperty("height") int height,
+                     @JsonProperty("weight") int weight,
+                     @JsonProperty("preferredFoot") String preferredFoot){
         super(name, dateOfBirth, nationality);
         this.playerId = playerId;
         this.number = number;
@@ -377,16 +399,20 @@ public abstract class Player extends FootballCharacter{
         if (playerPosition.equalsIgnoreCase("goalkeeper")){
             Player goalkeeper = new Goalkeeper(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(goalkeeper);
+            playerTeam.addPlayer(goalkeeper);
         } else if (playerPosition.equalsIgnoreCase("midfielder")) {
             Player midfielder = new Midfielder(playerName, playerDateOfBirth, playerNationality,playerID,playerNumber, playerTeam, playerHeight, playerWeight,playerPreferredFoot);
             players.add(midfielder);
+            playerTeam.addPlayer(midfielder);
         } else if (playerPosition.equalsIgnoreCase("forward")) {
             Player forward = new Forward(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(forward);
+            playerTeam.addPlayer(forward);
         }
         else if (playerPosition.equalsIgnoreCase("defender")){
             Player defender = new Defender(playerName, playerDateOfBirth, playerNationality, playerID, playerNumber, playerTeam, playerHeight, playerWeight, playerPreferredFoot);
             players.add(defender);
+            playerTeam.addPlayer(defender);
         }
 
     }

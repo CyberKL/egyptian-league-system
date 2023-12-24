@@ -155,7 +155,7 @@ public class NewPlayerController implements Initializable {
         }
     }
 
-    public void createPlayer(){
+    public void createPlayer(ActionEvent event){
         Alert success = new Alert(Alert.AlertType.INFORMATION, "Player created successfully!");
         if (isAnyFieldBlank()){
             missingDataAlert.show();
@@ -206,17 +206,8 @@ public class NewPlayerController implements Initializable {
                         }
                         Logic.addPlayer(player);
                         currentTeam.addPlayer(player);
-                        success.show();
-                        nameField.clear();
-                        idField.clear();
-                        nationalityField.clear();
-                        heightField.clear();
-                        weightField.clear();
-                        dobPicker.setValue(null);
-                        numSpinner.getValueFactory().setValue(numSpinner.getValueFactory().getConverter().fromString("1"));
-                        foot.selectToggle(null);
-                        teamChoice.setValue(null);
-                        positionChoice.setValue(null);
+                        success.showAndWait();
+                        switchPlayersMenu(event);
                     }
                 }
             }catch (NumberFormatException nfe){

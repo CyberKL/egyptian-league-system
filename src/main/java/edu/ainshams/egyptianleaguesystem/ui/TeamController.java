@@ -115,7 +115,7 @@ public class TeamController implements Initializable {
         stage.show();
     }
 
-    public void createTeam(){
+    public void createTeam(ActionEvent event){
         try {
             Alert success = new Alert(Alert.AlertType.INFORMATION, "Team created successfully!");
             boolean duplicateName = false;
@@ -139,12 +139,14 @@ public class TeamController implements Initializable {
             if (!duplicateName && !duplicateId) {
                 Team team = new Team(name, id);
                 Logic.addTeam(team);
-                success.show();
+                success.showAndWait();
+                switchTeamMenu(event);
             }
-            teamId.clear();
-            teamName.clear();
         }catch (NumberFormatException nfe){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter numbers only in id field");
+            alert.show();
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "An error occurred");
             alert.show();
         }
     }
@@ -280,6 +282,7 @@ public class TeamController implements Initializable {
                     currentInfo.setText("N/A");
                 }
                 newInfoLabel.setText("New team captain:");
+                newInfoField.setPromptText("ID");
             }
             else {
                 currentInfoLabel.setText("Current team manager:");
@@ -290,6 +293,7 @@ public class TeamController implements Initializable {
                     currentInfo.setText("N/A");
                 }
                 newInfoLabel.setText("New team manager:");
+                newInfoField.setPromptText("ID");
             }
             editForm.setVisible(true);
         }else {
@@ -374,18 +378,28 @@ public class TeamController implements Initializable {
                     boolean playerFound = false;
                     int id = Integer.parseInt(newInfoField.getText());
                     for (Player player : team.getPlayers()) {
-                        if (player.getPlayerId() == id && team.getCaptain().getPlayerId() != id) {
-                            team.setCaptain(player);
-                            success.show();
-                            captainFound = true;
+                        if (player.getPlayerId() == id) {
+                            if (team.getCaptain() != null){
+                                if (team.getCaptain().getPlayerId() == id){
+                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is already the captain of this team");
+                                    alert.show();
+                                    return;
+                                }
+                                else{
+                                    team.setCaptain(player);
+                                    success.show();
+                                    captainFound = true;
+                                }
+                            }
+                            else {
+                                team.setCaptain(player);
+                                success.show();
+                                captainFound = true;
+                            }
                             break;
                         }
                     }
                     if (!captainFound) {
-                        if (team.getCaptain().getPlayerId() == id) {
-                            Alert alert = new Alert(Alert.AlertType.WARNING, "Captain entered is already the captain of this team");
-                            alert.show();
-                        }
                         for (Player player : Logic.getPlayers()) {
                             if (player.getPlayerId() == id) {
                                 playerFound = true;
@@ -402,11 +416,28 @@ public class TeamController implements Initializable {
                     }
                 } else if (editing.equalsIgnoreCase("manager")) {
                     int id = Integer.parseInt(newInfoField.getText());
-                    if (team.getManager().getManagerId() == id) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "This is already the team manager");
-                        alert.show();
-                    } else {
-                        boolean managerFound = false;
+                    boolean managerFound = false;
+                    if (team.getManager() != null) {
+                        if (team.getManager().getManagerId() == id) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "This is already the team manager");
+                            alert.show();
+                        } else {
+                            for (Manager manager : Logic.getManagers()) {
+                                if (manager.getManagerId() == id) {
+                                    managerFound = true;
+                                    if (manager.getTeam() != null) {
+                                        manager.getTeam().setManager(null);
+                                    }
+                                    team.getManager().setTeam(null);
+                                    team.setManager(manager);
+                                    manager.setTeam(team);
+                                    success.show();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
                         for (Manager manager : Logic.getManagers()) {
                             if (manager.getManagerId() == id) {
                                 managerFound = true;
@@ -419,10 +450,11 @@ public class TeamController implements Initializable {
                                 break;
                             }
                         }
-                        if (!managerFound) {
+                    }
+
+                    if (!managerFound) {
                             Alert alert = new Alert(Alert.AlertType.WARNING, "Manager not found!");
                             alert.show();
-                        }
                     }
                 }
                 newInfoField.setText("");
