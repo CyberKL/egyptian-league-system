@@ -1,6 +1,7 @@
 package edu.ainshams.egyptianleaguesystem.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -42,6 +43,7 @@ public class Logic {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.registerModule(new Jdk8Module());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper.readValue(new File(filePath), typeReference);
     }
 
@@ -606,7 +608,7 @@ public class Logic {
         System.out.println("Player with ID " + playerIdToDelete + " not found.");
     }
     private static void displayTotalPlayers(){
-        System.out.println(Player.numOfPlayers);
+        System.out.println(Logic.getPlayers().size());
     }
     //End of players related methods
 

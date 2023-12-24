@@ -29,7 +29,7 @@ public abstract class Player extends FootballCharacter{
     protected String preferredFoot;
     @JsonProperty("type")
     protected String position;
-    protected static int numOfPlayers = 0;
+    //protected static int numOfPlayers = 0;
 
     protected Player(@JsonProperty("name") String name,
                      @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
@@ -47,7 +47,7 @@ public abstract class Player extends FootballCharacter{
         this.height = height;
         this.weight = weight;
         this.preferredFoot = preferredFoot;
-        numOfPlayers ++;
+        //numOfPlayers ++;
     }
 
     @Override

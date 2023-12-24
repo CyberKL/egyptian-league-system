@@ -1,1 +1,11 @@
-[ ]
+[ {
+  "@json_id" : "dac59363-d49d-4779-a775-1bc43b6fc259",
+  "name" : "Amin Omar",
+  "dateOfBirth" : [ 1985, 9, 25 ],
+  "nationality" : "Egyptian",
+  "refereeId" : 1,
+  "yellowCards" : 0,
+  "redCards" : 0,
+  "age" : 38,
+  "matchesRefereed" : 4
+} ]

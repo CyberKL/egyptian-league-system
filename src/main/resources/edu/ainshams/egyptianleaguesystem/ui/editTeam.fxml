@@ -81,7 +81,7 @@
             <VBox fx:id="editBox1" alignment="TOP_CENTER" prefWidth="637.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="currentInfoLabel" styleClass="info-label" />
-                  <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="230.0">
+                  <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="391.0">
                      <children>
                         <HBox fx:id="playerChoiceBox" layoutX="9.0" layoutY="2.0" prefHeight="46.0" prefWidth="212.0" spacing="20.0">
                            <children>
@@ -100,7 +100,7 @@
                               </RadioButton>
                            </children>
                         </HBox>
-                        <Label fx:id="currentInfo" layoutX="38.0" prefHeight="49.0" prefWidth="139.0" styleClass="info-label" />
+                        <Label fx:id="currentInfo" layoutX="4.0" prefHeight="49.0" prefWidth="387.0" styleClass="info-label" />
                      </children>
                   </Pane>
                   <Label fx:id="newInfoLabel" layoutX="269.0" layoutY="115.0" styleClass="info-label" />

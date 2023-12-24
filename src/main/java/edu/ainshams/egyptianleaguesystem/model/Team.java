@@ -32,7 +32,7 @@ public class Team {
     private int goalDifference;
     private int totalScore;
     private double averageAge;
-    private static int numOfTeams = 0;
+    //private static int numOfTeams = 0;
 
     public Team(@JsonProperty("name") String name, @JsonProperty("teamId") int teamId) {
         this.name = name;
@@ -46,7 +46,6 @@ public class Team {
         this.goalsAgainst = 0;
         this.goalDifference = 0;
         this.averageAge = 0.0;
-        numOfTeams++;
     }
 
     public String getName() {
@@ -94,7 +93,7 @@ public class Team {
     }
 
     public static int getNumOfTeams() {
-        return numOfTeams;
+        return Logic.getTeams().size();
     }
 
     public int getTeamId() {

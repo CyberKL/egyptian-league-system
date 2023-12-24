@@ -1241,6 +1241,7 @@ public class MenuController implements Initializable {
                     Alert delete = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + existingPlayer.getName());
                     Optional<ButtonType> choice = delete.showAndWait();
                     if (choice.isPresent() && choice.get() == ButtonType.OK) {
+                        existingPlayer.getTeam().deletePlayer(existingPlayer);
                         Logic.removePlayer(existingPlayer);
                         Alert success = new Alert(Alert.AlertType.INFORMATION);
                         success.setTitle("Success");

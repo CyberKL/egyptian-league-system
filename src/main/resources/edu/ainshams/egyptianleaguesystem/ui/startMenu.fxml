@@ -70,7 +70,7 @@
                </children></VBox>
             <VBox alignment="CENTER" layoutX="528.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="240.0" prefWidth="273.0" styleClass="infoBar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <children>
-                  <Label fx:id="upcomingMatchesLabel" style="-fx-text-fill: white; -fx-font-size: 30;" text="No data yet" />
+                  <Label fx:id="upcomingMatchesLabel" style="-fx-text-fill: white; -fx-font-size: 30;" text="No data yet" wrapText="true" />
                </children></VBox>
             <Label forceDisableTextEllipsis="true" prefHeight="45.0" prefWidth="141.0" styleClass="header" text="Most Goals" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <graphic>

@@ -22,7 +22,7 @@ public class Manager extends FootballCharacter{
     private Team team;
     private int trophies;
     private boolean wasPlayer;
-    private static int numOfManagers = 0;
+    //private static int numOfManagers = 0;
 
 
     public Manager( @JsonProperty("name") String name,
@@ -37,7 +37,7 @@ public class Manager extends FootballCharacter{
         this.managerId = managerId;
         this.trophies = trophies;
         this.wasPlayer = wasPlayer;
-        numOfManagers++;
+        //numOfManagers++;
     }
 
     public int getManagerId() {
@@ -57,7 +57,7 @@ public class Manager extends FootballCharacter{
     }
 
     public static int getNumOfManagers() {
-        return numOfManagers;
+        return Logic.getManagers().size();
     }
 
     public void setTeam(Team team) {

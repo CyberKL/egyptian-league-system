@@ -133,7 +133,7 @@ public class StandingsController implements Initializable {
 
         standingsTable.setItems(observableTeams);
         int rowHeight = 50;
-        double preferredHeight = (Team.getNumOfTeams() + 1) * rowHeight;
+        double preferredHeight = (Logic.getTeams().size() + 1) * rowHeight;
         standingsTable.setPrefHeight(preferredHeight);
     }
 

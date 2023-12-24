@@ -16,10 +16,10 @@ import java.io.IOException;
 public class Main extends Application{
 
     public static void main(String[] args) throws DuplicateException {
-        //Logic.read();
-        //launch(args);
-        Logic.startCLI();
-        //Logic.write();
+        Logic.read();
+        launch(args);
+        //Logic.startCLI();
+        Logic.write();
         System.out.println("exited");
     }
 

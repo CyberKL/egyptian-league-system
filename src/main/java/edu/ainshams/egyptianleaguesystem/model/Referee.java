@@ -19,7 +19,7 @@ public class Referee extends FootballCharacter{
 
     private int matchesRefereed;
     private final int refereeId;
-    private static int numOfReferees = Logic.getReferees().size();
+    //private static int numOfReferees = Logic.getReferees().size();
 
     public Referee(@JsonProperty("name") String name,
                    @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
@@ -28,7 +28,7 @@ public class Referee extends FootballCharacter{
         super(name, dateOfBirth, nationality);
         this.refereeId = refereeId;
         this.matchesRefereed = 0;
-        numOfReferees++;
+        //numOfReferees++;
     }
 
     public int getMatchesRefereed() {
@@ -39,7 +39,7 @@ public class Referee extends FootballCharacter{
     }
 
     public static int getNumOfReferees() {
-        return numOfReferees;
+        return Logic.getReferees().size();
     }
 
     public int getRefereeId() {
