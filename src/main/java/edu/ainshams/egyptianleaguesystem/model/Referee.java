@@ -50,11 +50,11 @@ public class Referee extends FootballCharacter{
     public String toString() {
         return  "Name: " + name +
                 "\nID:" + refereeId +
-                "\nMatches Refereed: " + matchesRefereed +
+                "\nAge: " + age +
                 "\nNationality: " + nationality +
+                "\nMatches Refereed: " + matchesRefereed +
                 "\nYellow Cards: " + yellowCards +
-                "\nRed Cards: " + redCards +
-                "\nAge: " + age;
+                "\nRed Cards: " + redCards;
     }
 
     protected static void enterRefereeInfo(ArrayList<Referee> referees){

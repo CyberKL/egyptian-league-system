@@ -72,12 +72,13 @@ public class Manager extends FootballCharacter{
 
     @Override
     public String toString() {
+        String teamName = (team != null) ? team.getName() : "N/A";
         return
                 "\nName: " + name +
                 "\nManager Id:"+managerId+
                 "\nAge: " + age +
                 "\nNationality: " + nationality +
-                "\nTeam: " + team +
+                "\nTeam: " + teamName +
                 "\nTrophies:" + trophies +
                 "\nWas Player:" + wasPlayer +
                 "\nYellowCards: " + yellowCards +
@@ -134,7 +135,7 @@ public class Manager extends FootballCharacter{
         boolean teamFound = false;
         System.out.println("Enter manager team");
         String teamName = scanner.nextLine();
-        for (Team team : Logic.getTeams()){
+        for (Team team : teams){
             if (team.getName().equalsIgnoreCase(teamName)){
                 teamFound = true;
                 managerTeam = team;

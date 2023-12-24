@@ -100,10 +100,12 @@ public class Match {
 
     @Override
     public String toString() {
+        String homeTeamName = (homeTeam != null) ? homeTeam.getName() : "N/A";
+        String awayTeamName = (awayTeam != null) ? awayTeam.getName() : "N/A";
         String info = "Match Id: " + matchId +
                 "\nDate: " + date +
-                "\nHome team: " + homeTeam.getName() +
-                "\nAway team: " + awayTeam.getName() +
+                "\nHome team: " + homeTeamName +
+                "\nAway team: " + awayTeamName +
                 "\nReferee: " + referee.getName() +
                 "\nStadium: " + stadium.getName();
         if (this.date.isBefore(LocalDate.now())){

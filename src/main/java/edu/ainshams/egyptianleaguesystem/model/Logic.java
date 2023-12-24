@@ -157,7 +157,18 @@ public class Logic {
 
     //Start of match related methods
     private static void enterMatchInfo(){
-        Match.enterMatchInfo(teams, referees, stadiums, matches);
+        if (teams.size()<2){
+            System.out.println("There is no enough teams");
+        }
+        else if (referees.isEmpty()){
+            System.out.println("Please add a referee first");
+        }
+        else if (stadiums.isEmpty()){
+            System.out.println("Please add a stadium first");
+        }
+        else{
+            Match.enterMatchInfo(teams, referees, stadiums, matches);
+        }
     }
 
     private static String displayMatchInfo(){
@@ -409,7 +420,7 @@ public class Logic {
             if (stadium.getName().equalsIgnoreCase(name)) {
                 stadiums.remove(stadium);
                 System.out.println("Stadium deleted successfully!");
-
+                return;
             }
         }
         System.out.println("Stadium not found, please enter a valid name");
@@ -418,7 +429,7 @@ public class Logic {
 
     //Start of referee related methods
     private static void displayTotalReferees(){
-        System.out.println("Total number of referees: " + Integer.toString(Referee.getNumOfReferees()));
+        System.out.println("Total number of referees: " + Referee.getNumOfReferees());
     }
 
     private static void deleteReferee(){
@@ -430,6 +441,7 @@ public class Logic {
             if (referee.getRefereeId()==refereeId){
                 referees.remove(referee);
                 System.out.println("This referee has been deleted successfully");
+                return;
             }
         }
         System.out.println("Referee not found");
@@ -450,6 +462,19 @@ public class Logic {
                 referee.updateReferee();
                 System.out.println("Referee information updated successfully!");
                 return;
+            }
+        }
+        System.out.println("Referee with ID " + refereeIdToUpdate + " not found.");
+    }
+    private static void displayRefereeInfo () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the ID of the referee you want to display info: ");
+        int refereeIdToUpdate = scanner.nextInt();
+        scanner.nextLine();
+
+        for (Referee referee : referees) {
+            if (referee.getRefereeId() == refereeIdToUpdate) {
+                System.out.println(referee.toString());
             }
         }
         System.out.println("Referee with ID " + refereeIdToUpdate + " not found.");
@@ -505,6 +530,9 @@ public class Logic {
             }
         }
         return "Manager with ID " + managerIdToDisplay + " not found.";
+    }
+    private static void displayTotalManagers (){
+        System.out.println("Total number of referees: " + Manager.getNumOfManagers());
     }
     //End of Manager related methods
 
@@ -854,8 +882,9 @@ public class Logic {
             System.out.println("Manager Management Menu:");
             System.out.println("1. Enter Manager Information");
             System.out.println("2. Update Manager Information");
-            System.out.println("3. Delete Manager");
-            System.out.println("4. Display Manager Information");
+            System.out.println("3. Display Manager Information");
+            System.out.println("4. Display Number Of Managers");
+            System.out.println("5. Delete Manager");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
@@ -873,10 +902,13 @@ public class Logic {
                     updateManagerInfo();
                     break;
                 case 3:
-                    deleteManager();
+                    System.out.println(displayManagerInfo());
                     break;
                 case 4:
-                   System.out.println( displayManagerInfo() );
+                    displayTotalManagers();
+                    break;
+                case 5:
+                    deleteManager();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -892,8 +924,9 @@ public class Logic {
             System.out.println("Referee Management Menu:");
             System.out.println("1. Enter Referee Information");
             System.out.println("2. Update Referee Information");
-            System.out.println("3. Delete Referee");
+            System.out.println("3. Display Referee Info");
             System.out.println("4. Display Total Referees");
+            System.out.println("5. Delete Referee");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
@@ -911,10 +944,13 @@ public class Logic {
                     updateRefereeInfo();
                     break;
                 case 3:
-                    deleteReferee();
+                    displayRefereeInfo();
                     break;
                 case 4:
                     displayTotalReferees();
+                    break;
+                case 5:
+                    deleteReferee();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

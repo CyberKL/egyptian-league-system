@@ -52,18 +52,19 @@ public abstract class Player extends FootballCharacter{
 
     @Override
     public String toString() {
-        return "Player Id: " + playerId +
+        String teamName = (team != null) ? team.getName() : "N/A";
+        return  "Name: " + name +
+                "\nPlayer Id: " + playerId +
+                "\nAge: " + age +
+                "\nNationality: " + nationality +
                 "\nNumber: " + number +
-                "\nTeam: " + team +
+                "\nTeam: " + teamName +
                 "\nHeight: " + height +
                 "\nWeight: " + weight +
                 "\nPreferredFoot: " + preferredFoot +
                 "\nPosition: " + position +
-                "\nName: " + name +
-                "\nNationality: " + nationality +
                 "\nYellowCards: " + yellowCards +
-                "\nRedCards: " + redCards +
-                "\nAge: " + age;
+                "\nRedCards: " + redCards;
     }
     public int getPlayerId() {
         return playerId;
