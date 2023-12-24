@@ -495,7 +495,7 @@ public class Logic {
 
         for (Manager manager : managers) {
             if (manager.getManagerId() == managerIdToUpdate) {
-                manager.updateManagerInfo();
+                manager.updateManagerInfo(teams);
                 System.out.println("Manager information updated successfully!");
                 return;
             }
