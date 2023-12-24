@@ -274,7 +274,7 @@ public class Team {
         boolean duplicateTeamName;
         switch (choice){
             case 1:{
-                String teamName = null;
+                String teamName;
                 do {
                     duplicateTeamName = false;
                     System.out.print("Enter the team name: ");
