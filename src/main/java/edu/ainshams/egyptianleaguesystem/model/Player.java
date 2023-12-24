@@ -29,7 +29,7 @@ public abstract class Player extends FootballCharacter{
     protected String preferredFoot;
     @JsonProperty("type")
     protected String position;
-    private static int numOfPlayers = 0;
+    protected static int numOfPlayers = 0;
 
     protected Player(@JsonProperty("name") String name,
                      @JsonProperty("dateOfBirth") LocalDate dateOfBirth,
@@ -133,7 +133,7 @@ public abstract class Player extends FootballCharacter{
 
             for (Player player : playersList) {
                 if (player.getName().equalsIgnoreCase(playerName)) {
-                    System.out.println( "Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
+                    return ( "Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
                 }
             }
             return "Player not found.";
@@ -145,7 +145,7 @@ public abstract class Player extends FootballCharacter{
                 if (team.getName().equalsIgnoreCase(inputTeamName)) {
                     for (Player player : team.getPlayers()) {
                         if (player.getName().equalsIgnoreCase(playerName)) {
-                            System.out.println("Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
+                            return ("Player Name: " + player.getName() + ", Player ID: " + player.getPlayerId());
                         }
                     }
                 }
@@ -163,8 +163,7 @@ public abstract class Player extends FootballCharacter{
             switch (choice) {
                 case 1: {
                     System.out.print("Enter new name: ");
-                    String newName = scanner.nextLine();
-                    this.name = newName;
+                    this.name = scanner.nextLine();
                     break;
                 }
                 case 2: {
@@ -190,7 +189,8 @@ public abstract class Player extends FootballCharacter{
                     boolean teamExists = false;
                     for (Team existingTeam : teams) {
                         if (existingTeam.getName().equalsIgnoreCase(newTeamName)) {
-                            existingTeam.deletePlayer(this);
+                            this.team.deletePlayer(this);
+                            existingTeam.addPlayer(this);
                             this.team = existingTeam;
                             teamExists = true;
                             break;
@@ -240,31 +240,39 @@ public abstract class Player extends FootballCharacter{
                 }
                 case 7: {
                     System.out.print("Enter new Nationality: ");
-                    String newNationality = scanner.nextLine();
-                    this.nationality = newNationality;
+                    this.nationality = scanner.nextLine();
                     break;
                 }
                 case 8: {
-                    System.out.print("Enter new Date of Birth (yyyy-mm-dd): ");
-                    LocalDate dob = LocalDate.parse(scanner.nextLine());
-                    LocalDate currentDate = LocalDate.now();
-                    Period period = Period.between(dob, currentDate);
-                    int age = period.getYears();
+                    try {
+                        System.out.print("Enter new Date of Birth (yyyy-mm-dd): ");
+                        LocalDate dob = LocalDate.parse(scanner.nextLine());
+                        LocalDate currentDate = LocalDate.now();
+                        Period period = Period.between(dob, currentDate);
+                        int age = period.getYears();
 
-                    if (age >= 16) {
-                        this.dateOfBirth = dob;
-                        this.age = age;
-                    } else {
-                        System.out.println("The player must be at least 16 years old.");
-                        return;
+                        if (age >= 16) {
+                            this.dateOfBirth = dob;
+                            this.age = age;
+                        } else {
+                            System.out.println("The player must be at least 16 years old.");
+                            return;
+                        }
+                    }catch (InputMismatchException ime){
+                        System.out.println("Please enter valid date");
                     }
                     break;
                 }
                 case 9: {
-                    System.out.println("Enter new Player ID:");
-                    int newPlayerId = scanner.nextInt();
-                    scanner.nextLine();
-                    isPlayerIdDuplicate(newPlayerId, playersList);
+                    int newPlayerId = 0;
+                    try {
+                        System.out.println("Enter new Player ID:");
+                        newPlayerId = scanner.nextInt();
+                        scanner.nextLine();
+                        isPlayerIdDuplicate(newPlayerId, playersList);
+                    }catch (InputMismatchException ime){
+                        System.out.println("Please enter numbers only");
+                    }
                     this.playerId = newPlayerId;
                     break;
                 }
@@ -315,27 +323,36 @@ public abstract class Player extends FootballCharacter{
         String playerName = scanner.nextLine();
 
         while (!isValidAge) {
-            System.out.print("Enter Date of Birth: ");
-            playerDateOfBirth = LocalDate.parse(scanner.nextLine());
-            LocalDate currentDate = LocalDate.now();
-            Period period = Period.between(playerDateOfBirth, currentDate);
-            int age = period.getYears();
+            try {
+                System.out.print("Enter Date of Birth: ");
+                playerDateOfBirth = LocalDate.parse(scanner.nextLine());
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(playerDateOfBirth, currentDate);
+                int age = period.getYears();
 
-            if (age >= 16) {
-                isValidAge = true;
-            } else {
-                System.out.println("The player must be at least 16 years old");
-                return;
+                if (age >= 16) {
+                    isValidAge = true;
+                } else {
+                    System.out.println("The player must be at least 16 years old");
+                    return;
+                }
+            }catch (InputMismatchException ime){
+                System.out.println("Please enter valid date");
             }
         }
 
         System.out.print("Enter nationality: ");
         String playerNationality = scanner.nextLine();
 
-        System.out.print("Enter player ID:");
-        int playerID = scanner.nextInt();
-        scanner.nextLine();
-        isPlayerIdDuplicate(playerID, players);
+        int playerID = 0;
+        try {
+            System.out.print("Enter player ID:");
+            playerID = scanner.nextInt();
+            scanner.nextLine();
+            isPlayerIdDuplicate(playerID, players);
+        }catch (InputMismatchException ime){
+            System.out.println("Please enter numbers only");
+        }
 
         int playerNumber = 0;
         try {
@@ -377,12 +394,12 @@ public abstract class Player extends FootballCharacter{
             scanner.nextLine();
         }
 
-            System.out.println("Enter preferred foot (right/left):");
-            String playerPreferredFoot = scanner.nextLine();
-            if (!playerPreferredFoot.equalsIgnoreCase("right") && !playerPreferredFoot.equalsIgnoreCase("left")) {
-                System.out.println("Please enter either 'right' or 'left'.");
-                return;
-            }
+        System.out.println("Enter preferred foot (right/left):");
+        String playerPreferredFoot = scanner.nextLine();
+        if (!playerPreferredFoot.equalsIgnoreCase("right") && !playerPreferredFoot.equalsIgnoreCase("left")) {
+            System.out.println("Please enter either 'right' or 'left'.");
+            return;
+        }
 
         System.out.println("Enter player position (forward/midfielder/defender/goalkeeper):");
         String playerPosition = scanner.nextLine();

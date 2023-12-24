@@ -542,7 +542,7 @@ public class Logic {
         Player.enterPlayerInfo(teams, players);
     }
     private static void searchPlayer() {
-        Player.searchPlayer(players,teams);
+        System.out.println(Player.searchPlayer(players,teams));
     }
 
     private static void updatePlayer() throws DuplicateException{
@@ -605,6 +605,10 @@ public class Logic {
         }
         System.out.println("Player with ID " + playerIdToDelete + " not found.");
     }
+    private static void displayTotalPlayers(){
+        System.out.println(Player.numOfPlayers);
+    }
+    //End of players related methods
 
     //Start of stats related methods
     private static void displayTopScorePlayers() {
@@ -844,7 +848,8 @@ public class Logic {
             System.out.println("1. Enter Player Information");
             System.out.println("2. Search Player");
             System.out.println("3. Update Player");
-            System.out.println("4. Delete Player");
+            System.out.println("4. Display Number Of Players");
+            System.out.println("5. Delete Player");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
@@ -865,6 +870,9 @@ public class Logic {
                     updatePlayer();
                     break;
                 case 4:
+                    displayTotalPlayers();
+                    break;
+                case 5:
                     deletePlayer();
                     break;
                 default:

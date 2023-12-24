@@ -309,27 +309,30 @@ public class Match {
             case 1: {
                 boolean isValidDate = false;
                 while(!isValidDate) {
-                    System.out.print("Enter new date: ");
-                    LocalDate date = LocalDate.parse(scanner.nextLine());
-                    if (date.isBefore(LocalDate.now())) {
-                        System.out.println("Please enter an upcoming date.");
-                    }
-                    else {
-                        if (this.date.isBefore(LocalDate.now())) {
-                            this.stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn() - 1);
-                            this.stadium.addUpcomingMatch(this);
-                            this.homeTeam.setGoalsFor(this.homeTeam.getGoalsFor() - this.score.getHomeTeam());
-                            this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() - this.score.getAwayTeam());
-                            this.homeTeam.calcGoalDiff();
-                            this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() - this.score.getAwayTeam());
-                            this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() - this.score.getHomeTeam());
-                            this.awayTeam.calcGoalDiff();
-                            this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed()-1);
-                            this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed()-1);
-                            this.score = null;
+                    try {
+                        System.out.print("Enter new date: ");
+                        LocalDate date = LocalDate.parse(scanner.nextLine());
+                        if (date.isBefore(LocalDate.now())) {
+                            System.out.println("Please enter an upcoming date.");
+                        } else {
+                            if (this.date.isBefore(LocalDate.now())) {
+                                this.stadium.setMatchesPlayedOn(stadium.getMatchesPlayedOn() - 1);
+                                this.stadium.addUpcomingMatch(this);
+                                this.homeTeam.setGoalsFor(this.homeTeam.getGoalsFor() - this.score.getHomeTeam());
+                                this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() - this.score.getAwayTeam());
+                                this.homeTeam.calcGoalDiff();
+                                this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() - this.score.getAwayTeam());
+                                this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() - this.score.getHomeTeam());
+                                this.awayTeam.calcGoalDiff();
+                                this.homeTeam.setMatchesPlayed(this.homeTeam.getMatchesPlayed() - 1);
+                                this.awayTeam.setMatchesPlayed(this.awayTeam.getMatchesPlayed() - 1);
+                                this.score = null;
+                            }
+                            this.date = date;
+                            isValidDate = true;
                         }
-                        this.date = date;
-                        isValidDate = true;
+                    }catch (InputMismatchException ime){
+                        System.out.println("Please enter a valid date");
                     }
                 }
                 break;
@@ -499,13 +502,23 @@ public class Match {
                     this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() - this.score.getAwayTeam());
                     this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() - this.score.getAwayTeam());
                     this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() - this.score.getHomeTeam());
+                    if (this.getWinner().equals(this.getHomeTeam().getName())){
+                        this.getHomeTeam().setWins(this.getHomeTeam().getWins()-1);
+                        this.getHomeTeam().setTotalScore(this.getHomeTeam().getTotalScore()-3);
+                        this.getAwayTeam().setLosses(this.getAwayTeam().getLosses()-1);
+                    }
+                    else if (this.getWinner().equals(this.getAwayTeam().getName())) {
+                        this.getAwayTeam().setWins(this.getAwayTeam().getWins()-1);
+                        this.getAwayTeam().setTotalScore(this.getAwayTeam().getTotalScore()-3);
+                        this.getHomeTeam().setLosses(this.getHomeTeam().getLosses()-1);
+                    }
+                    else {
+                        this.getHomeTeam().setDraws(this.getHomeTeam().getDraws()-1);
+                        this.getHomeTeam().setTotalScore(this.getHomeTeam().getTotalScore()-1);
+                        this.getAwayTeam().setDraws(this.getAwayTeam().getDraws()-1);
+                        this.getAwayTeam().setTotalScore(this.getAwayTeam().getTotalScore()-1);
+                    }
                     this.score = score;
-                    this.homeTeam.setGoalsFor(this.homeTeam.getGoalsFor() + this.score.getHomeTeam());
-                    this.homeTeam.setGoalsAgainst(this.homeTeam.getGoalsAgainst() + this.score.getAwayTeam());
-                    this.awayTeam.setGoalsFor(this.awayTeam.getGoalsAgainst() + this.score.getAwayTeam());
-                    this.awayTeam.setGoalsAgainst(this.awayTeam.getGoalsAgainst() + this.score.getHomeTeam());
-                    this.homeTeam.calcGoalDiff();
-                    this.awayTeam.calcGoalDiff();
                     result(this);
                 }
                 else {

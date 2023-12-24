@@ -70,12 +70,17 @@ public class Referee extends FootballCharacter{
                 return;
             }
         }
-        System.out.println("Enter Date Of Birth: ");
-        LocalDate dateOfBirth = LocalDate.parse(scanner.nextLine());
-        Period period = Period.between(dateOfBirth, LocalDate.now());
-        if (period.getYears()<25){
-            System.out.println("The is Below 25 years ! ");
-            return;
+        LocalDate dateOfBirth = null;
+        try {
+            System.out.println("Enter Date Of Birth: ");
+            dateOfBirth = LocalDate.parse(scanner.nextLine());
+            Period period = Period.between(dateOfBirth, LocalDate.now());
+            if (period.getYears() < 25) {
+                System.out.println("The is Below 25 years ! ");
+                return;
+            }
+        }catch (InputMismatchException ime){
+            System.out.println("Please enter a valid date");
         }
         System.out.println("Enter The Nationality: ");
         String refereeNationality = scanner.nextLine();
@@ -100,26 +105,30 @@ public class Referee extends FootballCharacter{
             switch (choice) {
                 case 1 : {
                     System.out.println(" What is the new name : ");
-                    String name = scanner.nextLine();
-                    this.name = name ;
+                    this.name = scanner.nextLine();
                     System.out.println(" Successful ! ");
                     break;
                 }
                 case 2 : {
-                    System.out.println(" What is the new date of birth : ");
-                    LocalDate date = LocalDate.parse(scanner.nextLine());
-                    Period period = Period.between(date, LocalDate.now());
-                    if (period.getYears()<25){
-                        System.out.println("The is Below 25 years ! ");
-                        return;}
+                    LocalDate date = null;
+                    try {
+                        System.out.println(" What is the new date of birth : ");
+                        date = LocalDate.parse(scanner.nextLine());
+                        Period period = Period.between(date, LocalDate.now());
+                        if (period.getYears() < 25) {
+                            System.out.println("The is Below 25 years ! ");
+                            return;
+                        }
+                    }catch (InputMismatchException ime){
+                        System.out.println("Please enter a valid date");
+                    }
                     this.dateOfBirth = date ;
                     System.out.println("successful ! ");
                     break;
                 }
                 case 3 : {
                     System.out.println("What is the new nationality : ");
-                    String nationality = scanner.nextLine();
-                    this.nationality = nationality;
+                    this.nationality = scanner.nextLine();
                     System.out.println("successful !");
                     break;
                 }
@@ -130,7 +139,7 @@ public class Referee extends FootballCharacter{
                         matchesRefereed = scanner.nextInt();
                         scanner.nextLine();
                     }catch (InputMismatchException ime){
-                        System.out.println("Invalid enetr data, please enter a number!");
+                        System.out.println("Invalid enter data, please enter a number!");
                     }
                     this.matchesRefereed = matchesRefereed;
                     System.out.println("successful ! ");
@@ -138,15 +147,15 @@ public class Referee extends FootballCharacter{
                 }
                 case 5 : {
                     System.out.println("What is the new amount yellow cards : ");
-                    int yelloweCard = 0 ;
+                    int yellowCard = 0 ;
                     try {
-                        yelloweCard = scanner.nextInt();
+                        yellowCard = scanner.nextInt();
                         scanner.nextLine();
                     }
                     catch (InputMismatchException ime){
-                        System.out.println("Invalid enetr data, please enter a number!");
+                        System.out.println("Invalid enter data, please enter a number!");
                     }
-                    this.yellowCards = yellowCards;
+                    this.yellowCards = yellowCard;
                     System.out.println("successful !");
                     break;
                 }

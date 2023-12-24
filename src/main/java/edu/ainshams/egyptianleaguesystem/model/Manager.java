@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -100,16 +102,20 @@ public class Manager extends FootballCharacter{
         boolean isValidAge = false;
         LocalDate managerDateOfBirth = null;
         while (!isValidAge) {
-            System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-            managerDateOfBirth = LocalDate.parse(scanner.nextLine());
-            LocalDate currentDate = LocalDate.now();
-            Period period = Period.between(managerDateOfBirth, currentDate);
-            int age = period.getYears();
-            if (age >= 30) {
-                isValidAge = true;
-            }
-            else {
-                System.out.println("The manager must be at least 30 years old.");
+            try {
+                System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
+                managerDateOfBirth = LocalDate.parse(scanner.nextLine());
+
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(managerDateOfBirth, currentDate);
+                int age = period.getYears();
+                if (age >= 30) {
+                    isValidAge = true;
+                } else {
+                    System.out.println("The manager must be at least 30 years old.");
+                }
+            }catch (DateTimeParseException dtpe){
+                System.out.println("Please enter a valid date");
             }
         }
 
@@ -177,8 +183,7 @@ public class Manager extends FootballCharacter{
         switch (choice) {
             case 1: {
                 System.out.print("Enter new player name: ");
-                String newPlayerName = scanner.nextLine();
-                this.name=newPlayerName;
+                this.name = scanner.nextLine();
                 break;
             }
             case 2: {
@@ -188,6 +193,10 @@ public class Manager extends FootballCharacter{
                 for (Team team : teams) {
                     if (team.getName().equalsIgnoreCase(newTeamName)) {
                         teamExists = true;
+                        if (team.getManager()!= null){
+                            team.getManager().setTeam(null);
+                        }
+                        team.setManager(this);
                         this.setTeam(team);
                         break;
                     }
@@ -220,24 +229,27 @@ public class Manager extends FootballCharacter{
 
             case 5: {
                 System.out.print("Enter new nationality: ");
-                String newNationality = scanner.nextLine();
-                this.nationality=newNationality;
+                this.nationality= scanner.nextLine();
                 break;
             }
             case 6: {
-                boolean isValidAge = false;
                 LocalDate newDOB = null;
-                while (!isValidAge) {
-                    System.out.print("Enter new Date Of Birth (yyyy-MM-dd): ");
-                    newDOB = LocalDate.parse(scanner.nextLine());
-                    LocalDate currentDate = LocalDate.now();
-                    Period period = Period.between(newDOB, currentDate);
-                    int age = period.getYears();
-                    if (age >= 30) {
-                        isValidAge = true;
-                    } else {
-                        System.out.println("The manager must be at least 30 years old.");
+                try {
+                    boolean isValidAge = false;
+                    while (!isValidAge) {
+                        System.out.print("Enter new Date Of Birth (yyyy-MM-dd): ");
+                        newDOB = LocalDate.parse(scanner.nextLine());
+                        LocalDate currentDate = LocalDate.now();
+                        Period period = Period.between(newDOB, currentDate);
+                        int age = period.getYears();
+                        if (age >= 30) {
+                            isValidAge = true;
+                        } else {
+                            System.out.println("The manager must be at least 30 years old.");
+                        }
                     }
+                }catch (DateTimeParseException dtpe){
+                    System.out.println("Please enter a valid date");
                 }
                 this.dateOfBirth=newDOB;
                 break;
@@ -245,16 +257,26 @@ public class Manager extends FootballCharacter{
 
             case 7: {
                 System.out.print("Enter new number of yellow cards: ");
-                int yellowCards = scanner.nextInt();
-                scanner.nextLine();
-                this.yellowCards += yellowCards;
+                int yellowCards = 0;
+                try{
+                    yellowCards = scanner.nextInt();
+                    scanner.nextLine();
+                }catch (InputMismatchException ime){
+                    System.out.println("Invalid input please enter numbers only");
+                }
+                this.yellowCards = yellowCards;
                 break;
             }
             case 8: {
                 System.out.print("Enter new number of red cards: ");
-                int redCards = scanner.nextInt();
-                scanner.nextLine();
-                this.redCards += redCards;
+                int redCards = 0;
+                try{
+                    redCards = scanner.nextInt();
+                    scanner.nextLine();
+                }catch (InputMismatchException ime){
+                    System.out.println("Invalid input please enter numbers only");
+                }
+                this.redCards = redCards;
                 break;
             }
             default: {
